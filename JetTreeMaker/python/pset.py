@@ -13,7 +13,7 @@ process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True),
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
         #"file:/eos/cms/store/group/phys_heavyions/davidlw/JetMET0/Jet260_RAWMINIAODSkim/240210_104720/0000/skim_23.root"
-        "file:/afs/cern.ch/user/p/pgardner/StorageArea/13cdeae8-0c59-401a-a6f9-defef27d998e.root"
+        "file:/eos/user/x/xiaoyul/13cdeae8-0c59-401a-a6f9-defef27d998e.root"
         #"file:/afs/cern.ch/user/p/pgardner/StorageArea/Output_all_275_24.root"
         #"file:/afs/cern.ch/user/p/pgardner/CMSSW_10_6_4_patch1/src/HeavyIonsAnalysis/TrackAnalysis/python/puppi/highMultJets.root"
         #"file:highMultJets.root"
@@ -23,7 +23,7 @@ process.source = cms.Source("PoolSource",
 
 # number of events to process, set to -1 to process all events
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(-1)
     )
 
 # load Global Tag, geometry, etc.
