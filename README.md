@@ -74,7 +74,7 @@ Header file
 -->    
 Once changes are made to macro and header, back up one directory so you can see both \src and \include. 
 
-Modify "Makefile": change the name to reflect the macro you are working on. (change it in 5 locations).
+Modify "Makefile": change the name to reflect the macro you are working on. (change it in five locations).
 
 Remove old executable with `make clean`. 
 
@@ -87,8 +87,12 @@ Split the file list with "splitfiles" in JetTreeAnalyzer/batch/, usually it only
 
 ### Batch jobs
 Modify "JetTreeAnalyzer/batch/data_vn500.sh" to reflect the excutable and files that will be used. 
+
 Modify "JetTreeAnalyzer/batch/OnOff.py" accordingly. This python script will divide jobs, give args etc. 
+
 Submit condor jobs:
+```Linux
 python OnOff.py
+```
 
 
