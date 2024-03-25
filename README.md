@@ -15,14 +15,14 @@ Parker's codes only work with lxplus7** machines for now:
 ```Linux
 ssh -XY xiaoyul@lxplus7.cern.ch
 ```
-CMS release for Run3 data:
+CMS release for Run 3 data:
 ```Linux
 cmsrel CMSSW_13_3_0
 cd CMSSW_13_3_0/src
 cmsenv
 ```  
 >[!Note] 
-> `cmsenv` in CMSSW_13_3_0/src will set the enviroment for CMS release CMSSW_13_3_0.
+>`cmsenv` in the CMSSW_13_3_0/src directory will set the specific enviroment for the CMS release CMSSW_13_3_0.
 Compile JetTreeMaker
 ```Linux
 git clone https://github.com/liuxiaoyuyuyu/JetFlowAnalysis/
@@ -30,7 +30,7 @@ cd JetTreeMaker
 scram b -j8
 ```  
 >[!Note] 
-> `scram` only compile codes two directories down CMSSW_*/src. In this case: CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/; on my lxplus (when learning this anslysis from Parker): CMSSW_13_3_0/src/Dir1/Dir2/
+>`scram b` only compile codes two directories down CMSSW_*/src. In this case: CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/; on my lxplus (when learning this anslysis from Parker): CMSSW_13_3_0/src/Dir1/Dir2/
 
 ### Local test
 ```Linux
@@ -43,13 +43,13 @@ voms-proxy-init -voms cms
 crab submit -c crab.py --dryrun
 ```
 >[!Note] 
-> 1. `pset.py` is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, the `psetName` in `crab.py` should match `pset.py`.
-> 2. Modify `config.Data.outLFNDirBase` in `crab.py` if needed. It is currently set to my eos space in flowcorr. 
-> 3. InputDataset:
+>1. "pset.py" is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, "psetName" in "crab.py" should match "pset.py".
+>2. Modify "config.Data.outLFNDirBase" in "crab.py" if needed. It is currently set to my eos space in flowcorr. 
+>3. InputDataset:
 > https://cmsweb.cern.ch/das/request?input=dataset%3D%2FJetMET0%2FRun2023C-22Sep2023_v4-v1%2FMINIAOD&instance=prod/global
-> 4. Monitor crab jobs:
-> check task status: `crab status`;
-> online monitor: https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?from=1709757014000&orgId=11&to=now&var-task=240306_213014%3Axiaoyul_crab_20240306_223010&var-user=xiaoyul  
+>4. Monitor crab jobs:
+>check task status: `crab status`;
+>online monitor: https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?from=1709757014000&orgId=11&to=now&var-task=240306_213014%3Axiaoyul_crab_20240306_223010&var-user=xiaoyul  
 
 ## Analyze Jet Trees
 ### JetTreeAnalyzer
@@ -74,20 +74,20 @@ Header file
 -->    
 Once changes are made to macro and header, back up one directory so you can see both \src and \include. 
 
-Modify `Makefile`: change the name to reflect the macro you are working on. (change it in 5 locations).
+Modify "Makefile": change the name to reflect the macro you are working on. (change it in 5 locations).
 
 Remove old executable with `make clean`. 
 
-Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a `\bin` directory. 
+Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a \bin directory. 
 
 Make data file list that contains all paths to all files, e.g 
 (Those files were prodeuced by the JetTreeMaker in the last step.)
 
-Split the file list with `JetTreeAnalyzer/batch/splitfiles`, usually only need to do it once.
+Split the file list with "splitfiles" in JetTreeAnalyzer/batch/, usually it only needs to be done once.
 
 ### Batch jobs
-Modify `JetTreeAnalyzer/batch/data_vn500.sh` to reflect the excutable and files that will be used. 
-Modify `JetTreeAnalyzer/batch/OnOff.py` accordingly. This python script will divide jobs, give args etc. 
+Modify "JetTreeAnalyzer/batch/data_vn500.sh" to reflect the excutable and files that will be used. 
+Modify "JetTreeAnalyzer/batch/OnOff.py" accordingly. This python script will divide jobs, give args etc. 
 Submit condor jobs:
 python OnOff.py
 
