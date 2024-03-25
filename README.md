@@ -46,9 +46,9 @@ crab submit -c crab.py --dryrun
 >1. "pset.py" is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, "psetName" in "crab.py" should match "pset.py".
 >2. Modify "config.Data.outLFNDirBase" in "crab.py" if needed. It is currently set to my eos space in flowcorr. 
 >3. InputDataset:
-> https://cmsweb.cern.ch/das/request?input=dataset%3D%2FJetMET0%2FRun2023C-22Sep2023_v4-v1%2FMINIAOD&instance=prod/global
->4. Monitor crab jobs:
->check task status: `crab status`;
+> for Run3, search "dataset dataset=/JetMET0/Run2023*/MINIAOD" in CMS DAS:
+>https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset+dataset%3D%2FJetMET0%2FRun2023*%2FMINIAOD
+>4. Check task status: `crab status`;
 >online monitor: https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?from=1709757014000&orgId=11&to=now&var-task=240306_213014%3Axiaoyul_crab_20240306_223010&var-user=xiaoyul  
 
 ## Analyze Jet Trees
