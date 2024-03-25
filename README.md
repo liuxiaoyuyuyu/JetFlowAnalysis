@@ -1,6 +1,39 @@
 # Parker-jet-code
  Parker's code for the jet collectivity study
 
+- [Code Setup](#code-setup)
+- [Make Jet Trees](#make-jet-trees)
+  - [TreeMaker](#treemaker)
+  - [Local test](#local-test)
+  - [Crab jobs](#crab-jobs)
+- [Analyze Jet Trees](#anslyze-jet-trees) 
+  - [TreeAnalyzer](#treeanalyzer)
+  - [Batch jobs](#batch-jobs)
+   
+## Code Setup
+Parker's codes only work with lxplus7** machines for now:
+```Linux
+ssh -XY xiaoyul@lxplus7.cern.ch
+CMS release for Run3 data:
+```Linux
+cmsrel CMSSW_13_3_0
+cd CMSSW_13_3_0/src
+cmsenv
+```  
+>[!Note] 
+> `cmsenv` in CMSSW_13_3_0/src will set the enviroment for CMS release CMSSW_13_3_0.
+```Linux
+git clone https://github.com/liuxiaoyuyuyu/Parker-jet-code/JetFlow/TreeMaker
+cd 
+```  
+
+
+## Make Jet Trees
+### TreeMaker
+
+
+
+
 Code to make trees -> local or CRAB, produces roots
 
 Macros in src/
