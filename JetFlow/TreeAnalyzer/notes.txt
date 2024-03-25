@@ -1,6 +1,3 @@
-# Parker-jet-code
- Parker's code for the jet collectivity study
-
 Code to make trees -> local or CRAB, produces roots
 
 Macros in src/

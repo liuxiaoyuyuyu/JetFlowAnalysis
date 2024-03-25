@@ -1,0 +1,6 @@
+#1 = files per job
+#2 = location of total file list
+#3 = directory where split lists will be
+
+        #1            2                               3
+split -l25 -d -a 3 ../fileLists/data_v2_list.txt 	./short_data1/list_cor_

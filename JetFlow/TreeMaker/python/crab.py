@@ -1,0 +1,40 @@
+from WMCore.Configuration import Configuration
+config = Configuration()
+
+config.section_('General')
+config.General.transferOutputs = True
+
+config.section_('JobType')
+config.JobType.psetName = 'pset.py'
+config.JobType.pluginName = 'Analysis'
+config.JobType.outputFiles = ['MATCH.root']
+config.JobType.allowUndistributedCMSSW = True
+#config.JobType.maxMemoryMB = 4000
+#config.JobType.inputFiles = ['HeavyIonRPVRcd_PbPb2018_offline.db']
+config.section_('Data')
+config.Data.inputDataset = '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
+#used to be '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
+
+config.Data.inputDBS = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
+
+#config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt'
+
+config.Data.splitting = 'Automatic'
+#config.Data.unitsPerJob = 150
+config.Data.publication = False
+
+#config.Data.outLFNDirBase = '/store/user/pgardner/MINIAOD_2018_UL_D_ak8_new'
+
+config.Data.outLFNDirBase = '/store/group/phys_heavyions/flowcorr/Run3_jet_trees/'
+
+#config.Data.totalUnits        = 1 #for test only
+
+config.section_('User')
+config.section_('Site')
+config.Site.storageSite = 'T2_CH_CERN'
+
+#blacklist,Vanderbuilt 
+
+
+
+#config.Site.storageSite = 'T3_US_Rice'
