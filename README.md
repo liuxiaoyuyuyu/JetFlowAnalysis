@@ -1,19 +1,20 @@
-# Parker-jet-code
- Parker's code for the jet collectivity study
+# JetFlowAnalysis
+Parker Gardner's code for the jet collectivity study
 
-- [Code Setup](#code-setup)
 - [Make Jet Trees](#make-jet-trees)
-  - [TreeMaker](#treemaker)
+  - [JetTreeMaker](#treemaker)
   - [Local test](#local-test)
   - [Crab jobs](#crab-jobs)
 - [Analyze Jet Trees](#anslyze-jet-trees) 
-  - [TreeAnalyzer](#treeanalyzer)
+  - [JetTreeAnalyzer](#treeanalyzer)
   - [Batch jobs](#batch-jobs)
    
-## Code Setup
+## Make Jet Trees
+### JetTreeMaker
 Parker's codes only work with lxplus7** machines for now:
 ```Linux
 ssh -XY xiaoyul@lxplus7.cern.ch
+```
 CMS release for Run3 data:
 ```Linux
 cmsrel CMSSW_13_3_0
@@ -22,20 +23,39 @@ cmsenv
 ```  
 >[!Note] 
 > `cmsenv` in CMSSW_13_3_0/src will set the enviroment for CMS release CMSSW_13_3_0.
+Compile JetTreeMaker
 ```Linux
-git clone https://github.com/liuxiaoyuyuyu/Parker-jet-code/JetFlow/TreeMaker
-cd 
+git clone https://github.com/liuxiaoyuyuyu/JetFlowAnalysis/
+cd JetTreeMaker
+scram b -j8
 ```  
+>[!Note] 
+> `scram` only compile codes two directories down CMSSW_*/src. In this case: CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/; on my lxplus (when learning this anslysis from Parker): CMSSW_13_3_0/src/Dir1/Dir2/
 
+### Local test
+```Linux
+cd JetFlowAnalysis/JetTreeMaker/python
+cmsRun pset.py
+```  
+### Crab jobs 
+```Linux
+voms-proxy-init -voms cms
+crab submit -c crab.py --dryrun
+```
+>[!Note] 
+> 1. `pset.py` is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, the `psetName` in `crab.py` should match `pset.py`.
+> 2. Modify `config.Data.outLFNDirBase` in `crab.py` if needed. It is currently set to my eos space in flowcorr. 
+> 3. InputDataset:
+> https://cmsweb.cern.ch/das/request?input=dataset%3D%2FJetMET0%2FRun2023C-22Sep2023_v4-v1%2FMINIAOD&instance=prod/global
+> 4. Monitor crab jobs:
+> check task status: `crab status`;
+> online monitor: https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?from=1709757014000&orgId=11&to=now&var-task=240306_213014%3Axiaoyul_crab_20240306_223010&var-user=xiaoyul  
 
-## Make Jet Trees
-### TreeMaker
-
-
-
-
-Code to make trees -> local or CRAB, produces roots
-
+## Analyze Jet Trees
+### JetTreeAnalyzer
+Main analysis macro in: JetTreeAnalyzer/src/
+Header files in: JetTreeAnalyzer/include/ 
+<!--
 Macros in src/
 Main macro( list of files, job number 1-N)
     loads root file
@@ -48,23 +68,27 @@ Main macro( list of files, job number 1-N)
     Line 79 
     Line 149 Main code starts
 
-
-
 Header file
     include/
     3 header files: coordinate tools, constants, Tree details
-    
-Once changes are made to macro and header, back up one directory so you can see both src and include âmake cleanâ removes old executable. âMakeâ compiles new changes (very fast, not like scram b)
+-->    
+Once changes are made to macro and header, back up one directory so you can see both \src and \include. 
 
-Make file
-Change the name to reflect the macro you are working on, (change it in 5 locations)
+Modify `Makefile`: change the name to reflect the macro you are working on. (change it in 5 locations).
 
-Produces executable in âbinâ directory
+Remove old executable with `make clean`. 
 
-Data file lists
-    data_v2_list.txt, contains all paths to all files
+Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a `\bin` directory. 
+
+Make data file list that contains all paths to all files, e.g 
+(Those files were prodeuced by the JetTreeMaker in the last step.)
+
+Split the file list with `JetTreeAnalyzer/batch/splitfiles`, usually only need to do it once.
+
+### Batch jobs
+Modify `JetTreeAnalyzer/batch/data_vn500.sh` to reflect the excutable and files that will be used. 
+Modify `JetTreeAnalyzer/batch/OnOff.py` accordingly. This python script will divide jobs, give args etc. 
+Submit condor jobs:
+python OnOff.py
 
 
-Executable
-Condor jobs in batch
-    divides, gives args, etc
