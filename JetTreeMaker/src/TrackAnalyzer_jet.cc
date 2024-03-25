@@ -1,5 +1,5 @@
-#include "HeavyIonsAnalysis_2/JetAna/interface/reduced.h"
-#include "HeavyIonsAnalysis_2/JetAna/interface/coordinateTools.h"
+#include "JetTreeAnalyzer/JetTreeMaker/interface/reduced.h"
+#include "JetTreeAnalyzer/JetTreeMaker/interface/coordinateTools.h"
 #include "math.h"
 #include <iostream>
 #include <iomanip>
