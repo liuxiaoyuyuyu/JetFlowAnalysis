@@ -1,5 +1,5 @@
-#include "JetTreeAnalyzer/JetTreeMaker/interface/reduced.h"
-#include "JetTreeAnalyzer/JetTreeMaker/interface/coordinateTools.h"
+#include "JetTreeAnalysis/JetTreeMaker/interface/reduced.h"
+#include "JetTreeAnalysis/JetTreeMaker/interface/coordinateTools.h"
 #include "math.h"
 #include <iostream>
 #include <iomanip>
