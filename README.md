@@ -26,7 +26,7 @@ cmsenv
 Compile JetTreeMaker
 ```Linux
 git clone https://github.com/liuxiaoyuyuyu/JetFlowAnalysis/
-cd JetTreeMaker
+cd JetFlowAnalysis/JetTreeMaker
 scram b -j8
 ```  
 >[!Note] 
