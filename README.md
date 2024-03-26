@@ -43,7 +43,7 @@ voms-proxy-init -voms cms
 crab submit -c crab.py --dryrun
 ```
 >[!Note] 
->1. "pset.py" is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, "psetName" in "crab.py" should match "pset.py".
+>1. "pset.py" is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, "psetName" in "crab.py" should match "pset.py". Output name should also match in "pset.py" and "crab.py".
 >2. Modify "config.Data.outLFNDirBase" in "crab.py" if needed. It is currently set to my eos space in flowcorr. 
 >3. InputDataset:
 > for Run3, search "dataset dataset=/JetMET0/Run2023*/MINIAOD" in CMS DAS:
