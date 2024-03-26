@@ -40,7 +40,7 @@ cmsRun pset.py
 ### Crab jobs 
 ```Linux
 voms-proxy-init -voms cms
-crab submit -c crab.py --dryrun
+crab submit -c crab.py
 ```
 >[!Note] 
 >1. "pset.py" is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, "psetName" in "crab.py" should match "pset.py". Output name should also match in "pset.py" and "crab.py".
