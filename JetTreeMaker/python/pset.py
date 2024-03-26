@@ -41,14 +41,11 @@ process.TFileService = cms.Service("TFileService",
 process.hlt = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
 #process.hlt.HLTPaths = ['HLT_AK8PF*'] # for allphysics
 process.hlt.HLTPaths = ['HLT_AK8PFJet500*'] # for allphysics
-#anti-kt jet cone size: 0.8 (lab frame), 0.8 is largest we can have, more pileup. larger underlying events.
-#e+e- no pile up, no underlying events (soft process besides hard proess, jet fragmentation)
-#260 GeV jet 
-#500 is the highest without prescale
+#500 is the highest jet energy without prescale
 process.hlt.andOr = cms.bool(True)
 process.hlt.throw = cms.bool(False)
-process.hlt260 = process.hlt.clone()
-process.eventFilterHLT260 = cms.Sequence(process.hlt260)
+process.hlt500= process.hlt.clone()
+process.eventFilterHLT500 = cms.Sequence(process.hlt500)
 
 process.analyzerOffline = cms.EDAnalyzer('TrackAnalyzer_jet',
     vertexSrc = cms.InputTag("offlineSlimmedPrimaryVertices"),
@@ -64,9 +61,9 @@ process.analyzerOffline = cms.EDAnalyzer('TrackAnalyzer_jet',
 #)
 #
 #main forest sequence
-process.runAnalyzer260 = cms.Path(
+process.runAnalyzer500 = cms.Path(
     #process.analyzerOnline *
-    process.eventFilterHLT260 *
+    process.eventFilterHLT500 *
     process.analyzerOffline
     )
 
