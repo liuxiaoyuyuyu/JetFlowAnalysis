@@ -40,7 +40,11 @@ process.TFileService = cms.Service("TFileService",
 
 process.hlt = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
 #process.hlt.HLTPaths = ['HLT_AK8PF*'] # for allphysics
-process.hlt.HLTPaths = ['HLT_AK8PFJet260*'] # for allphysics
+process.hlt.HLTPaths = ['HLT_AK8PFJet500*'] # for allphysics
+#anti-kt jet cone size: 0.8 (lab frame), 0.8 is largest we can have, more pileup. larger underlying events.
+#e+e- no pile up, no underlying events (soft process besides hard proess, jet fragmentation)
+#260 GeV jet 
+#500 is the highest without prescale
 process.hlt.andOr = cms.bool(True)
 process.hlt.throw = cms.bool(False)
 process.hlt260 = process.hlt.clone()

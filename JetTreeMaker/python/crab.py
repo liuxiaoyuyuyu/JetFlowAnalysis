@@ -13,12 +13,14 @@ config.JobType.allowUndistributedCMSSW = True
 #config.JobType.inputFiles = ['HeavyIonRPVRcd_PbPb2018_offline.db']
 config.section_('Data')
 #config.Data.inputDataset = '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
-config.Data.inputDataset = '/JetMET0/Run2023C-22Sep2023_v4-v1/MINIAOD'
-#used to be '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
+#config.Data.inputDataset = '/JetMET0/Run2023C-22Sep2023_v4-v1/MINIAOD'
+config.Data.inputDataset = '/JetMET0/Run2023B-19Dec2023-v1/MINIAOD'
 
 config.Data.inputDBS = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
 
 #config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt'
+config.Data.lumiMask = '/afs/cern.ch/user/x/xiaoyul/Cert_Collisions2023_366442_370790_Golden_JSON.txt'
+#.txt file convert from raw data of /eos/user/c/cmsdqm/www/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json
 
 config.Data.splitting = 'Automatic'
 #config.Data.unitsPerJob = 150
