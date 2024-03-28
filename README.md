@@ -7,6 +7,7 @@ Parker Gardner's code for the jet collectivity study
   - [Crab jobs](#crab-jobs)
 - [Analyze Jet Trees](#anslyze-jet-trees) 
   - [JetTreeAnalyzer](#treeanalyzer)
+  - [JetTreeAnalyzer](#treeanalyzer)
   - [Batch jobs](#batch-jobs)
    
 ## Make Jet Trees
