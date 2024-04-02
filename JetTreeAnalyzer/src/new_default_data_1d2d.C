@@ -378,9 +378,9 @@ void MyClass::Loop(int job, std::string fList){
 
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
                     if(jet_dau_eta > track_eta_lim) continue;
-                    /*
-                    //getting et pt efficiency for A track in beam frame
-                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    
+                    //getting eta pt efficiency for A track in beam frame
+                    double Atrk_weight = 1.0; //(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     hAvg_Atrk_Weight->Fill(1.0/(Atrk_weight));
 
                     for(int i = 0; i < trackbin; i++){
@@ -391,7 +391,7 @@ void MyClass::Loop(int job, std::string fList){
                             }
                         }
                     }
-                    */
+                    
                     if(A_trk == NNtrk - 1) continue;
 
                     for(long int T_trk=A_trk+1; T_trk< NNtrk; T_trk++ ){
