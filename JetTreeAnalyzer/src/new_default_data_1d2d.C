@@ -32,8 +32,6 @@
 using TMath::ATan;
 using TMath::Exp;
 
-
-
 //Bool folds
 
 bool F_eventpass(std::vector< float > *jetPt, int jetnumber, float jetPtCut){
@@ -71,9 +69,6 @@ bool isSubstring(string s1, string s2)
 
     return 0;
 }
-
-
-
 
 
 void MyClass::Loop(int job, std::string fList){
@@ -129,30 +124,25 @@ void MyClass::Loop(int job, std::string fList){
         }
     }
 
-
     //NEW THING                        
     //NEW THING                        
     //NEW THING                         
     TH2D* hReco2D[fileList.size()];
     TH2D* hGen2D[fileList.size()];
-TH1D* hdid500;
-TH1D* hdid400;
+    TH1D* hdid500;
+    TH1D* hdid400;
 
-TFile *f_jet_HLT_lookup = new TFile("did400500_v2_all.root");
-hdid500 = (TH1D*)f_jet_HLT_lookup->Get("d500")->Clone("did500");
-hdid400 = (TH1D*)f_jet_HLT_lookup->Get("d400")->Clone("did400");
-hdid500->Divide(hdid400);
+    TFile *f_jet_HLT_lookup = new TFile("did400500_v2_all.root");
+    hdid500 = (TH1D*)f_jet_HLT_lookup->Get("d500")->Clone("did500");
+    hdid400 = (TH1D*)f_jet_HLT_lookup->Get("d400")->Clone("did400");
+    hdid500->Divide(hdid400);
 
-
-
-// MAIN CODE BEGINS
+    // MAIN CODE BEGINS
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
-        int f_from_file = f;
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
-// Change the name of the tree, "OfflineAnalzyer/tree"
-        TTree *tree = (TTree*)fFile->Get("analyzer500/trackTree");
+        TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
         Init(tree);
 
         std::cout << "File " << f+1 << " out of " << fileList.size() << std::endl;
@@ -161,8 +151,7 @@ hdid500->Divide(hdid400);
         cout<<"Total Entries is:"<<endl;
         cout<< nentries <<endl;
 
-
-        //COMMENT OUT DOWN TO 200, all that is matching MC to Data era
+        /* Below is all about matching MC to Data era
         vector<string> era_vec;
         vector<string> matched_cor_table_vec;
         era_vec.push_back("2018D_"); matched_cor_table_vec.push_back("18_v2");
@@ -198,57 +187,52 @@ hdid500->Divide(hdid400);
         hReco2D[f]->Divide(hGen2D[f]);
         int thisEffTable =f_from_file;
 
-        // ENTERING EVENT LOOP
-        //for(int f = 0; f<fileList.size(); f++){
+        //Above is all about matching MC to Data era */
+
+        //========ENTERING EVENT LOOP========
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
-            //{{{
             Long64_t jevent = LoadTree(ievent);
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
+            //cut on jetPt and jetN (number of [HLT-passed] jets in an evnet)
             if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
                 continue;
             }
-
-            //cut on pt
-            //cut on jet N
-
 
             hEvent_Pass->Fill(1);
 
             int jetCounter = jetPt->size();
             if(jetCounter == 0) continue;
-            //ENTERING JET LOOP
 
-            //for(int f = 0; f<fileList.size(); f++){
-            //for (Long64_t ievent=0; ievent <nentries; ievent ++){
+            //========ENTERING JET LOOP========
             for(int kjet=0; kjet < jetCounter; kjet++){
 
                 int ijet = kjet; //indicesG[kjet];
-                long int NNtrk = (dau_pt_STAR->at(ijet)).size();
+                long int NNtrk = (dau_pt->at(ijet)).size();
+                //long int NNtrk = (dau_pt_STAR->at(ijet)).size();
                 gRandom->SetSeed(0);
                 double eta_smear;
 
                 if( fabs(((*jetEta)[kjet])+eta_smear) > jetEtaCut ) continue;
-                if( (*jetPt)[kjet] < jetPtCut_Jet   ) continue;
+                if( (*jetPt)[kjet] < jetPtCut_Jet) continue;
                 hJetPt->Fill((*jetPt)[kjet]);
                 // filling distrivutions within track bins
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
-                 double jet_HLT_weight = 1.0;
+                double jet_HLT_weight = 1.0;
+                 /*
                  //COMMENT OUT NEXT 3 LINES
                  //HIGH LEVEL TRIGGER "is there a jet with cone size 8 and pt above X"
                  if((*jetPt)[ijet] < 880 && (*jetPt)[ijet] > 550){
                      jet_HLT_weight = 1.0/(hdid500->GetBinContent(hdid500->FindBin((*jetPt)[ijet]) ) );
                  }
-
-
-
+                */
 
                 int tkBool[trackbin] = {0};
 
-
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
+                
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[kjet][A_trk] == 0) continue;//charge
                     if(fabs((*dau_pt)[kjet][A_trk])  < 0.3)     continue;//lab pt
@@ -270,21 +254,25 @@ hdid500->Divide(hdid400);
                     //          "n_ChargeMult_DCA_labPt_Eta_exclusion_Cor"
                     //          with
                     //          "n_ChargeMult_DCA_labPt_Eta_exclusion"
+                    /*
                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
+                    */
                 }
-
-                hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
-                hBinDist_unc_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion, 1.0*jet_HLT_weight);
+                /*
+                hBinDist_cor_single->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
+                */
+                hBinDist_unc_single->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion, 1.0*jet_HLT_weight);
                 for(int i = 0; i < trackbin; i++){
                     if( n_ChargeMult_DCA_labPt_Eta_exclusion >= trackbinbounds[i] && n_ChargeMult_DCA_labPt_Eta_exclusion < trackbinboundsUpper[i]){
                         tkBool[i] = 1;
-                        hJet_Pass                   ->Fill(i);
-                        if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550                           ->Fill(i);
-                        if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550_hltCor                   ->Fill(i,1.0*jet_HLT_weight);
-
-                        hBinDist_cor[i]             ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,1.0*jet_HLT_weight);
-                        hBinDist_unc[i]             ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion,1.0*jet_HLT_weight);
+                        hJet_Pass->Fill(i);
+                        if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550->Fill(i);
+                        if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550_hltCor->Fill(i,1.0*jet_HLT_weight);
+                        /*
+                        hBinDist_cor[i]->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,1.0*jet_HLT_weight);
+                        */
+                        hBinDist_unc[i]->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion,1.0*jet_HLT_weight);
                     }
                 }
 
@@ -292,20 +280,11 @@ hdid500->Divide(hdid400);
                 double NtrigCorrected[trackbin][ptbin] = {0};
                 int A_ptBool[NNtrk][ptbin] = {0};
 
+                //****** TWO PARTICLE MULT CODE *******
                 // VERY IMPORTANT calculating daughter pt wrt to jet axis.
                 // So this needs to be 2d vector, for pt bin and for daughter index.
                 // In each case I create a true falsse for that daughter falling in to the specific pt bin.
                 // Note this is NOT jet x daughter. It's pt bin x daughtr
-
-                //for(int f = 0; f<fileList.size(); f++){
-                //for (Long64_t ievent=0; ievent <nentries; ievent ++){
-                //for(int kjet=0; kjet < jetCounter; kjet++){
-
-
-
-
-                //****** TWO PARTICLE MULT CODE *******"
-
 
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
@@ -338,42 +317,40 @@ hdid500->Divide(hdid400);
                     // Jet with mult 90
                     // tkBool [1,1,1]
 
-
-
-
                     //NEW THING                        
                     //NEW THING                        
                     //NEW THING                        
 
                     //getting et pt efficiency for A track in beam frame
                     //COMMENT OUT IF YOU DONT HAVE MC TABLES
+                    /*
                     double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    */
+
+                    double Atrk_weight = 1.0;
 
                     //in the case where the total jet mult and the individual daughter pt is acceptable for this track bin and pt bin, we increase the Ntrig count.
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-
-                                //NtrigCorrected[i][j] += (1.0/Atrk_weight);
+                                NtrigCorrected[i][j] += (1.0/Atrk_weight);
                                 Ntrig[i][j] += 1;
                             }
                         }
                     }
 
                 }//here ends the boolean array creations.
-                //continuation of main loops. Here is where the 2D Corr plots are created using the above booleans and 
+
+                //continuation of main loops. Here is where the 2D Corr plots are created using the above booleans 
 
                 for(int i = 0; i < trackbin; i++){
                     for(int j = 0; j < ptbin; j++){
                         hNtrig->Fill(i,j,Ntrig[i][j]);
-                        hNtrigCorrected->Fill(i,j, NtrigCorrected[i][j]);
-                        hAvg_NtrigCorrected_Bump->Fill(NtrigCorrected[i][j] - Ntrig[i][j]);
+                        //hNtrigCorrected->Fill(i,j, NtrigCorrected[i][j]);
+                        //hAvg_NtrigCorrected_Bump->Fill(NtrigCorrected[i][j] - Ntrig[i][j]);
                     }
                 }
 
-                //for(int f = 0; f<fileList.size(); f++){
-                //for (Long64_t ievent=0; ievent <nentries; ievent ++){
-                //for(int kjet=0; kjet < jetCounter; kjet++){
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
@@ -401,6 +378,7 @@ hdid500->Divide(hdid400);
 
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
                     if(jet_dau_eta > track_eta_lim) continue;
+                    /*
                     //getting et pt efficiency for A track in beam frame
                     double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     hAvg_Atrk_Weight->Fill(1.0/(Atrk_weight));
@@ -413,12 +391,8 @@ hdid500->Divide(hdid400);
                             }
                         }
                     }
+                    */
                     if(A_trk == NNtrk - 1) continue;
-
-                    
-
-
-
 
                     for(long int T_trk=A_trk+1; T_trk< NNtrk; T_trk++ ){
 
@@ -439,17 +413,13 @@ hdid500->Divide(hdid400);
 
 
                         //We use E Scheme jet axis, others include "winner take all"
-
                         double T_jet_dau_pt    =  ptWRTJet( (double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][T_trk], (double)(*dau_eta)[ijet][T_trk], (double)(*dau_phi)[ijet][T_trk]);
                         double T_jet_dau_eta   = etaWRTJet( (double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][T_trk], (double)(*dau_eta)[ijet][T_trk], (double)(*dau_phi)[ijet][T_trk]);
                         double T_jet_dau_phi   = phiWRTJet( (double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][T_trk], (double)(*dau_eta)[ijet][T_trk], (double)(*dau_phi)[ijet][T_trk]);
 
-
                         if(T_jet_dau_eta > track_eta_lim) continue;
 
-
                         //ETA AND PHI DIFFERNCES
-
                         double deltaEta = (jet_dau_eta - T_jet_dau_eta);
                         double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
                         //NEW THING                        
@@ -462,10 +432,8 @@ hdid500->Divide(hdid400);
                         // pt 0-1,1-2,2-3
                         // BELOW, i=3, j=3
 
-
-
-                        for(        int i = 0; i < trackbin; i++){
-                            for(    int j = 0; j < ptbin;    j++){
+                        for(int i = 0; i < trackbin; i++){
+                            for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
 
                                     //cout << "1.0/(Atrk_weight*Ttrk_weight*NtrigCorrected[i][j]) " << 1.0/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ) << " and components: " << Atrk_weight << " " << Ttrk_weight << " " << NtrigCorrected[i][j] << endl;
@@ -494,156 +462,145 @@ hdid500->Divide(hdid400);
                         }
                     }//T_trk end
                 }//A_trk end
-            }//}}}
             }
             fFile->Close();
-            }
-//ABOVE loops every single root file in fList and produce the entire signal dist
-//it also makes EPDraw, single particle 2D eta phi dist for ALL jets in ALL events, within a jet mult class
+        }
+        //ABOVE loops every single root file in fList and produce the entire signal dist
+        //it also makes EPDraw, single particle 2D eta phi dist for ALL jets in ALL events, within a jet mult class
 
-//EPDraw takes all particles from every event that meets our selection, jet mult, daughter pT, etc
-//  combines them all into one 2D distribution of Eta-Phi (with respect to jet axis)
-//  later for background we will pull out particles from the EPDraw distribution
-//  when we pull particles from EPDraw we are selecting partciles from ALL events and so there should be no single-jet correlations
+        //EPDraw takes all particles from every event that meets our selection, jet mult, daughter pT, etc
+        //  combines them all into one 2D distribution of Eta-Phi (with respect to jet axis)
+        //  later for background we will pull out particles from the EPDraw distribution
+        //  when we pull particles from EPDraw we are selecting partciles from ALL events and so there should be no single-jet correlations
 
+        int backMult =10;
+        for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
+            std::cout << wtrk << "/" << trackbin << std::endl;
+            for(int wppt = 1; wppt < ptbin+1; wppt++){ 
+                std::cout << wppt << "/" << ptbin << std::endl;
+                for(int wpPU = 1; wpPU < PUbin+1; wpPU++){
+                    std::cout << wpPU << "/" << PUbin << std::endl;
+                    //Nent is the number of pairs in the signal which we will try to 10x
+                    //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
+                    //us 10 times as many pairs as we have in the signal histogrm.
 
+                    //long int NENT =  hPairsPU[wpPU-1]->GetBinContent(wtrk, wppt);
+                    long int NENT =  hPairs->GetBinContent(wtrk, wppt);
+                    long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
+                    //float A_ETA[XENT] = {0};
+                    //float A_PHI[XENT] = {0};
+                    float A_ETA_Cor[XENT] = {0};
+                    float A_PHI_Cor[XENT] = {0};
+                    for(int x = 0; x<XENT; x++){
+                        gRandom->SetSeed(0);
 
-            int backMult =10;
-            for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
-                std::cout << wtrk << "/" << trackbin << std::endl;
-                for(int wppt = 1; wppt < ptbin+1; wppt++){ 
-                    std::cout << wppt << "/" << ptbin << std::endl;
-                    for(int wpPU = 1; wpPU < PUbin+1; wpPU++){
-                        std::cout << wpPU << "/" << PUbin << std::endl;
-                        //Nent is the number of pairs in the signal which we will try to 10x
-                        //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
-                        //us 10 times as many pairs as we have in the signal histogrm.
+                        double WEta1_Cor, WPhi1_Cor;//making the pseudoparticles
+                        hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1_Cor, WPhi1_Cor);
+                        A_ETA_Cor[x] = WEta1_Cor;
+                        A_PHI_Cor[x] = WPhi1_Cor;
+                    }
+                    for(long int i = 0; i < (XENT-1); i++){
+                        for(long int j = (i+1); j < XENT; j++){
 
-                        //long int NENT =  hPairsPU[wpPU-1]->GetBinContent(wtrk, wppt);
-                        long int NENT =  hPairs->GetBinContent(wtrk, wppt);
-                        long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                        //float A_ETA[XENT] = {0};
-                        //float A_PHI[XENT] = {0};
-                        float A_ETA_Cor[XENT] = {0};
-                        float A_PHI_Cor[XENT] = {0};
-                        for(int x = 0; x<XENT; x++){
-                            gRandom->SetSeed(0);
+                            double WdeltaEta_Cor = (A_ETA_Cor[i]-A_ETA_Cor[j]);
+                            double WdeltaPhi_Cor = (TMath::ACos(TMath::Cos(A_PHI_Cor[i]-A_PHI_Cor[j])));
+                            hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, WdeltaPhi_Cor,   1);//./XENT);
+                            hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, WdeltaPhi_Cor,  1);//./XENT);
+                            hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, -WdeltaPhi_Cor,  1);//./XENT);
+                            hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, -WdeltaPhi_Cor, 1);//./XENT);
+                            hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, 2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
+                            hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor,2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
 
-                            double WEta1_Cor, WPhi1_Cor;//making the pseudoparticles
-                            hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1_Cor, WPhi1_Cor);
-                            A_ETA_Cor[x] = WEta1_Cor;
-                            A_PHI_Cor[x] = WPhi1_Cor;
-                        }
-                        for(long int i = 0; i < (XENT-1); i++){
-                            for(long int j = (i+1); j < XENT; j++){
-
-                                double WdeltaEta_Cor = (A_ETA_Cor[i]-A_ETA_Cor[j]);
-                                double WdeltaPhi_Cor = (TMath::ACos(TMath::Cos(A_PHI_Cor[i]-A_PHI_Cor[j])));
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, WdeltaPhi_Cor,   1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, WdeltaPhi_Cor,  1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, -WdeltaPhi_Cor,  1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, -WdeltaPhi_Cor, 1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, 2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor,2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
-
-                            }
                         }
                     }
                 }
             }
+        }
 
-//We have theBck and the Sig for all jets
-//closed all the root files
-//
+        //We have theBck and the Sig for all jets
+        //closed all the root files
 
-
-
-
-            string subList = fList.substr(fList.size() - 3);
-            TFile* fS_tempA = new TFile(Form("new_default_data/root_out_1d2d/job_%s.root",subList.c_str()), "recreate");
-            for(int wtrk =1; wtrk <trackbin+1; wtrk++){
-                hBinDist_cor[wtrk-1]         ->Write();
-                hBinDist_unc[wtrk-1]         ->Write();
-                for(int wppt =1; wppt <ptbin+1; wppt++){
-                    for(int wpPU =1; wpPU<PUbin+1; wpPU++){
+        string subList = fList.substr(fList.size() - 3);
+        TFile* fS_tempA = new TFile(Form("new_default_data/root_out_1d2d/job_%s.root",subList.c_str()), "recreate");
+        for(int wtrk =1; wtrk <trackbin+1; wtrk++){
+            hBinDist_cor[wtrk-1]->Write();
+            hBinDist_unc[wtrk-1]->Write();
+            for(int wppt =1; wppt <ptbin+1; wppt++){
+                for(int wpPU =1; wpPU<PUbin+1; wpPU++){
                     // In "1d2d_constants.h" we 3 jet mults, 2 pT bins
                     // 0-30,30-60,60+
                     // 0-3 GeV, 0.3 - 3 Gev
                     // hSignalShiftedCor_0_to_30_and_0_3
                     // hSignalShiftedCor_30_to_60_and_0_3
 
-
-
-                        hSignalShiftedCor             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
-                        hBckrndShiftedCor             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
-                        hEPDrawCor                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU  ));
-
-
-                    }
+                    hSignalShiftedCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
+                    hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
+                    hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU  ));
                 }
             }
-            hPairs   ->Write();
-            hNtrig   ->Write();
-            hNtrigCorrected   ->Write();
-            hTotalWeight                ->Write();
-            hAvg_Atrk_Weight            ->Write();
-            hAvg_NtrigCorrected_Bump    ->Write();
-            hJetPt->Write();
-            hEvent_Pass   ->Write();
-            hJet_Pass     ->Write();
-            hJet_Pass550    ->Write();
-            hJet_Pass550_hltCor    ->Write();
-            hBinDist_cor_single->Write();
-            hBinDist_unc_single->Write();
+        }
+        hPairs->Write();
+        hNtrig->Write();
+        hNtrigCorrected->Write();
+        hTotalWeight->Write();
+        hAvg_Atrk_Weight->Write();
+        hAvg_NtrigCorrected_Bump->Write();
+        hJetPt->Write();
+        hEvent_Pass->Write();
+        hJet_Pass->Write();
+        hJet_Pass550->Write();
+        hJet_Pass550_hltCor->Write();
+        hBinDist_cor_single->Write();
+        hBinDist_unc_single->Write();
+        
+        fS_tempA->Close();
+    
+    }//end looping over files
+}
+
+//Code enters execution here
+int main(int argc, const char* argv[])
+{
+    if(argc != 4)
+    {
+        std::cout << "Usage: Z_mumu_Channel <fileList> <jobNumber> <nJobs>" << std::endl;
+        return 1;
+    }
 
 
-            fS_tempA->Close();
-            }
+    //read input parameters
+    std::string fList = argv[1];
+    std::string buffer;
+    std::vector<std::string> listOfFiles;
+    std::ifstream inFile(fList.data());
+
+    int job = (int)std::atoi(argv[2]);
+    int nJobs = (int)std::atoi(argv[3]);
 
 
-            //Code enters execution here
-            int main(int argc, const char* argv[])
-            {
-                if(argc != 4)
-                {
-                    std::cout << "Usage: Z_mumu_Channel <fileList> <jobNumber> <nJobs>" << std::endl;
-                    return 1;
-                }
+    //read the file list and spit it into a vector of strings based on how the parallelization is to be done
+    //each vector is a separate subset of the fileList based on the job number
+    if(!inFile.is_open())
+    {
+        std::cout << "Error opening jet file. Exiting." <<std::endl;
+        return 1;
+    }
+    else
+    {
+        int line = 0;
+        while(true)
+        {
+            inFile >> buffer;
+            if(inFile.eof()) break;
+            if( line%nJobs == job) listOfFiles.push_back(buffer);
+            line++;
+        }
+    }
 
+    //create the MyClass Object
+    MyClass m = MyClass(listOfFiles);
+    m.Loop(job, fList);
 
-                //read input parameters
-                std::string fList = argv[1];
-                std::string buffer;
-                std::vector<std::string> listOfFiles;
-                std::ifstream inFile(fList.data());
-
-                int job = (int)std::atoi(argv[2]);
-                int nJobs = (int)std::atoi(argv[3]);
-
-
-                //read the file list and spit it into a vector of strings based on how the parallelization is to be done
-                //each vector is a separate subset of the fileList based on the job number
-                if(!inFile.is_open())
-                {
-                    std::cout << "Error opening jet file. Exiting." <<std::endl;
-                    return 1;
-                }
-                else
-                {
-                    int line = 0;
-                    while(true)
-                    {
-                        inFile >> buffer;
-                        if(inFile.eof()) break;
-                        if( line%nJobs == job) listOfFiles.push_back(buffer);
-                        line++;
-                    }
-                }
-
-                //create the MyClass Object
-                MyClass m = MyClass(listOfFiles);
-                m.Loop(job, fList);
-
-                return 0;
-            }
+    return 0;
+}
 

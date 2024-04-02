@@ -32,50 +32,47 @@ public :
    UInt_t           nRun;
    ULong64_t           nEv;
    UInt_t           nLumi;
-    vector<float> *trkPhi;
-   vector<float>   *zVtx;
    vector<int>     *jetNumDaughters;
    vector<float>   *jetEta;
    vector<float>   *jetPt;
    vector<float>   *jetPhi;
-   vector<float>   *jetTheta;
    vector<int>     *chargedMultiplicity;
    Int_t           jetN;
+   vector<vector<float> > *dau_PuppiW;
    vector<vector<int> > *dau_chg;
-   vector<vector<float> > *dau_ptError;
-   vector<vector<float> > *dau_ZDCAsig;
-   vector<vector<float> > *dau_XYDCAsig;
-   vector<vector<double> > *dau_pt_STAR;
-   vector<vector<double> > *dau_eta_STAR;
-   vector<vector<double> > *dau_phi_STAR;
-   vector<vector<double> > *dau_theta_STAR;
    vector<vector<float> > *dau_pt;
+   vector<vector<float> > *dau_ptError;
    vector<vector<float> > *dau_eta;
    vector<vector<float> > *dau_phi;
+   vector<vector<float> > *dau_theta;
+   vector<vector<float> > *dau_XYDCAsig;
+   vector<vector<float> > *dau_ZDCAsig;
+   vector<vector<float> > *dau_vz;
+   vector<vector<float> > *dau_vy;
+   vector<vector<float> > *dau_vx;
+
    // List of branches
-   //TBranch        *b_nRun;   //!
    TBranch        *b_nRun;   //!
+   TBranch        *b_nEv;   //!
    TBranch        *b_nLumi;   //!
-   TBranch        *b_trkPhi;   //!
-   TBranch        *b_zVtx;   //!
    TBranch        *b_jetNumDaughters;   //!
    TBranch        *b_jetEta;   //!
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetPhi;   //!
-   TBranch        *b_jetTheta;   //!
    TBranch        *b_chargedMultiplicity;   //!
    TBranch        *b_jetN;   //!
+   TBranch        *b_dau_PuppiW;   //!
    TBranch        *b_dau_chg;   //!
-   TBranch        *b_dau_ptError;   //!
-   TBranch        *b_dau_ZDCAsig;   //!
-   TBranch        *b_dau_XYDCAsig;   //!
-   TBranch        *b_dau_pt_STAR;   //!
-   TBranch        *b_dau_eta_STAR;   //!
-   TBranch        *b_dau_phi_STAR;   //!
-   TBranch        *b_dau_theta_STAR;   //!
    TBranch        *b_dau_pt;   //!
+   TBranch        *b_dau_ptError;   //!
    TBranch        *b_dau_eta;   //!
    TBranch        *b_dau_phi;   //!
+   TBranch        *b_dau_theta;   //!
+   TBranch        *b_dau_XYDCAsig;   //!
+   TBranch        *b_dau_ZDCAsig;   //!
+   TBranch        *b_dau_vz;   //!
+   TBranch        *b_dau_vy;   //!
+   TBranch        *b_dau_vx;   //!
 
    MyClass(std::vector<std::string> _fileList);
    virtual ~MyClass();
@@ -89,7 +86,6 @@ public :
 };
 
 MyClass::MyClass(std::vector<std::string> _fileList) : fChain(0)
-//MyClass::MyClass(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -141,25 +137,23 @@ void MyClass::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
-   trkPhi = 0;
-   zVtx = 0;
    jetNumDaughters = 0;
    jetEta = 0;
    jetPt = 0;
    jetPhi = 0;
-   jetTheta = 0;
    chargedMultiplicity = 0;
+   dau_PuppiW = 0;
    dau_chg = 0;
-   dau_ptError= 0;   //!
-   dau_ZDCAsig= 0;   //!
-   dau_XYDCAsig= 0;   //!
-   dau_pt_STAR = 0;
-   dau_eta_STAR = 0;
-   dau_phi_STAR = 0;
    dau_pt = 0;
+   dau_ptError = 0;
    dau_eta = 0;
    dau_phi = 0;
-   dau_theta_STAR = 0;
+   dau_theta = 0;
+   dau_XYDCAsig = 0;
+   dau_ZDCAsig = 0;
+   dau_vz = 0;
+   dau_vy = 0;
+   dau_vx = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -167,28 +161,26 @@ void MyClass::Init(TTree *tree)
    fChain->SetMakeClass(1);
 
    fChain->SetBranchAddress("nRun", &nRun, &b_nRun);
-   fChain->SetBranchAddress("nEv", &nEv, &b_nRun);
+   fChain->SetBranchAddress("nEv", &nEv, &b_nEv);
    fChain->SetBranchAddress("nLumi", &nLumi, &b_nLumi);
-   fChain->SetBranchAddress("trkPhi", &trkPhi, &b_trkPhi);
-   fChain->SetBranchAddress("zVtx", &zVtx, &b_zVtx);
    fChain->SetBranchAddress("jetNumDaughters", &jetNumDaughters, &b_jetNumDaughters);
    fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetPhi", &jetPhi, &b_jetPhi);
-   fChain->SetBranchAddress("jetTheta", &jetTheta, &b_jetTheta);
    fChain->SetBranchAddress("chargedMultiplicity", &chargedMultiplicity, &b_chargedMultiplicity);
    fChain->SetBranchAddress("jetN", &jetN, &b_jetN);
+   fChain->SetBranchAddress("dau_PuppiW", &dau_PuppiW, &b_dau_PuppiW);
    fChain->SetBranchAddress("dau_chg", &dau_chg, &b_dau_chg);
-   fChain->SetBranchAddress("dau_ptError", &dau_ptError, &b_dau_ptError);
-   fChain->SetBranchAddress("dau_ZDCAsig", &dau_ZDCAsig, &b_dau_ZDCAsig);
-   fChain->SetBranchAddress("dau_XYDCAsig", &dau_XYDCAsig, &b_dau_XYDCAsig);
-   fChain->SetBranchAddress("dau_pt_STAR", &dau_pt_STAR, &b_dau_pt_STAR);
-   fChain->SetBranchAddress("dau_eta_STAR", &dau_eta_STAR, &b_dau_eta_STAR);
-   fChain->SetBranchAddress("dau_phi_STAR", &dau_phi_STAR, &b_dau_phi_STAR);
-   fChain->SetBranchAddress("dau_theta_STAR", &dau_theta_STAR, &b_dau_theta_STAR);
    fChain->SetBranchAddress("dau_pt", &dau_pt, &b_dau_pt);
+   fChain->SetBranchAddress("dau_ptError", &dau_ptError, &b_dau_ptError);
    fChain->SetBranchAddress("dau_eta", &dau_eta, &b_dau_eta);
    fChain->SetBranchAddress("dau_phi", &dau_phi, &b_dau_phi);
+   fChain->SetBranchAddress("dau_theta", &dau_theta, &b_dau_theta);
+   fChain->SetBranchAddress("dau_XYDCAsig", &dau_XYDCAsig, &b_dau_XYDCAsig);
+   fChain->SetBranchAddress("dau_ZDCAsig", &dau_ZDCAsig, &b_dau_ZDCAsig);
+   fChain->SetBranchAddress("dau_vz", &dau_vz, &b_dau_vz);
+   fChain->SetBranchAddress("dau_vy", &dau_vy, &b_dau_vy);
+   fChain->SetBranchAddress("dau_vx", &dau_vx, &b_dau_vx);
    Notify();
 }
 
