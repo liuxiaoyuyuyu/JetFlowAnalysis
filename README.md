@@ -82,7 +82,7 @@ Remove old executable with `make clean`.
 Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a \bin directory. 
 
 Make data file list that contains all paths to all files, e.g 
-(Those files were prodeuced by the JetTreeMaker in the last step.)
+(Those files were produced by the JetTreeMaker in the last step.)
 
 Split the file list with "splitfiles" in JetTreeAnalyzer/batch/, usually it only needs to be done once.
 
