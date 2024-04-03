@@ -191,7 +191,6 @@ void MyClass::Loop(int job, std::string fList){
         //Above is all about matching MC to Data era */
         //========ENTERING EVENT LOOP========
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
-        //for (Long64_t ievent=4; ievent <nentries; ievent ++){
             cout<<"ievnt"<<ievent<<endl;
             Long64_t jevent = LoadTree(ievent);
             cout<<"jevent "<<jevent<<" ievent "<<ievent<<endl;
@@ -202,15 +201,16 @@ void MyClass::Loop(int job, std::string fList){
             if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
                 continue;
             }
-
+            cout<<"h1"<<endl;
             hEvent_Pass->Fill(1);
-
+            /*
             int jetCounter = jetPt->size();
             if(jetCounter == 0) continue;
 
             cout<<"jet counter "<<jetCounter<<endl;
+            */
             //========ENTERING JET LOOP========
-            for(int kjet=0; kjet < jetCounter; kjet++){
+            //for(int kjet=0; kjet < jetCounter; kjet++){
                 /*
                 int ijet = kjet; //indicesG[kjet];
                 long int NNtrk = (dau_pt->at(ijet)).size();
@@ -473,7 +473,7 @@ void MyClass::Loop(int job, std::string fList){
                     }//T_trk end
                 }//A_trk end
                 */
-            }
+            //}//jet loop ends
             
             fFile->Close();
         }
@@ -485,6 +485,7 @@ void MyClass::Loop(int job, std::string fList){
         //  later for background we will pull out particles from the EPDraw distribution
         //  when we pull particles from EPDraw we are selecting partciles from ALL events and so there should be no single-jet correlations
 
+        /*
         int backMult =10;
         for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
             std::cout << wtrk << "/" << trackbin << std::endl;
@@ -528,7 +529,7 @@ void MyClass::Loop(int job, std::string fList){
                 }
             }
         }
-
+        */
         //We have theBck and the Sig for all jets
         //closed all the root files
 
