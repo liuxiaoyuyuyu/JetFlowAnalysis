@@ -196,20 +196,23 @@ void MyClass::Loop(int job, std::string fList){
             Long64_t jevent = LoadTree(ievent);
             cout<<"jevent "<<jevent<<" ievent "<<ievent<<endl;
             nb = fChain->GetEntry(ievent);   nbytes += nb;
+            cout<<"h3"<<endl;
 
             //cut on jetPt and jetN (number of [HLT-passed] jets in an evnet)
             if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
                 continue;
             }
+            cout<<"h4"<<endl;
 
             hEvent_Pass->Fill(1);
 
             int jetCounter = jetPt->size();
             if(jetCounter == 0) continue;
 
+            cout<<"h5"<<endl;
             //========ENTERING JET LOOP========
             for(int kjet=0; kjet < jetCounter; kjet++){
-
+            cout<<"h6"<<endl;
                 int ijet = kjet; //indicesG[kjet];
                 long int NNtrk = (dau_pt->at(ijet)).size();
                 //long int NNtrk = (dau_pt_STAR->at(ijet)).size();
@@ -236,6 +239,7 @@ void MyClass::Loop(int job, std::string fList){
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
                 
+            cout<<"h7"<<endl;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[kjet][A_trk] == 0) continue;//charge
                     if(fabs((*dau_pt)[kjet][A_trk])  < 0.3)     continue;//lab pt
@@ -262,6 +266,7 @@ void MyClass::Loop(int job, std::string fList){
                     n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
                     */
                 }
+            cout<<"h8"<<endl;
                 /*
                 hBinDist_cor_single->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
                 */
@@ -289,6 +294,7 @@ void MyClass::Loop(int job, std::string fList){
                 // In each case I create a true falsse for that daughter falling in to the specific pt bin.
                 // Note this is NOT jet x daughter. It's pt bin x daughtr
 
+            cout<<"h9"<<endl;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
                     if((*dau_pt)[ijet][A_trk] < 0.3) continue;
@@ -354,6 +360,7 @@ void MyClass::Loop(int job, std::string fList){
                     }
                 }
 
+            cout<<"h10"<<endl;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
@@ -397,6 +404,7 @@ void MyClass::Loop(int job, std::string fList){
                     
                     if(A_trk == NNtrk - 1) continue;
 
+            cout<<"h11"<<endl;
                     for(long int T_trk=A_trk+1; T_trk< NNtrk; T_trk++ ){
 
                         if((*dau_chg)[ijet][T_trk] == 0) continue;
