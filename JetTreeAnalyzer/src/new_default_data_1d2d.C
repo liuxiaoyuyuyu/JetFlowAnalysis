@@ -473,10 +473,9 @@ void MyClass::Loop(int job, std::string fList){
                     }//T_trk end
                 }//A_trk end
                 */
-            //}//jet loop ends
-            
-            fFile->Close();
+            //}//jet loop ends    
         }
+        fFile->Close();
         //ABOVE loops every single root file in fList and produce the entire signal dist
         //it also makes EPDraw, single particle 2D eta phi dist for ALL jets in ALL events, within a jet mult class
 
