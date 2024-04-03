@@ -192,7 +192,7 @@ void MyClass::Loop(int job, std::string fList){
         cout<<"h1"<<endl;
         //========ENTERING EVENT LOOP========
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
-            cout<<"h2"<<endl;
+            cout<<"ievnt"<<ievent<<endl;
             Long64_t jevent = LoadTree(ievent);
             cout<<"jevent "<<jevent<<" ievent "<<ievent<<endl;
             nb = fChain->GetEntry(ievent);   nbytes += nb;
@@ -209,7 +209,7 @@ void MyClass::Loop(int job, std::string fList){
             int jetCounter = jetPt->size();
             if(jetCounter == 0) continue;
 
-            cout<<"h5"<<endl;
+            cout<<"jet counter "<<jetCounter<<endl;
             //========ENTERING JET LOOP========
             for(int kjet=0; kjet < jetCounter; kjet++){
             cout<<"h6"<<endl;
