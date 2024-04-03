@@ -191,7 +191,8 @@ void MyClass::Loop(int job, std::string fList){
         //Above is all about matching MC to Data era */
         cout<<"h1"<<endl;
         //========ENTERING EVENT LOOP========
-        for (Long64_t ievent=0; ievent <nentries; ievent ++){
+        //for (Long64_t ievent=0; ievent <nentries; ievent ++){
+        for (Long64_t ievent=1; ievent <nentries; ievent ++){
             cout<<"ievnt"<<ievent<<endl;
             Long64_t jevent = LoadTree(ievent);
             cout<<"jevent "<<jevent<<" ievent "<<ievent<<endl;
