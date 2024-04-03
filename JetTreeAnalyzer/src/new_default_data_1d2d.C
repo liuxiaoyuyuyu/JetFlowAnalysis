@@ -189,7 +189,6 @@ void MyClass::Loop(int job, std::string fList){
         int thisEffTable =f_from_file;
 
         //Above is all about matching MC to Data era */
-        cout<<"h1"<<endl;
         //========ENTERING EVENT LOOP========
         //for (Long64_t ievent=0; ievent <nentries; ievent ++){
         for (Long64_t ievent=4; ievent <nentries; ievent ++){
@@ -197,13 +196,12 @@ void MyClass::Loop(int job, std::string fList){
             Long64_t jevent = LoadTree(ievent);
             cout<<"jevent "<<jevent<<" ievent "<<ievent<<endl;
             nb = fChain->GetEntry(ievent);   nbytes += nb;
-            cout<<"h3"<<endl;
+            cout<<"nb "<<nb<<" nbytes "<<nbytes<<endl;
 
             //cut on jetPt and jetN (number of [HLT-passed] jets in an evnet)
             if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
                 continue;
             }
-            cout<<"h4"<<endl;
 
             hEvent_Pass->Fill(1);
 
@@ -213,7 +211,6 @@ void MyClass::Loop(int job, std::string fList){
             cout<<"jet counter "<<jetCounter<<endl;
             //========ENTERING JET LOOP========
             for(int kjet=0; kjet < jetCounter; kjet++){
-            cout<<"h6"<<endl;
                 int ijet = kjet; //indicesG[kjet];
                 long int NNtrk = (dau_pt->at(ijet)).size();
                 //long int NNtrk = (dau_pt_STAR->at(ijet)).size();
@@ -240,7 +237,6 @@ void MyClass::Loop(int job, std::string fList){
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
                 
-            cout<<"h7"<<endl;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[kjet][A_trk] == 0) continue;//charge
                     if(fabs((*dau_pt)[kjet][A_trk])  < 0.3)     continue;//lab pt
@@ -267,10 +263,11 @@ void MyClass::Loop(int job, std::string fList){
                     n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
                     */
                 }
-            cout<<"h8"<<endl;
                 /*
                 hBinDist_cor_single->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
                 */
+                
+                /*
                 hBinDist_unc_single->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion, 1.0*jet_HLT_weight);
                 for(int i = 0; i < trackbin; i++){
                     if( n_ChargeMult_DCA_labPt_Eta_exclusion >= trackbinbounds[i] && n_ChargeMult_DCA_labPt_Eta_exclusion < trackbinboundsUpper[i]){
@@ -278,9 +275,9 @@ void MyClass::Loop(int job, std::string fList){
                         hJet_Pass->Fill(i);
                         if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550->Fill(i);
                         if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550_hltCor->Fill(i,1.0*jet_HLT_weight);
-                        /*
-                        hBinDist_cor[i]->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,1.0*jet_HLT_weight);
-                        */
+                        
+                        //hBinDist_cor[i]->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,1.0*jet_HLT_weight);
+                        
                         hBinDist_unc[i]->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion,1.0*jet_HLT_weight);
                     }
                 }
@@ -288,14 +285,14 @@ void MyClass::Loop(int job, std::string fList){
                 int Ntrig[trackbin][ptbin] = {0};
                 double NtrigCorrected[trackbin][ptbin] = {0};
                 int A_ptBool[NNtrk][ptbin] = {0};
-
+                */
                 //****** TWO PARTICLE MULT CODE *******
                 // VERY IMPORTANT calculating daughter pt wrt to jet axis.
                 // So this needs to be 2d vector, for pt bin and for daughter index.
                 // In each case I create a true falsse for that daughter falling in to the specific pt bin.
                 // Note this is NOT jet x daughter. It's pt bin x daughtr
 
-            cout<<"h9"<<endl;
+                /*
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
                     if((*dau_pt)[ijet][A_trk] < 0.3) continue;
@@ -333,9 +330,7 @@ void MyClass::Loop(int job, std::string fList){
 
                     //getting et pt efficiency for A track in beam frame
                     //COMMENT OUT IF YOU DONT HAVE MC TABLES
-                    /*
-                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
-                    */
+                    //double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
 
                     double Atrk_weight = 1.0;
 
@@ -350,9 +345,9 @@ void MyClass::Loop(int job, std::string fList){
                     }
 
                 }//here ends the boolean array creations.
-
+                */
                 //continuation of main loops. Here is where the 2D Corr plots are created using the above booleans 
-
+                /*
                 for(int i = 0; i < trackbin; i++){
                     for(int j = 0; j < ptbin; j++){
                         hNtrig->Fill(i,j,Ntrig[i][j]);
@@ -360,8 +355,9 @@ void MyClass::Loop(int job, std::string fList){
                         //hAvg_NtrigCorrected_Bump->Fill(NtrigCorrected[i][j] - Ntrig[i][j]);
                     }
                 }
-
-            cout<<"h10"<<endl;
+                */
+                
+                /*
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
@@ -405,7 +401,6 @@ void MyClass::Loop(int job, std::string fList){
                     
                     if(A_trk == NNtrk - 1) continue;
 
-            cout<<"h11"<<endl;
                     for(long int T_trk=A_trk+1; T_trk< NNtrk; T_trk++ ){
 
                         if((*dau_chg)[ijet][T_trk] == 0) continue;
@@ -452,11 +447,11 @@ void MyClass::Loop(int job, std::string fList){
 
                                     hPairs->Fill(i,j);
 
-                                    if(Atrk_weight == 0){/* cout  << "Atrk_weight = 0!" << endl;
-                                    */
+                                    if(Atrk_weight == 0){ //cout  << "Atrk_weight = 0!" << endl;
+                                    
                                         continue;}
-                                    if(Ttrk_weight == 0){/* cout << "Ttrk_weight = 0!" << endl;
-                                    */
+                                    if(Ttrk_weight == 0){//cout << "Ttrk_weight = 0!" << endl;
+                                
                                         continue;}
                                     if(NtrigCorrected[i][j] == 0){ cout << "NtrigCorrected[i][j] = 0!" << endl; continue;}
 
@@ -474,7 +469,9 @@ void MyClass::Loop(int job, std::string fList){
                         }
                     }//T_trk end
                 }//A_trk end
+                */
             }
+            
             fFile->Close();
         }
         //ABOVE loops every single root file in fList and produce the entire signal dist
