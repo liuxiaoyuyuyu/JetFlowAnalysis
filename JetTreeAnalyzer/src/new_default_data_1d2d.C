@@ -190,8 +190,8 @@ void MyClass::Loop(int job, std::string fList){
 
         //Above is all about matching MC to Data era */
         //========ENTERING EVENT LOOP========
-        //for (Long64_t ievent=0; ievent <nentries; ievent ++){
-        for (Long64_t ievent=4; ievent <nentries; ievent ++){
+        for (Long64_t ievent=0; ievent <nentries; ievent ++){
+        //for (Long64_t ievent=4; ievent <nentries; ievent ++){
             cout<<"ievnt"<<ievent<<endl;
             Long64_t jevent = LoadTree(ievent);
             cout<<"jevent "<<jevent<<" ievent "<<ievent<<endl;
@@ -211,6 +211,7 @@ void MyClass::Loop(int job, std::string fList){
             cout<<"jet counter "<<jetCounter<<endl;
             //========ENTERING JET LOOP========
             for(int kjet=0; kjet < jetCounter; kjet++){
+                /*
                 int ijet = kjet; //indicesG[kjet];
                 long int NNtrk = (dau_pt->at(ijet)).size();
                 //long int NNtrk = (dau_pt_STAR->at(ijet)).size();
@@ -224,19 +225,20 @@ void MyClass::Loop(int job, std::string fList){
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
                 double jet_HLT_weight = 1.0;
-                 /*
+                 
                  //COMMENT OUT NEXT 3 LINES
                  //HIGH LEVEL TRIGGER "is there a jet with cone size 8 and pt above X"
-                 if((*jetPt)[ijet] < 880 && (*jetPt)[ijet] > 550){
-                     jet_HLT_weight = 1.0/(hdid500->GetBinContent(hdid500->FindBin((*jetPt)[ijet]) ) );
-                 }
-                */
+                 //if((*jetPt)[ijet] < 880 && (*jetPt)[ijet] > 550){
+                    //jet_HLT_weight = 1.0/(hdid500->GetBinContent(hdid500->FindBin((*jetPt)[ijet]) ) );
+                 //}
+                
 
                 int tkBool[trackbin] = {0};
 
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
-                
+                */
+                /*
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[kjet][A_trk] == 0) continue;//charge
                     if(fabs((*dau_pt)[kjet][A_trk])  < 0.3)     continue;//lab pt
@@ -258,11 +260,12 @@ void MyClass::Loop(int job, std::string fList){
                     //          "n_ChargeMult_DCA_labPt_Eta_exclusion_Cor"
                     //          with
                     //          "n_ChargeMult_DCA_labPt_Eta_exclusion"
-                    /*
-                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
-                    n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
-                    */
+                    
+                    //double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    //n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
+                    
                 }
+                */
                 /*
                 hBinDist_cor_single->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
                 */
