@@ -126,7 +126,8 @@ void MyClass::Loop(int job, std::string fList){
 
     //NEW THING                        
     //NEW THING                        
-    //NEW THING                         
+    //NEW THING                   
+    /*      
     TH2D* hReco2D[fileList.size()];
     TH2D* hGen2D[fileList.size()];
     TH1D* hdid500;
@@ -136,7 +137,7 @@ void MyClass::Loop(int job, std::string fList){
     hdid500 = (TH1D*)f_jet_HLT_lookup->Get("d500")->Clone("did500");
     hdid400 = (TH1D*)f_jet_HLT_lookup->Get("d400")->Clone("did400");
     hdid500->Divide(hdid400);
-
+    */
     // MAIN CODE BEGINS
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
@@ -521,7 +522,7 @@ void MyClass::Loop(int job, std::string fList){
         //closed all the root files
 
         string subList = fList.substr(fList.size() - 3);
-        TFile* fS_tempA = new TFile(Form("new_default_data/root_out_1d2d/job_%s.root",subList.c_str()), "recreate");
+        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_1d2d/job_%s.root",subList.c_str()), "recreate");
         for(int wtrk =1; wtrk <trackbin+1; wtrk++){
             hBinDist_cor[wtrk-1]->Write();
             hBinDist_unc[wtrk-1]->Write();
