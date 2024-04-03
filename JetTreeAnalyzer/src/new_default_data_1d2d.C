@@ -189,10 +189,11 @@ void MyClass::Loop(int job, std::string fList){
         int thisEffTable =f_from_file;
 
         //Above is all about matching MC to Data era */
-
+        cout<<"h1"<<endl;
         //========ENTERING EVENT LOOP========
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
             Long64_t jevent = LoadTree(ievent);
+            cout<<"h2"<<endl;
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
             //cut on jetPt and jetN (number of [HLT-passed] jets in an evnet)
