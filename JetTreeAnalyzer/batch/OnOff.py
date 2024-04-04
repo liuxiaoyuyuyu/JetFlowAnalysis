@@ -1,20 +1,20 @@
 import math
 import subprocess
-name = "approv_data_vn260.jdl"
+name = "data_run3_vn500.jdl"
 f = open(name, "w")
 
 command_lines = '''Universe   = vanilla
 GetEnv     = True
-Executable = approv_data/data_vn260.sh
+Executable = data_vn500.sh
 Arguments  = 000
-Log        = approv_data/err_log_out260/submit_v0.$(Process).log
-Output     = approv_data/err_log_out260/submit_v0.$(Process).out
-Error      = approv_data/err_log_out260/submit_v0.$(Process).err
+Log        = condor_log/submit_v0.$(Process).log
+Output     = condor_log/submit_v0.$(Process).out
+Error      = condor_log/submit_v0.$(Process).err
 +MaxRuntime =3000
 Queue
 '''
 
-with open('raw_mini.txt') as fs:
+with open('TreeList_Run2023Dec_MINIAOD.list') as fs:
     line_count = 0
     for line in fs:
         line_count += 1
