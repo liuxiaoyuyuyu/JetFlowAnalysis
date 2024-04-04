@@ -79,17 +79,31 @@ Modify "Makefile": change the name to reflect the macro you are working on. (cha
 
 Remove old executable with `make clean`. 
 
-Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a \bin directory. 
-
-Make data file list that contains all paths to all files, e.g 
-(Those files were produced by the JetTreeMaker in the last step.)
-
-Split the file list with "splitfiles" in JetTreeAnalyzer/batch/, usually it only needs to be done once.
+Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a \bin directory. (Seems that this step has to been done every time I log in lxplus?)
 
 ### Batch jobs
-Modify "JetTreeAnalyzer/batch/data_vn500.sh" to reflect the excutable and files that will be used. 
+Make data file list that contains all paths to all files (these files were produced by the JetTreeMaker in the last step.)
+e.g
+```
+cd /eos/cms/store/group/phys_heavyions/flowcorr/Run3_jet_trees
+find $PWD/JetMET* -name '*root'> TreeList_Run2023Dec_MINIAOD.list
+```
+Split the file list:
+```
+cd /afs/cern.ch/user/x/xiaoyul/MYDEMOANALYZER/CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeAnalyzer/batch/
+cp /eos/cms/store/group/phys_heavyions/flowcorr/Run3_jet_trees/TreeList_Run2023Dec_MINIAOD.list .
+mkdir run3_data
+mkdir run3_data/list_25
+cd run3_data/list_25
+split -l25 -d -a 3 ../../TreeList_Run2023Dec_MINIAOD.list list_job
+```
 
-Modify "JetTreeAnalyzer/batch/OnOff.py" accordingly. This python script will divide jobs, give args etc. 
+Modify "JetTreeAnalyzer/batch/data_vn500.sh" to reflect the excutable and files that will be used. 
+```
+chmod +x data_vn500.sh
+```
+
+Modify "JetTreeAnalyzer/batch/OnOff.py" accordingly (e.g excutable name, file list name, line_count_frac=line_count/X, X needs to be the same as split -lX). This python script will divide jobs, give args etc. 
 
 Submit condor jobs:
 ```Linux
