@@ -522,7 +522,7 @@ void MyClass::Loop(int job, std::string fList){
         //closed all the root files
 
         string subList = fList.substr(fList.size() - 3);
-        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_1d2d/job_%s.root",subList.c_str()), "recreate");
+        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_1d2d/round2/job_%s_%d.root",subList.c_str()),f, "recreate");
         for(int wtrk =1; wtrk <trackbin+1; wtrk++){
             hBinDist_cor[wtrk-1]->Write();
             hBinDist_unc[wtrk-1]->Write();
@@ -573,7 +573,7 @@ int main(int argc, const char* argv[])
     std::string fList = argv[1];
     std::string buffer;
     std::vector<std::string> listOfFiles;
-    std::ifstream inFile(fList.data());
+    std::ifstream inFile(fList.data());//open the file 
 
     int job = (int)std::atoi(argv[2]);
     int nJobs = (int)std::atoi(argv[3]);
