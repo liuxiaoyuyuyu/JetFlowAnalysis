@@ -60,8 +60,8 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* h_lab_JetMult_phi=new TH2D("lab_JetMult_phi","lab_JetMult_phi",30,-TMath::Pi(),TMath::Pi(),120,0.5,120.5);
     TH2D* h_lab_JetMult_eta=new TH2D("lab_JetMult_eta","lab_JetMult_eta",34,-1.7,1.7,120,0.5,120.5);
 
-    TH1D* h_jet_jT=new TH2D("jet_jT","jet_jT",200,0,20);
-    TH1D* h_jet_etastar=new TH2D("jet_etastar","jet_etastar",100,0,10);
+    TH1D* h_jet_jT=new TH1D("jet_jT","jet_jT",200,0,20);
+    TH1D* h_jet_etastar=new TH1D("jet_etastar","jet_etastar",100,0,10);
 
 
     // MAIN CODE BEGINS
