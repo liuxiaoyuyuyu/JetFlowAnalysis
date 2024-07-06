@@ -79,7 +79,7 @@ Modify "Makefile": change the name to reflect the macro you are working on. (cha
 
 Remove old executable with `make clean`. 
 
-Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a \bin directory. (Seems that this step has to been done every time I log in lxplus?)
+Compile new changes with `make` (very fast, unlike scram b). It will produce excutable in a \bin directory.
 
 ### Batch jobs
 Make data file list that contains all paths to all files (these files were produced by the JetTreeMaker in the last step.)
