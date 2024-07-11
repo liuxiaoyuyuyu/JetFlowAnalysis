@@ -83,8 +83,8 @@ void MyClass::Loop(int job, std::string fList){
             Long64_t jevent = LoadTree(ievent);
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
-            //cut on jetPt and jetN (number of [HLT-passed] jets in an event)
-            if(!F_eventpass(jetPt, jetN, 0)){
+            //cut on jetPt and jetN (number of [HLT-passed] jets in an evnet)
+            if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
                 continue;
             }
 
@@ -135,7 +135,8 @@ void MyClass::Loop(int job, std::string fList){
         fFile->Close();
 
         string subList = fList.substr(fList.size() - 3);
-        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/job_%s_%d.root",subList.c_str(),f), "recreate");
+        //TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/hlt260/job_%s_%d.root",subList.c_str(),f), "recreate");
+        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/hlt500/job_%s_%d.root",subList.c_str(),f), "recreate");
         hEvent_Pass->Write();
         h_jet_jT->Write();
         h_jet_etastar->Write();
