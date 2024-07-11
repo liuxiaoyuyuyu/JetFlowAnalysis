@@ -56,13 +56,7 @@ void MyClass::Loop(int job, std::string fList){
 
     //Initializing Histograms
     TH1D* hEvent_Pass   = new TH1D("hEvent_Pass","hEvent_Pass", trackbin,bin0,trackbin);
-    TH2D* h_lab_JetMult_pT=new TH2D("lab_JetMult_pT","lab_JetMult_pT",300,100,3500,120,0.5,120.5);
-    TH2D* h_lab_JetMult_phi=new TH2D("lab_JetMult_phi","lab_JetMult_phi",30,-TMath::Pi(),TMath::Pi(),120,0.5,120.5);
-    TH2D* h_lab_JetMult_eta=new TH2D("lab_JetMult_eta","lab_JetMult_eta",34,-1.7,1.7,120,0.5,120.5);
-
-    TH1D* h_jet_jT=new TH1D("jet_jT","jet_jT",200,0,20);
-    TH1D* h_jet_etastar=new TH1D("jet_etastar","jet_etastar",100,0,10);
-
+    TH2D* hRun_Lumi = new TH2D("hRun_Lumi","hRun_Lumi",6200,366300.5,372500.5,10000,-0.5,9999.5);
 
     // MAIN CODE BEGINS
     std::cout << "Starting event loop" << std::endl;
@@ -83,66 +77,21 @@ void MyClass::Loop(int job, std::string fList){
             Long64_t jevent = LoadTree(ievent);
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
-            //cut on jetPt and jetN (number of [HLT-passed] jets in an event)
+            hRun_Lumi->Fill(nRun,nLumi); 
+            //cut on jetPt and jetN (number of [HLT-passed] jets in an evnet)
             if(!F_eventpass(jetPt, jetN, 0)){
                 continue;
             }
 
             hEvent_Pass->Fill(1);
 
-            int jetCounter = jetPt->size();
-            if(jetCounter == 0) continue;
-
-            //========ENTERING JET LOOP========
-            for(int ijet=0; ijet < jetCounter; ijet++){
-
-                long int NNtrk = (dau_pt->at(ijet)).size();
-                //long int NNtrk = (dau_pt_STAR->at(ijet)).size();
-
-                int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
-                
-                for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
-                    if((*dau_chg)[ijet][A_trk] == 0) continue;//charge
-                    if(fabs((*dau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
-                    if(fabs((*dau_eta)[ijet][A_trk]) > 2.4)     continue;//lab eta
-
-                    double dauptnow = (*dau_pt)[ijet][A_trk]; 
-                    double pterr_R_pt =0; 
-                    double dcaXY = 0; 
-                    double dcaZ = 0;
-                    pterr_R_pt= ( (*dau_ptError)[ijet][A_trk] ) / ( (*dau_pt)[ijet][A_trk] );
-                    dcaXY = (*dau_XYDCAsig)[ijet][A_trk];
-                    dcaZ = (*dau_ZDCAsig)[ijet][A_trk];
-
-                    if(pterr_R_pt   > 0.1   && dauptnow > 0.5)  continue;
-                    if(fabs(dcaXY)  > 3     && dauptnow > 0.5)  continue;
-                    if(fabs(dcaZ)   > 3     && dauptnow > 0.5)  continue;
-                    n_ChargeMult_DCA_labPt_Eta_exclusion += 1;
-
-                    double jet_dau_pt    =  ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] , (double)(*jetPhi)[ijet] , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
-                    double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] , (double)(*jetPhi)[ijet] , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
-                    double jet_dau_phi   = phiWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] , (double)(*jetPhi)[ijet] , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
-
-                    h_jet_jT->Fill(jet_dau_pt);
-                    h_jet_etastar->Fill(jet_dau_eta);
-                }
-                h_lab_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-                h_lab_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-                h_lab_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-            
-            }
         }
         fFile->Close();
 
         string subList = fList.substr(fList.size() - 3);
-        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/job_%s_%d.root",subList.c_str(),f), "recreate");
+        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/statistics/job_stat_qa_%s_%d.root",subList.c_str(),f), "recreate");
         hEvent_Pass->Write();
-        h_jet_jT->Write();
-        h_jet_etastar->Write();
-        h_lab_JetMult_pT->Write();
-        h_lab_JetMult_phi->Write();
-        h_lab_JetMult_eta->Write(); 
-        
+        hRun_Lumi->Write(); 
         fS_tempA->Close();
     
     }//end looping over files
