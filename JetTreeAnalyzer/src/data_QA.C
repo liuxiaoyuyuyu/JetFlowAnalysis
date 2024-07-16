@@ -144,6 +144,13 @@ void MyClass::Loop(int job, std::string fList){
         h_lab_JetMult_eta->Write(); 
         
         fS_tempA->Close();
+        
+        hEvent_Pass->Reset()();
+        h_jet_jT->Reset()();
+        h_jet_etastar->Reset()();
+        h_lab_JetMult_pT->Reset()();
+        h_lab_JetMult_phi->Reset()();
+        h_lab_JetMult_eta->Reset()(); 
     
     }//end looping over files
 }

@@ -522,7 +522,7 @@ void MyClass::Loop(int job, std::string fList){
         //closed all the root files
 
         string subList = fList.substr(fList.size() - 3);
-        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_1d2d/round2/job_%s_%d.root",subList.c_str(),f), "recreate");
+        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_1d2d/round3/job_%s_%d.root",subList.c_str(),f), "recreate");
         for(int wtrk =1; wtrk <trackbin+1; wtrk++){
             hBinDist_cor[wtrk-1]->Write();
             hBinDist_unc[wtrk-1]->Write();
@@ -555,7 +555,37 @@ void MyClass::Loop(int job, std::string fList){
         hBinDist_unc_single->Write();
         
         fS_tempA->Close();
-    
+
+        for(int wtrk =1; wtrk <trackbin+1; wtrk++){
+            hBinDist_cor[wtrk-1]->Reset();
+            hBinDist_unc[wtrk-1]->Reset();
+            for(int wppt =1; wppt <ptbin+1; wppt++){
+                for(int wpPU =1; wpPU<PUbin+1; wpPU++){                 
+                    // In "1d2d_constants.h" we 3 jet mults, 2 pT bins
+                    // 0-30,30-60,60+
+                    // 0-3 GeV, 0.3 - 3 Gev
+                    // hSignalShiftedCor_0_to_30_and_0_3
+                    // hSignalShiftedCor_30_to_60_and_0_3
+
+                    hSignalShiftedCor[wtrk-1][wppt-1][wpPU-1]->Reset();
+                    hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Reset();
+                    hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->Reset();
+                }
+            }
+        }
+        hPairs->Reset();
+        hNtrig->Reset();
+        hNtrigCorrected->Reset();
+        hTotalWeight->Reset();
+        hAvg_Atrk_Weight->Reset();
+        hAvg_NtrigCorrected_Bump->Reset();
+        hJetPt->Reset();
+        hEvent_Pass->Reset();
+        hJet_Pass->Reset();
+        hJet_Pass550->Reset();
+        hJet_Pass550_hltCor->Reset();
+        hBinDist_cor_single->Reset();
+        hBinDist_unc_single->Reset(); 
     }//end looping over files
 }
 

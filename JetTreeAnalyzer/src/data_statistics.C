@@ -93,6 +93,9 @@ void MyClass::Loop(int job, std::string fList){
         hEvent_Pass->Write();
         hRun_Lumi->Write(); 
         fS_tempA->Close();
+        
+        hEvent_Pass->Close();
+        hRun_Lumi->Close(); 
     
     }//end looping over files
 }
