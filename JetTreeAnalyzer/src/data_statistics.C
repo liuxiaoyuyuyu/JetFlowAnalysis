@@ -62,11 +62,11 @@ void MyClass::Loop(int job, std::string fList){
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
-        fFile = TFile::Open(fileList.at(f).c_str(),"read");
-        TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
+	fFile = TFile::Open(fileList.at(f).c_str(),"read");
+	TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
         Init(tree);
 
-        std::cout << "File " << f+1 << " out of " << fileList.size() << std::endl;
+	std::cout << "File " << f+1 << " out of " << fileList.size() << std::endl;
         Long64_t nbytes = 0, nb = 0;
         Long64_t nentries = fChain->GetEntriesFast();
         cout<<"Total Entries is:"<<endl;
@@ -89,14 +89,13 @@ void MyClass::Loop(int job, std::string fList){
         fFile->Close();
 
         string subList = fList.substr(fList.size() - 3);
-        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/statistics/job_stat_qa_%s_%d.root",subList.c_str(),f), "recreate");
+        //TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/statistics/ak8hlt500/job_stat_qa_%s_%d.root",subList.c_str(),f), "recreate");
+        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/statistics/ak8/job_stat_localtest_qa_%s_%d.root",subList.c_str(),f), "recreate");
         hEvent_Pass->Write();
         hRun_Lumi->Write(); 
         fS_tempA->Close();
-        
-        hEvent_Pass->Close();
-        hRun_Lumi->Close(); 
-    
+   	hEvent_Pass->Reset();
+        hRun_Lumi->Reset();	
     }//end looping over files
 }
 
@@ -145,4 +144,3 @@ int main(int argc, const char* argv[])
 
     return 0;
 }
-
