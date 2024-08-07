@@ -13,8 +13,8 @@ config.JobType.allowUndistributedCMSSW = True
 #config.JobType.inputFiles = ['HeavyIonRPVRcd_PbPb2018_offline.db']
 config.section_('Data')
 #config.Data.inputDataset = '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
-#config.Data.inputDataset = '/JetMET0/Run2023C-22Sep2023_v4-v1/MINIAOD'
-config.Data.inputDataset = '/JetMET0/Run2023B-19Dec2023-v1/MINIAOD'
+#config.Data.inputDataset = '/JetMET0/Run2023B-19Dec2023-v1/MINIAOD'
+config.Data.inputDataset = '/JetMET0/Run2023C-22Sep2023_v1-v1/MINIAOD'
 
 config.Data.inputDBS = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
 
@@ -27,10 +27,11 @@ config.Data.splitting = 'Automatic'
 config.Data.publication = False
 
 #config.Data.outLFNDirBase = '/store/user/pgardner/MINIAOD_2018_UL_D_ak8_new'
+#config.Data.outLFNDirBase = '/store/group/phys_heavyions/flowcorr/Run3_jet_trees/'
 
-config.Data.outLFNDirBase = '/store/group/phys_heavyions/flowcorr/Run3_jet_trees/'
+config.Data.outLFNDirBase = '/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_jet_trees/'
 
-config.Data.totalUnits        = 1 # root file or lumi section for test only
+#config.Data.totalUnits        = 1 # root file or lumi section for test only
 
 config.section_('User')
 config.section_('Site')
