@@ -11,9 +11,8 @@ Parker Gardner's code for the jet collectivity study
    
 ## Make Jet Trees
 ### JetTreeMaker
-Parker's codes only work with lxplus7** machines for now:
 ```Linux
-ssh -XY xiaoyul@lxplus7.cern.ch
+ssh -XY xiaoyul@lxplus.cern.ch
 ```
 CMS release for Run 3 data:
 ```Linux
@@ -30,7 +29,7 @@ cd JetFlowAnalysis/JetTreeMaker
 scram b -j8
 ```  
 >[!Note] 
->`scram b` only compile codes two directories down CMSSW_*/src. In this case: CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/; on my lxplus (when learning this anslysis from Parker): CMSSW_13_3_0/src/Dir1/Dir2/
+>`scram b` only compile codes two directories down CMSSW_*/src. In this case: CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/.
 
 ### Local test
 ```Linux
@@ -46,10 +45,22 @@ crab submit -c crab.py
 >1. "pset.py" is the macro for local testing, it is also the configuration that will be used by the crab jobs. Therefore, "psetName" in "crab.py" should match "pset.py". Output name should also match in "pset.py" and "crab.py".
 >2. Modify "config.Data.outLFNDirBase" in "crab.py" if needed. It is currently set to my eos space in flowcorr. 
 >3. InputDataset:
-> for Run3, search "dataset dataset=/JetMET0/Run2023*/MINIAOD" in CMS DAS:
->https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset+dataset%3D%2FJetMET0%2FRun2023*%2FMINIAOD
->4. Check task status: `crab status`;
->online monitor: https://monit-grafana.cern.ch/d/cmsTMDetail/cms-task-monitoring-task-view?from=1709757014000&orgId=11&to=now&var-task=240306_213014%3Axiaoyul_crab_20240306_223010&var-user=xiaoyul  
+>[Run 3 data](https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun3Analysis#Year_2024)
+>For the latest data to use, refer to the "Analysis Summary Table" section of each year.
+>5. Set tiggers by "process.hlt.HLTPaths" in "pset.py".
+>6. Check task status: `crab status -d`.
+
+| Year   | Trigger   |
+|------------|------------|
+| 2022| HLT_AK8PFJet500*| 
+| 2023| HLT_AK8PFJet500*| 
+| 2024|HLT_AK8PFJet500_v27, HLT_AK8PFJet275_Nch40_v5, HLT_AK8PFJet260_v27 | 
+
+How to check tiggers:
+1. Go to [CMS OMS](https://cmsoms.cern.ch/cms/run_3/index)
+2. Select a recent phyiscs run
+3. In the upper bar, hover over "Runs", then go to "Triggers->HLT trigger rates"
+4. Find triggers in the "HLT Path Rates" section.
 
 ## Analyze Jet Trees
 ### JetTreeAnalyzer
