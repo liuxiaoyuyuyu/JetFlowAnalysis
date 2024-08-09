@@ -14,13 +14,15 @@ config.JobType.allowUndistributedCMSSW = True
 config.section_('Data')
 #config.Data.inputDataset = '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
 #config.Data.inputDataset = '/JetMET0/Run2023B-19Dec2023-v1/MINIAOD'
-config.Data.inputDataset = '/JetMET1/Run2023D-22Sep2023_v2-v1/MINIAOD'
+#config.Data.inputDataset = '/JetMET1/Run2023D-22Sep2023_v2-v1/MINIAOD'
+config.Data.inputDataset = '/JetMET/Run2022C-22Sep2023-v1/MINIAOD'
 
 config.Data.inputDBS = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
 
 #config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt'
-config.Data.lumiMask = '/afs/cern.ch/user/x/xiaoyul/Cert_Collisions2023_366442_370790_Golden_JSON.txt'
+#config.Data.lumiMask = '/afs/cern.ch/user/x/xiaoyul/Cert_Collisions2023_366442_370790_Golden_JSON.txt'
 #.txt file convert from raw data of /eos/user/c/cmsdqm/www/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json
+config.Data.lumiMask = '/afs/cern.ch/user/x/xiaoyul/Cert_Collisions2022_355100_362760_Golden_JSON.txt'
 
 config.Data.splitting = 'Automatic'
 #config.Data.unitsPerJob = 150
