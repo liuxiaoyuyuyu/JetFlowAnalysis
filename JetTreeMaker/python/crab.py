@@ -15,7 +15,7 @@ config.section_('Data')
 #config.Data.inputDataset = '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
 #config.Data.inputDataset = '/JetMET0/Run2023B-19Dec2023-v1/MINIAOD'
 #config.Data.inputDataset = '/JetMET1/Run2023D-22Sep2023_v2-v1/MINIAOD'
-config.Data.inputDataset = '/JetMET/Run2022C-22Sep2023-v1/MINIAOD'
+config.Data.inputDataset = '/JetMET/Run2022D-22Sep2023-v1/MINIAOD'
 
 config.Data.inputDBS = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
 
