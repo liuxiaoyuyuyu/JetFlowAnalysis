@@ -2,7 +2,8 @@
 
 #include "include/MyTrim.h"
 #include "include/coordinateTools.h"
-#include "include/high_vn.h"
+//#include "include/high_vn.h"
+#include "include/1d2d_constants.h"
 
 #include <iostream>
 #include <iomanip>
@@ -73,9 +74,6 @@ bool isSubstring(string s1, string s2)
 }
 
 
-
-
-
 void MyClass::Loop(int job, std::string fList){
 
     TH1::SetDefaultSumw2(kTRUE);
@@ -135,6 +133,7 @@ void MyClass::Loop(int job, std::string fList){
     //NEW THING                        
     //NEW THING                        
     //NEW THING                         
+    /*
     TH2D* hReco2D[fileList.size()];
     TH2D* hGen2D[fileList.size()];
     TH1D* hdid500;
@@ -144,10 +143,7 @@ void MyClass::Loop(int job, std::string fList){
     hdid500 = (TH1D*)f_jet_HLT_lookup->Get("d500")->Clone("did500");
     hdid400 = (TH1D*)f_jet_HLT_lookup->Get("d400")->Clone("did400");
     hdid500->Divide(hdid400);
-
-
-
-
+    */
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
@@ -162,6 +158,7 @@ void MyClass::Loop(int job, std::string fList){
         cout<<"Total Entries is:"<<endl;
         cout<< nentries <<endl;
 
+        /*
         vector<string> era_vec;
         vector<string> matched_cor_table_vec;
         era_vec.push_back("2018D_"); matched_cor_table_vec.push_back("18_v2");
@@ -196,11 +193,10 @@ void MyClass::Loop(int job, std::string fList){
         hGen2D[f] = (TH2D*)f_pt_eta_DCA_lookup->Get("h2_Dau_Gen_Pt_Eta_Lab_All")->Clone(Form("h2_Dau_Gen_Pt_Eta_Lab_All_%d",f));
         hReco2D[f]->Divide(hGen2D[f]);
         int thisEffTable =f_from_file;
-
+        */
+        
         // ENTERING EVENT LOOP
-        //for(int f = 0; f<fileList.size(); f++){
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
-            //{{{
             Long64_t jevent = LoadTree(ievent);
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
@@ -212,66 +208,60 @@ void MyClass::Loop(int job, std::string fList){
 
             int jetCounter = jetPt->size();
             if(jetCounter == 0) continue;
-            //ENTERING JET LOOP
+            
+            //=================ENTERING JET LOOP==================
+            for(int ijet=0; ijet < jetCounter; ijet++){
 
-            //for(int f = 0; f<fileList.size(); f++){
-            //for (Long64_t ievent=0; ievent <nentries; ievent ++){
-            for(int kjet=0; kjet < jetCounter; kjet++){
-
-                int ijet = kjet; //indicesG[kjet];
                 long int NNtrk = (dau_pt_STAR->at(ijet)).size();
                 gRandom->SetSeed(0);
                 double eta_smear;
                 eta_smear=0;
 
-
-
-
-
-                if( fabs(((*jetEta)[kjet])+eta_smear) > jetEtaCut ) continue;
-                if( (*jetPt)[kjet] < jetPtCut_Jet   ) continue;
-                hJetPt->Fill((*jetPt)[kjet]);
+                if( fabs(((*jetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
+                if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
+                hJetPt->Fill((*jetPt)[ijet]);
                 // filling distrivutions within track bins
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
                 double jet_HLT_weight = 1.0;
+                /*
                 if((*jetPt)[ijet] < 880 && (*jetPt)[ijet] > 550){
                     jet_HLT_weight = 1.0/(hdid500->GetBinContent(hdid500->FindBin((*jetPt)[ijet]) ) );
                 }
-
+                */
                 int tkBool[trackbin] = {0};
 
 
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
-                    if((*dau_chg)[kjet][A_trk] == 0) continue;//charge
-                    if(fabs((*dau_pt)[kjet][A_trk])  < 0.3)     continue;//lab pt
-                    if(fabs((*dau_eta)[kjet][A_trk]) > 2.4)     continue;//lab eta
+                    if((*dau_chg)[ijet][A_trk] == 0) continue;//charge
+                    if(fabs((*dau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
+                    if(fabs((*dau_eta)[ijet][A_trk]) > 2.4)     continue;//lab eta
 
-                    double dauptnow = (*dau_pt)[kjet][A_trk]; double pterr_R_pt =0; double dcaXY = 0; double dcaZ = 0;
-                    pterr_R_pt= ( (*dau_ptError)[kjet][A_trk] ) / ( (*dau_pt)[kjet][A_trk] );
-                    dcaXY = (*dau_XYDCAsig)[kjet][A_trk];
-                    dcaZ = (*dau_ZDCAsig)[kjet][A_trk];
+                    double dauptnow = (*dau_pt)[ijet][A_trk]; double pterr_R_pt =0; double dcaXY = 0; double dcaZ = 0;
+                    pterr_R_pt= ( (*dau_ptError)[ijet][A_trk] ) / ( (*dau_pt)[ijet][A_trk] );
+                    dcaXY = (*dau_XYDCAsig)[ijet][A_trk];
+                    dcaZ = (*dau_ZDCAsig)[ijet][A_trk];
 
                     if(pterr_R_pt   > 0.1   && dauptnow > 0.5)  continue;
                     if(fabs(dcaXY)  > 3     && dauptnow > 0.5)  continue;
                     if(fabs(dcaZ)   > 3     && dauptnow > 0.5)  continue;
                     n_ChargeMult_DCA_labPt_Eta_exclusion += 1;
-                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
-                    n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
+                    //double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    //n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
                 }
 
-                hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
+                //hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
                 hBinDist_unc_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion, 1.0*jet_HLT_weight);
                 for(int i = 0; i < trackbin; i++){
                     if( n_ChargeMult_DCA_labPt_Eta_exclusion >= trackbinbounds[i] && n_ChargeMult_DCA_labPt_Eta_exclusion < trackbinboundsUpper[i]){
                         tkBool[i] = 1;
                         hJet_Pass                   ->Fill(i);
-                        if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550                           ->Fill(i);
-                        if((*jetPt)[kjet] >= jetPtCut_Event) hJet_Pass550_hltCor                   ->Fill(i,1.0*jet_HLT_weight);
+                        if((*jetPt)[ijet] >= jetPtCut_Event) hJet_Pass550                           ->Fill(i);
+                        if((*jetPt)[ijet] >= jetPtCut_Event) hJet_Pass550_hltCor                   ->Fill(i,1.0*jet_HLT_weight);
 
-                        hBinDist_cor[i]             ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,1.0*jet_HLT_weight);
+                        //hBinDist_cor[i]             ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,1.0*jet_HLT_weight);
                         hBinDist_unc[i]             ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion,1.0*jet_HLT_weight);
                     }
                 }
@@ -285,9 +275,6 @@ void MyClass::Loop(int job, std::string fList){
                 // In each case I create a true falsse for that daughter falling in to the specific pt bin.
                 // Note this is NOT jet x daughter. It's pt bin x daughtr
 
-                //for(int f = 0; f<fileList.size(); f++){
-                //for (Long64_t ievent=0; ievent <nentries; ievent ++){
-                //for(int kjet=0; kjet < jetCounter; kjet++){
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
                     if((*dau_pt)[ijet][A_trk] < 0.3) continue;
@@ -317,13 +304,13 @@ void MyClass::Loop(int job, std::string fList){
                     //NEW THING                        
 
                     //getting et pt efficiency for A track in beam frame
-                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    //double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    double Atrk_weight=1.0; 
 
                     //in the case where the total jet mult and the individual daughter pt is acceptable for this track bin and pt bin, we increase the Ntrig count.
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-
                                 NtrigCorrected[i][j] += (1.0/Atrk_weight);
                                 Ntrig[i][j] += 1;
                             }
@@ -336,14 +323,11 @@ void MyClass::Loop(int job, std::string fList){
                 for(int i = 0; i < trackbin; i++){
                     for(int j = 0; j < ptbin; j++){
                         hNtrig->Fill(i,j,Ntrig[i][j]);
-                        hNtrigCorrected->Fill(i,j, NtrigCorrected[i][j]);
-                        hAvg_NtrigCorrected_Bump->Fill(NtrigCorrected[i][j] - Ntrig[i][j]);
+                        //hNtrigCorrected->Fill(i,j, NtrigCorrected[i][j]);
+                        //hAvg_NtrigCorrected_Bump->Fill(NtrigCorrected[i][j] - Ntrig[i][j]);
                     }
                 }
 
-                //for(int f = 0; f<fileList.size(); f++){
-                //for (Long64_t ievent=0; ievent <nentries; ievent ++){
-                //for(int kjet=0; kjet < jetCounter; kjet++){
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
@@ -416,7 +400,7 @@ void MyClass::Loop(int job, std::string fList){
                         //NEW THING                        
                         //NEW THING                        
                         //getting et pt efficiency for T track in beam frame
-                        double Ttrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
+                        double Ttrk_weight =1.0; //(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
 
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){
@@ -448,132 +432,131 @@ void MyClass::Loop(int job, std::string fList){
                         }
                     }//T_trk end
                 }//A_trk end
-            }//}}}
-            }
-            fFile->Close();
-            }
+            }//ijet end
+        }//ievent end
+        
+        fFile->Close();
+    }//f in filelist end 
 
-            int backMult =10;
-            for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
-                std::cout << wtrk << "/" << trackbin << std::endl;
-                for(int wppt = 1; wppt < ptbin+1; wppt++){ 
-                    std::cout << wppt << "/" << ptbin << std::endl;
-                    for(int wpPU = 1; wpPU < PUbin+1; wpPU++){
-                        std::cout << wpPU << "/" << PUbin << std::endl;
-                        //Nent is the number of pairs in the signal which we will try to 10x
-                        //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
-                        //us 10 times as many pairs as we have in the signal histogrm.
+    int backMult =10;
+    for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
+        std::cout << wtrk << "/" << trackbin << std::endl;
+        for(int wppt = 1; wppt < ptbin+1; wppt++){ 
+            std::cout << wppt << "/" << ptbin << std::endl;
+            for(int wpPU = 1; wpPU < PUbin+1; wpPU++){
+                std::cout << wpPU << "/" << PUbin << std::endl;
+                //Nent is the number of pairs in the signal which we will try to 10x
+                //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
+                //us 10 times as many pairs as we have in the signal histogrm.
 
-                        //long int NENT =  hPairsPU[wpPU-1]->GetBinContent(wtrk, wppt);
-                        long int NENT =  hPairs->GetBinContent(wtrk, wppt);
-                        long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                        //float A_ETA[XENT] = {0};
-                        //float A_PHI[XENT] = {0};
-                        float A_ETA_Cor[XENT] = {0};
-                        float A_PHI_Cor[XENT] = {0};
-                        for(int x = 0; x<XENT; x++){
-                            gRandom->SetSeed(0);
+                //long int NENT =  hPairsPU[wpPU-1]->GetBinContent(wtrk, wppt);
+                long int NENT =  hPairs->GetBinContent(wtrk, wppt);
+                long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
+                //float A_ETA[XENT] = {0};
+                //float A_PHI[XENT] = {0};
+                float A_ETA_Cor[XENT] = {0};
+                float A_PHI_Cor[XENT] = {0};
+                for(int x = 0; x<XENT; x++){
+                    gRandom->SetSeed(0);
 
-                            double WEta1_Cor, WPhi1_Cor;//making the pseudoparticles
-                            hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1_Cor, WPhi1_Cor);
-                            A_ETA_Cor[x] = WEta1_Cor;
-                            A_PHI_Cor[x] = WPhi1_Cor;
-                        }
-                        for(long int i = 0; i < (XENT-1); i++){
-                            for(long int j = (i+1); j < XENT; j++){
-
-                                double WdeltaEta_Cor = (A_ETA_Cor[i]-A_ETA_Cor[j]);
-                                double WdeltaPhi_Cor = (TMath::ACos(TMath::Cos(A_PHI_Cor[i]-A_PHI_Cor[j])));
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, WdeltaPhi_Cor,   1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, WdeltaPhi_Cor,  1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, -WdeltaPhi_Cor,  1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, -WdeltaPhi_Cor, 1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, 2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
-                                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor,2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
-
-                            }
-                        }
-                    }
+                    double WEta1_Cor, WPhi1_Cor;//making the pseudoparticles
+                    hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1_Cor, WPhi1_Cor);
+                    A_ETA_Cor[x] = WEta1_Cor;
+                    A_PHI_Cor[x] = WPhi1_Cor;
                 }
-            }
+                for(long int i = 0; i < (XENT-1); i++){
+                    for(long int j = (i+1); j < XENT; j++){
 
-            string subList = fList.substr(fList.size() - 3);
-            TFile* fS_tempA = new TFile(Form("new_default_data/root_out_high_vn/job_%s.root",subList.c_str()), "recreate");
-            for(int wtrk =1; wtrk <trackbin+1; wtrk++){
-                hBinDist_cor[wtrk-1]         ->Write();
-                hBinDist_unc[wtrk-1]         ->Write();
-                for(int wppt =1; wppt <ptbin+1; wppt++){
-                    for(int wpPU =1; wpPU<PUbin+1; wpPU++){
-                        hSignalShiftedCor             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
-                        hBckrndShiftedCor             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
-                        hEPDrawCor                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU  ));
-
+                        double WdeltaEta_Cor = (A_ETA_Cor[i]-A_ETA_Cor[j]);
+                        double WdeltaPhi_Cor = (TMath::ACos(TMath::Cos(A_PHI_Cor[i]-A_PHI_Cor[j])));
+                        hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, WdeltaPhi_Cor,   1);//./XENT);
+                        hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, WdeltaPhi_Cor,  1);//./XENT);
+                        hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, -WdeltaPhi_Cor,  1);//./XENT);
+                        hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor, -WdeltaPhi_Cor, 1);//./XENT);
+                        hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta_Cor, 2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
+                        hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta_Cor,2*TMath::Pi() - WdeltaPhi_Cor, 1);//./XENT);
 
                     }
                 }
             }
-            hPairs   ->Write();
-            hNtrig   ->Write();
-            hNtrigCorrected   ->Write();
-            hTotalWeight                ->Write();
-            hAvg_Atrk_Weight            ->Write();
-            hAvg_NtrigCorrected_Bump    ->Write();
-            hJetPt->Write();
-            hEvent_Pass   ->Write();
-            hJet_Pass     ->Write();
-            hJet_Pass550    ->Write();
-            hJet_Pass550_hltCor    ->Write();
-            hBinDist_cor_single->Write();
-            hBinDist_unc_single->Write();
+        }
+    }
 
-
-            fS_tempA->Close();
+    string subList = fList.substr(fList.size() - 3);
+    TFile* fS_tempA = new TFile(Form("new_default_data/root_out_high_vn/job_%s.root",subList.c_str()), "recreate");
+    for(int wtrk =1; wtrk <trackbin+1; wtrk++){
+        hBinDist_cor[wtrk-1]->Write();
+        hBinDist_unc[wtrk-1]->Write();
+        for(int wppt =1; wppt <ptbin+1; wppt++){
+            for(int wpPU =1; wpPU<PUbin+1; wpPU++){
+                hSignalShiftedCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
+                hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
+                hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU  ));
             }
+        }
+    }
+    hPairs->Write();
+    hNtrig->Write();
+    hNtrigCorrected->Write();
+    hTotalWeight->Write();
+    hAvg_Atrk_Weight->Write();
+    hAvg_NtrigCorrected_Bump->Write();
+    hJetPt->Write();
+    hEvent_Pass->Write();
+    hJet_Pass->Write();
+    hJet_Pass550->Write();
+    hJet_Pass550_hltCor->Write();
+    hBinDist_cor_single->Write();
+    hBinDist_unc_single->Write();
 
 
-            //Code enters execution here
-            int main(int argc, const char* argv[])
-            {
-                if(argc != 4)
-                {
-                    std::cout << "Usage: Z_mumu_Channel <fileList> <jobNumber> <nJobs>" << std::endl;
-                    return 1;
-                }
+    fS_tempA->Close();
+}
 
 
-                //read input parameters
-                std::string fList = argv[1];
-                std::string buffer;
-                std::vector<std::string> listOfFiles;
-                std::ifstream inFile(fList.data());
+//Code enters execution here
+int main(int argc, const char* argv[])
+{
+    if(argc != 4)
+    {
+        std::cout << "Usage: Z_mumu_Channel <fileList> <jobNumber> <nJobs>" << std::endl;
+        return 1;
+    }
 
-                int job = (int)std::atoi(argv[2]);
-                int nJobs = (int)std::atoi(argv[3]);
+
+    //read input parameters
+    std::string fList = argv[1];
+    std::string buffer;
+    std::vector<std::string> listOfFiles;
+    std::ifstream inFile(fList.data());
+
+    int job = (int)std::atoi(argv[2]);
+    int nJobs = (int)std::atoi(argv[3]);
 
 
-                //read the file list and spit it into a vector of strings based on how the parallelization is to be done
-                //each vector is a separate subset of the fileList based on the job number
-                if(!inFile.is_open())
-                {
-                    std::cout << "Error opening jet file. Exiting." <<std::endl;
-                    return 1;
-                }
-                else
-                {
-                    int line = 0;
-                    while(true)
-                    {
-                        inFile >> buffer;
-                        if(inFile.eof()) break;
-                        if( line%nJobs == job) listOfFiles.push_back(buffer);
-                        line++;
-                    }
-                }
+    //read the file list and spit it into a vector of strings based on how the parallelization is to be done
+    //each vector is a separate subset of the fileList based on the job number
+    if(!inFile.is_open())
+    {
+        std::cout << "Error opening jet file. Exiting." <<std::endl;
+        return 1;
+    }
+    else
+    {
+        int line = 0;
+        while(true)
+        {
+            inFile >> buffer;
+            if(inFile.eof()) break;
+            if( line%nJobs == job) listOfFiles.push_back(buffer);
+            line++;
+        }
+    }
 
-                //create the MyClass Object
-                MyClass m = MyClass(listOfFiles);
-                m.Loop(job, fList);
+    //create the MyClass Object
+    MyClass m = MyClass(listOfFiles);
+    m.Loop(job, fList);
 
-                return 0;
-            }
+    return 0;
+}
 
