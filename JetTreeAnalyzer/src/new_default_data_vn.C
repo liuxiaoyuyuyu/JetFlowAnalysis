@@ -96,7 +96,6 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hNtrig        = new TH2D("hNtrig","hNtrig",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
     TH2D* hNtrigCorrected        = new TH2D("hNtrigCorrected","hNtrigCorrected",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
-
     TH1D* hEvent_Pass   = new TH1D("hEvent_Pass","hEvent_Pass", trackbin,bin0,trackbin);
     TH1D* hJet_Pass     = new TH1D("hJet_Pass"  ,"hJet_Pass"  , trackbin,bin0,trackbin);
     TH1D* hJet_Pass550     = new TH1D("hJet_Pass550"  ,"hJet_Pass550"  , trackbin,bin0,trackbin);
@@ -105,6 +104,12 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_cor_single = new TH1D("hBinDist_cor_single","hBinDist_cor_single",bin360,bin0,bin120);
     TH1D* hBinDist_unc_single = new TH1D("hBinDist_unc_single","hBinDist_unc_single",bin120,bin0,bin120);
 
+    TH2D* h_lab_JetMult_pT=new TH2D("lab_JetMult_pT","lab_JetMult_pT",300,100,3500,120,0.5,120.5);
+    TH2D* h_lab_JetMult_phi=new TH2D("lab_JetMult_phi","lab_JetMult_phi",30,-TMath::Pi(),TMath::Pi(),120,0.5,120.5);
+    TH2D* h_lab_JetMult_eta=new TH2D("lab_JetMult_eta","lab_JetMult_eta",34,-1.7,1.7,120,0.5,120.5);
+
+    TH1D* h_jet_jT=new TH1D("jet_jT","jet_jT",200,0,20);
+    TH1D* h_jet_etastar=new TH1D("jet_etastar","jet_etastar",100,0,10);
 
     TH2D* hEPDrawCor[trackbin][ptbin][PUbin];
     TH2D* hSignalShiftedCor[trackbin][ptbin][PUbin];
@@ -200,7 +205,9 @@ void MyClass::Loop(int job, std::string fList){
             Long64_t jevent = LoadTree(ievent);
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
-            if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
+            //if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
+            //Use jetPtCut_Dist=100 for QA plots.
+            if(!F_eventpass(jetPt, jetN, jetPtCut_Dist)){
                 continue;
             }
 
@@ -218,8 +225,8 @@ void MyClass::Loop(int job, std::string fList){
                 eta_smear=0;
 
                 if( fabs(((*jetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
-                if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
-                hJetPt->Fill((*jetPt)[ijet]);
+                //if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
+                //hJetPt->Fill((*jetPt)[ijet]);
                 // filling distrivutions within track bins
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
@@ -231,9 +238,9 @@ void MyClass::Loop(int job, std::string fList){
                 */
                 int tkBool[trackbin] = {0};
 
-
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
+                
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;//charge
                     if(fabs((*dau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
@@ -251,6 +258,14 @@ void MyClass::Loop(int job, std::string fList){
                     //double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     //n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
                 }
+
+                h_lab_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
+                h_lab_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
+                h_lab_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
+
+
+                if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
+                hJetPt->Fill((*jetPt)[ijet]);
 
                 //hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
                 hBinDist_unc_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion, 1.0*jet_HLT_weight);
@@ -353,6 +368,9 @@ void MyClass::Loop(int job, std::string fList){
                     double jet_dau_pt    =  ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
                     double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
                     double jet_dau_phi   = phiWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
+
+                    h_jet_jT->Fill(jet_dau_pt);
+                    h_jet_etastar->Fill(jet_dau_eta);
 
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
                     if(jet_dau_eta > track_eta_lim) continue;
