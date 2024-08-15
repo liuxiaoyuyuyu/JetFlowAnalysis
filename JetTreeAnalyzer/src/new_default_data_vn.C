@@ -522,7 +522,12 @@ void MyClass::Loop(int job, std::string fList){
     hJet_Pass550_hltCor->Write();
     hBinDist_cor_single->Write();
     hBinDist_unc_single->Write();
-
+    
+    h_jet_jT->Write();
+    h_jet_etastar->Write();
+    h_lab_JetMult_pT->Write();
+    h_lab_JetMult_phi->Write();
+    h_lab_JetMult_eta->Write(); 
 
     fS_tempA->Close();
 }
