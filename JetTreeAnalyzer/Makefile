@@ -7,13 +7,13 @@ endif
 
 MKDIR_BIN=mkdir -p $(PWD)/bin
 
-all: mkdirBin  bin/new_default_data_1d2d.exe
+all: mkdirBin  bin/new_default_data_vn.exe
 
 mkdirBin:
 	$(MKDIR_BIN)
 
-bin/new_default_data_1d2d.exe: src/new_default_data_1d2d.C
-	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/new_default_data_1d2d.exe src/new_default_data_1d2d.C
+bin/new_default_data_vn.exe: src/new_default_data_vn.C
+	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/new_default_data_vn.exe src/new_default_data_vn.C
 
 
 clean:
