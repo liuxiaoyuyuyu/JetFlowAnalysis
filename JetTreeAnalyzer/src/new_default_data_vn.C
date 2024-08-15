@@ -201,7 +201,6 @@ void MyClass::Loop(int job, std::string fList){
         */
         
         // ENTERING EVENT LOOP
-        cout<<"h1"<<endl;
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
             Long64_t jevent = LoadTree(ievent);
             nb = fChain->GetEntry(ievent);   nbytes += nb;
@@ -219,7 +218,6 @@ void MyClass::Loop(int job, std::string fList){
             
             //=================ENTERING JET LOOP==================
             for(int ijet=0; ijet < jetCounter; ijet++){
-                cout<<"h2"<<endl;
                 long int NNtrk = (dau_pt->at(ijet)).size();
                 gRandom->SetSeed(0);
                 double eta_smear;
@@ -259,7 +257,6 @@ void MyClass::Loop(int job, std::string fList){
                     //double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     //n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
                 }
-                cout<<"h3"<<endl;
 
                 h_lab_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
                 h_lab_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
@@ -291,7 +288,6 @@ void MyClass::Loop(int job, std::string fList){
                 // So this needs to be 2d vector, for pt bin and for daughter index.
                 // In each case I create a true falsse for that daughter falling in to the specific pt bin.
                 // Note this is NOT jet x daughter. It's pt bin x daughtr
-                cout<<"h4"<<endl;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;
                     if((*dau_pt)[ijet][A_trk] < 0.3) continue;
@@ -336,7 +332,6 @@ void MyClass::Loop(int job, std::string fList){
 
                 }//here ends the boolean array creations.
                 //continuation of main loops. Here is where the 2D Corr plots are created using the above booleans and 
-                cout<<"h5"<<endl;
                 for(int i = 0; i < trackbin; i++){
                     for(int j = 0; j < ptbin; j++){
                         hNtrig->Fill(i,j,Ntrig[i][j]);
@@ -389,7 +384,6 @@ void MyClass::Loop(int job, std::string fList){
                         }
                     }
                     if(A_trk == NNtrk - 1) continue;
-                    cout<<"h6"<<endl;
                     for(long int T_trk=A_trk+1; T_trk< NNtrk; T_trk++ ){
 
                         if((*dau_chg)[ijet][T_trk] == 0) continue;
@@ -450,7 +444,6 @@ void MyClass::Loop(int job, std::string fList){
                                 }
                             }
                         }
-                        cout<<"h7"<<endl;
                     }//T_trk end
                 }//A_trk end
             }//ijet end
