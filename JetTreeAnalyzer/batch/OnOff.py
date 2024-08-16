@@ -10,7 +10,7 @@ Arguments  = 000
 Log        = condor_log/submit_v0.$(Process).log
 Output     = condor_log/submit_v0.$(Process).out
 Error      = condor_log/submit_v0.$(Process).err
-+MaxRuntime =3000
++MaxRuntime =20000
 Queue
 '''
 
