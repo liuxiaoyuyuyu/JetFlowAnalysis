@@ -118,7 +118,7 @@ Modify "JetTreeAnalyzer/batch/OnOff.py" accordingly (e.g excutable name, file li
 
 Submit condor jobs:
 ```Linux
-python OnOff.py
+python3 OnOff.py
 ```
 
 
