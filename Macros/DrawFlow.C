@@ -1,75 +1,92 @@
 void DrawFlow(){
-    TH2D* hSignal[5][2];//Ntrk,pt
-    TH2D* hBkg[5][2];
-    TH2D* hBkg_ratio[5][2];
-    TH1D* hSignal_proj_to_deltaphi[5][3];
-    TH1D* hBkg_ratio_proj_to_deltaphi[5][3];
+    TH2D* hSignal[10][2];//Ntrk,pt
+    TH2D* hBkg[10][2];
     //TH2D* h2DCorr[5][2];
-    TH1D* h1DFlow[5][2];
-    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3.root","READ");
-    //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/new_default_complete_vn.root","READ");
-    int   trackbinbounds[5]= {76,78,80,81,82};
+    TH1D* h1DFlow[10][2];
+    //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3.root","READ");
+    //TFile* f_bkg= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/Bkg_highMult_jets_run3.root","READ");
+    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/new_default_complete_vn.root","READ");
+    
+    //int   trackbinbounds[5]= {76,78,80,81,82};
     int ptbinbounds[2]={3,5};
-    TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550");
-    //TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550_hltCor");
-    for(int i=0;i<5;i++){
+    const int   trackbinbounds[10]         = { 0,20,30,40,50,59,66,76,83,78};
+    const int   trackbinboundsUpper[10]    = {20,30,40,50,59,66,76,83,1000,1000};
+    
+    float ptname[2]={0.3,0.5};
+    int YPlo=28;
+    int YPhi=34;
+    //TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550");
+    TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550_hltCor");
+    
+    //for(int i=0;i<5;i++){
+    for(int i=0;i<9;i++){
         for(int j=0;j<2;j++){
-    //for(int i=0;i<1;i++){
-        //for(int j=0;j<1;j++){
-            hSignal[i][j]=(TH2D*)f->Get(Form("hSigS_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
-            hBkg[i][j]=(TH2D*)f->Get(Form("hBckS_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
-            /*
-            hBkg_ratio[i][j]=(TH2D*)hBkg[i][j]->Clone(Form("hBck_ratio_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
-            hBkg_ratio[i][j]->Reset(); 
-            for(int ieta=0;ieta<hBkg_ratio[i][j]->GetNbinsX();ieta++){
-                for(int iphi=0;iphi<hBkg_ratio[i][j]->GetNbinsY();iphi++){
-                    double tmp_ratio=hBkg[i][j]->GetBinContent(hBkg[i][j]->FindBin(0,0))/hBkg[i][j]->GetBinContent(ieta+1,iphi+1);
-                    double tmp_sgmrt00=hBkg[i][j]->GetBinError(hBkg[i][j]->FindBin(0,0))/hBkg[i][j]->GetBinContent(hBkg[i][j]->FindBin(0,0));
-                    double tmp_sgmrt=hBkg[i][j]->GetBinError(ieta+1,iphi+1)/hBkg[i][j]->GetBinContent(ieta+1,iphi+1);
-                    hBkg_ratio[i][j]->SetBinContent(ieta+1,iphi+1,tmp_ratio);
-                    hBkg_ratio[i][j]->SetBinError(ieta+1,iphi+1,tmp_ratio*sqrt(tmp_sgmrt00*tmp_sgmrt00+tmp_sgmrt*tmp_sgmrt)); 
-                }
-            }
-            */
-            hSignal[i][j]->GetXaxis()->SetRange(hSignal[i][j]->GetXaxis()->FindBin(2),hSignal[i][j]->GetNbinsX());
-            //hBkg_ratio[i][j]->GetXaxis()->SetRange(hSignal[i][j]->GetXaxis()->FindBin(2),hSignal[i][j]->GetNbinsX());
-            hBkg[i][j]->GetXaxis()->SetRange(hBkg[i][j]->GetXaxis()->FindBin(2),hBkg[i][j]->GetNbinsX());
-        
-
-            hSignal_proj_to_deltaphi[i][j]=(TH1D*)hSignal[i][j]->ProjectionY(); 
-            hBkg_ratio_proj_to_deltaphi[i][j]=(TH1D*)hBkg[i][j]->ProjectionY(); 
-
-            h1DFlow[i][j]=(TH1D*)hSignal_proj_to_deltaphi[i][j]->Clone(Form("h1DFlow_uncor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
-            h1DFlow[i][j]->Reset();
-
+            //hSignal[i][j]=(TH2D*)f->Get(Form("hSigS_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
+            //hBkg[i][j]=(TH2D*)f_bkg->Get(Form("hBckS_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
+            
+            hSignal[i][j]=(TH2D*)f->Get(Form("hSigS_Cor_%d_to_%d_and_%d_to_30_w_PU_1",trackbinbounds[i],trackbinboundsUpper[i],ptbinbounds[j]));
+            hBkg[i][j]=(TH2D*)f->Get(Form("hBckS_Cor_%d_to_%d_and_%d_to_30_w_PU_1",trackbinbounds[i],trackbinboundsUpper[i],ptbinbounds[j]));
+            
             //h2DCorr[i][j]=(TH2D*)hSignal[i][j]->Clone(Form("h2DCorr_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
             //h2DCorr[i][j]->Reset();
             double eta_bw=hSignal[i][j]->GetXaxis()->GetBinWidth(1);//x:delta eta; y:delta phi
             double phi_bw=hSignal[i][j]->GetYaxis()->GetBinWidth(1);
-            
-            for(int iphi=0;iphi<h1DFlow[i][j]->GetNbinsX();iphi++){
-                double tmp_njet=hJetPass->GetBinContent(i+1);
-                double tmp_bin=hSignal_proj_to_deltaphi[i][j]->GetBinContent(iphi+1)
-                /(hBkg_ratio_proj_to_deltaphi[i][j]->GetBinContent(iphi+1)*tmp_njet);
-                double tmp_sgmrt_S=hSignal_proj_to_deltaphi[i][j]->GetBinError(iphi+1)/hSignal_proj_to_deltaphi[i][j]->GetBinContent(iphi+1);
-                double tmp_sgmrt_B=hBkg_ratio_proj_to_deltaphi[i][j]->GetBinError(iphi+1)/hBkg_ratio_proj_to_deltaphi[i][j]->GetBinContent(iphi+1);
-                if(!std::isfinite(tmp_bin)) continue;
-                h1DFlow[i][j]->SetBinContent(iphi+1,tmp_bin);
-                h1DFlow[i][j]->SetBinError(iphi+1,tmp_bin*sqrt(tmp_sgmrt_S*tmp_sgmrt_S+tmp_sgmrt_B*tmp_sgmrt_B)); 
 
-            }
-        
+            hSignal[i][j]->Scale(1.0/(hJetPass->GetBinContent(i+1,j+1)));
+            hSignal[i][j]->Scale(1./(eta_bw*phi_bw));
+
+            TH1D *histfit1 = (TH1D*) hSignal[i][j]->ProjectionY("",YPlo,YPhi)->Clone();
+            TH1D *histfit2 = (TH1D*) hBkg[i][j]->ProjectionY("",YPlo,YPhi)->Clone();
+
+            histfit1->Divide(histfit2);
+            histfit1->Scale(hBkg[i][j]->GetMaximum());
+
+            h1DFlow[i][j]=(TH1D*)histfit1->Clone(); 
+            std::string function = "[0]/(TMath::Pi()*2)*(1+2*([1]*TMath::Cos(x)+[2]*TMath::Cos(2*x)+[3]*TMath::Cos(3*x)+[4]*TMath::Cos(4*x)+[5]*TMath::Cos(5*x)))";
+            TF1 func1("deltaPhi1", function.c_str(), -0.5*TMath::Pi(), 1.5*TMath::Pi());
+            func1.SetParameter(0, histfit1->GetMaximum());
+            func1.SetParameter(1, 0.1);
+            func1.SetParameter(2, 0.1);
+            func1.SetParameter(3, 0.1);
+            func1.SetParameter(4, 0.1);
+            func1.SetParameter(5, 0.1);
+            h1DFlow[i][j]->Fit(&func1, "m E q");
+            
+            // Set the histogram title
+            //h1DFlow[i][j]->SetTitle(Form("Nch>%d, %.2f<jT<3 GeV/c",trackbinbounds[i],ptname[j]));
+            h1DFlow[i][j]->SetTitle(Form("%d<Nch<%d, %.2f<jT<3 GeV/c",trackbinbounds[i],trackbinboundsUpper[i],ptname[j]));
+             
         }
     }
     
-    //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run2_PG_ana_eta_phi_bw.root","RECREATE");
-    //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run3.root","RECREATE");
-    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run3.root","RECREATE");
-    
+    TCanvas *c1 = new TCanvas("canvas", "Fourier Series Fits", 800, 1200);
+    c1->Divide(2, 5); // Divide canvas into 2 columns and 5 rows
     for(int i=0;i<5;i++){
         for(int j=0;j<2;j++){
-    //for(int i=0;i<1;i++){
-        //for(int j=0;j<1;j++){
+            c1->cd(i*2+j+1);
+            h1DFlow[i][j]->Draw();
+        }
+    } 
+    c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2.pdf(");
+
+    TCanvas *c2 = new TCanvas("canvas", "Fourier Series Fits", 800, 1200);
+    c2->Divide(2, 5); // Divide canvas into 2 columns and 5 rows
+    for(int i=0;i<4;i++){
+        for(int j=0;j<2;j++){
+            c2->cd(i*2+j+1);
+            h1DFlow[i+5][j]->Draw();
+        }
+    } 
+    c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2.pdf)");
+    
+    
+    //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run2_PG_ana_eta_phi_bw.root","RECREATE");
+    //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run3.root","RECREATE");
+    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run2.root","RECREATE");
+    
+    //for(int i=0;i<5;i++){
+    for(int i=0;i<9;i++){
+        for(int j=0;j<2;j++){
             //h2DCorr[i][j]->Write();
             h1DFlow[i][j]->Write();
         }
