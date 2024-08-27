@@ -33,7 +33,7 @@ void DrawFlow(){
             double phi_bw=hSignal[i][j]->GetYaxis()->GetBinWidth(1);
 
             hSignal[i][j]->Scale(1.0/(hJetPass->GetBinContent(i+1,j+1)));
-            hSignal[i][j]->Scale(1./(eta_bw*phi_bw));
+            hSignal[i][j]->Scale(1./(phi_bw));
 
             TH1D *histfit1 = (TH1D*) hSignal[i][j]->ProjectionY("",YPlo,YPhi)->Clone();
             TH1D *histfit2 = (TH1D*) hBkg[i][j]->ProjectionY("",YPlo,YPhi)->Clone();
