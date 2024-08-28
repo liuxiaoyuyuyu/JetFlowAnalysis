@@ -14,7 +14,7 @@ Error      = condor_log/submit_v0.$(Process).err
 Queue
 '''
 
-with open('TreeList_Run3_2024_EF_MINIAOD.list') as fs:
+with open('TreeList_Run3_2023_22Sep_MINIAOD.list') as fs:
     line_count = 0
     for line in fs:
         line_count += 1
