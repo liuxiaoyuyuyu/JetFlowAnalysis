@@ -5,7 +5,11 @@ void DrawFlow(){
     TH1D* h1DFlow[10][2];
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3.root","READ");
     //TFile* f_bkg= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/Bkg_highMult_jets_run3.root","READ");
-    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/new_default_complete_vn.root","READ");
+    //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/new_default_complete_vn.root","READ");
+    //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch.root","READ");
+    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_newBkg_for_high_Nch.root","READ");
+    //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin.root","READ");
+    //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin_newBkg_for_high_Nch.root","READ");
     
     //int   trackbinbounds[5]= {76,78,80,81,82};
     int ptbinbounds[2]={3,5};
@@ -15,11 +19,11 @@ void DrawFlow(){
     float ptname[2]={0.3,0.5};
     int YPlo=28;
     int YPhi=34;
-    //TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550");
-    TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550_hltCor");
+    TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550");
+    //TH1D* hJetPass = (TH1D*)f->Get("hJet_Pass550_hltCor");
     
     //for(int i=0;i<5;i++){
-    for(int i=0;i<9;i++){
+    for(int i=0;i<10;i++){
         for(int j=0;j<2;j++){
             //hSignal[i][j]=(TH2D*)f->Get(Form("hSigS_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
             //hBkg[i][j]=(TH2D*)f_bkg->Get(Form("hBckS_Cor_%d_to_1000_and_%d_to_30_w_PU_1",trackbinbounds[i],ptbinbounds[j]));
@@ -67,25 +71,28 @@ void DrawFlow(){
             h1DFlow[i][j]->Draw();
         }
     } 
-    c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2.pdf(");
+    c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_new.pdf(");
+    //c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2_unc_new.pdf(");
 
     TCanvas *c2 = new TCanvas("canvas", "Fourier Series Fits", 800, 1200);
     c2->Divide(2, 5); // Divide canvas into 2 columns and 5 rows
-    for(int i=0;i<4;i++){
+    for(int i=0;i<5;i++){
         for(int j=0;j<2;j++){
             c2->cd(i*2+j+1);
             h1DFlow[i+5][j]->Draw();
         }
     } 
-    c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2.pdf)");
+    c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_new.pdf)");
+    //c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2_unc_new.pdf)");
     
     
     //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run2_PG_ana_eta_phi_bw.root","RECREATE");
     //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run3.root","RECREATE");
-    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run2.root","RECREATE");
+    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run3_allNch_new.root","RECREATE");
+    //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run2_unc_new.root","RECREATE");
     
     //for(int i=0;i<5;i++){
-    for(int i=0;i<9;i++){
+    for(int i=0;i<10;i++){
         for(int j=0;j<2;j++){
             //h2DCorr[i][j]->Write();
             h1DFlow[i][j]->Write();
