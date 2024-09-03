@@ -7,7 +7,7 @@ void DrawFlow(){
     //TFile* f_bkg= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/Bkg_highMult_jets_run3.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/new_default_complete_vn.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch.root","READ");
-    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_newBkg_for_high_Nch.root","READ");
+    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_2024_newBkg_for_high_Nch.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin_newBkg_for_high_Nch.root","READ");
     
@@ -71,7 +71,7 @@ void DrawFlow(){
             h1DFlow[i][j]->Draw();
         }
     } 
-    c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_new.pdf(");
+    c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_2024.pdf(");
     //c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2_unc_new.pdf(");
 
     TCanvas *c2 = new TCanvas("canvas", "Fourier Series Fits", 800, 1200);
@@ -82,13 +82,13 @@ void DrawFlow(){
             h1DFlow[i+5][j]->Draw();
         }
     } 
-    c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_new.pdf)");
+    c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_2024.pdf)");
     //c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2_unc_new.pdf)");
     
     
     //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run2_PG_ana_eta_phi_bw.root","RECREATE");
     //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run3.root","RECREATE");
-    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run3_allNch_new.root","RECREATE");
+    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run3_allNch_2024.root","RECREATE");
     //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/1DFlow_run2_unc_new.root","RECREATE");
     
     //for(int i=0;i<5;i++){

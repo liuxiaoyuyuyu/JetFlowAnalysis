@@ -14,7 +14,8 @@ void makeBkg_for_highMult_jets(){
     TH1D* hJetPass;
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin.root","READ");
-    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch.root","READ");
+    //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch.root","READ");
+    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_2024.root","READ");
 
     hPairs=(TH2D*)f->Get("hPairs");
     hJetPass = (TH1D*)f->Get("hJet_Pass550");
@@ -74,7 +75,7 @@ void makeBkg_for_highMult_jets(){
     }
 
     //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin_newBkg_for_high_Nch.root","RECREATE");
-    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_newBkg_for_high_Nch.root","RECREATE");
+    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_2024_newBkg_for_high_Nch.root","RECREATE");
     
     for(int i=0;i<10;i++){
         for(int j=0;j<2;j++){
