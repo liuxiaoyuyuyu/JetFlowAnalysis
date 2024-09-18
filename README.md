@@ -121,4 +121,11 @@ Submit condor jobs:
 python3 OnOff.py
 ```
 
+## Macros 
+### Make new background dis. for high Nch bins
+makeBkg_for_highMult_jets.C
+
+### Vn vs. Nch
+DrawVn.C
+Use makeBkg_for_highMult_jets.C first to generate new background dis. for high Nch bins then extract Vn.
 
