@@ -8,6 +8,9 @@ Parker Gardner's code for the jet collectivity study
 - [Analyze Jet Trees](#analyze-jet-trees) 
   - [JetTreeAnalyzer](#jettreeanalyzer)
   - [Batch jobs](#batch-jobs)
+- [Macros](#macros) 
+  - [Make new background](#make-new-background)
+  - [Vn vs Nch](#vn-vs-nch)
    
 ## Make Jet Trees
 ### JetTreeMaker
@@ -122,7 +125,7 @@ python3 OnOff.py
 ```
 
 ## Macros 
-### Make new background dis. for high Nch bins
+### Make new background
 makeBkg_for_highMult_jets.C
 
 ### Vn vs. Nch
