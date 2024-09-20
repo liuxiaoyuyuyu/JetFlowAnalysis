@@ -3,7 +3,7 @@
 #include "math.h"
 #include <iostream>
 #include <iomanip>
-//#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/Event.h"
 using TMath::ATan;
 using TMath::Exp;
 
@@ -11,11 +11,10 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
 {
     minJetPt = iConfig.getUntrackedParameter<double>("minJetPt",100);
     maxJetEta = iConfig.getUntrackedParameter<double>("maxJetEta",2.5);
+    trackPtMin_ = iConfig.getUntrackedParameter<double>("trackPtMin",0.01);
 
     doTrack_ = iConfig.getUntrackedParameter<bool>("doTrack",true);
     doGen = iConfig.getUntrackedParameter< bool >("doGen",false);
-
-    trackPtMin_ = iConfig.getUntrackedParameter<double>("trackPtMin",0.01);
 
     vertexSrcLabel_ = iConfig.getParameter<edm::InputTag>("vertexSrc");
     vertexSrc_ = consumes<reco::VertexCollection>(vertexSrcLabel_);
@@ -184,7 +183,10 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
     int passer = 0;
     // Let's compute the fraction of charged pt from particles with dz < 0.1 cm
     for (const pat::Jet &j :  *jets2) {
-        if (j.pt() < 350 || fabs(j.eta()) > 2.4) continue;
+        //if (j.pt() < 350 || fabs(j.eta()) > 2.4) continue;
+        if (!j.isPFJet()) continue;
+        if (j.pt() < 20 || fabs(j.eta()) > 2.5) continue;
+        if (j.chargedMultiplicity() < 1) continue;
 
         jetPt.push_back(j.pt());
         jetEta.push_back(j.eta());
@@ -221,11 +223,12 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
         std::vector<float>		vp_difY;
         std::vector<float>		vp_difX;
 
+        /*
         std::vector<double>		vptSTAR;
         std::vector<double>		vetaSTAR;
         std::vector<double>		vphiSTAR;
         std::vector<double>             vthetaSTAR;
-
+        */
         float Ndau_pt_sum = 0;
 
         for( unsigned int dID=0; dID < j.numberOfDaughters();  dID++){
@@ -283,6 +286,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
             vp_difY.push_back(      V_percent_difY);
             vp_difX.push_back(      V_percent_difX);
 
+            /*
             double jet_dau_pt    =  ptWRTJet((double)(j.pt()), (double)(j.eta()), (double)(j.phi()), (double)(dau.pt()), (double)(dau.eta()), (double)(dau.phi()));
             double jet_dau_eta   =  etaWRTJet((double)(j.pt()), (double)(j.eta()), (double)(j.phi()), (double)(dau.pt()), (double)(dau.eta()), (double)(dau.phi()));
             double jet_dau_phi   =  phiWRTJet((double)(j.pt()), (double)(j.eta()), (double)(j.phi()), (double)(dau.pt()), (double)(dau.eta()), (double)(dau.phi()));
@@ -292,7 +296,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
             vetaSTAR.push_back(jet_dau_eta);
             vphiSTAR.push_back(jet_dau_phi);
             vthetaSTAR.push_back(jet_dau_theta);
-
+            */
         }
         dau_pt_sum.push_back(   Ndau_pt_sum);
 
@@ -542,10 +546,12 @@ void TrackAnalyzer::beginJob()
     trackTree_->Branch("dau_phi",		&dau_phi );
     trackTree_->Branch("dau_theta",	&dau_theta);
 
+    /*
     trackTree_->Branch("dau_pt_STAR",		&dau_pt_STAR);
     trackTree_->Branch("dau_eta_STAR",		&dau_eta_STAR);	 
     trackTree_->Branch("dau_phi_STAR",		&dau_phi_STAR );
     trackTree_->Branch("dau_theta_STAR",	&dau_theta_STAR);
+    */
 
     trackTree_->Branch("dau_vz",		&dau_vz	 );
     trackTree_->Branch("dau_vy",		&dau_vy	 );

@@ -232,11 +232,13 @@ class TrackAnalyzer : public edm::EDAnalyzer {
      std::vector<std::vector<float>>		dau_phi;
      std::vector<std::vector<float>>      	dau_theta;
 
+     /*
      std::vector<std::vector<double>>		dau_pt_STAR;
      std::vector<std::vector<double>>		dau_eta_STAR;
      std::vector<std::vector<double>>		dau_phi_STAR;
      std::vector<std::vector<double>>      	dau_theta_STAR;
-
+     */
+     
      std::vector<std::vector<float>>		dau_vz;
      std::vector<std::vector<float>>		dau_vy;
      std::vector<std::vector<float>>		dau_vx;
@@ -326,10 +328,12 @@ dau_eta.clear();
 dau_phi.clear();
 dau_theta.clear();
 
+/*
 dau_pt_STAR.clear();
 dau_eta_STAR.clear();
 dau_phi_STAR.clear();
 dau_theta_STAR.clear();
+*/
 
 dau_vz.clear();
 dau_vy.clear();
