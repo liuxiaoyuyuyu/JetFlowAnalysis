@@ -63,7 +63,7 @@
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingVertexContainer.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHit.h"
 #include "SimGeneral/HepPDTRecord/interface/ParticleDataTable.h"
-//#include "SimTracker/Records/interface/TrackAssociatorRecord.h"
+#include "SimTracker/Records/interface/TrackAssociatorRecord.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "DataFormats/Common/interface/ValueMap.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
