@@ -19,8 +19,8 @@
 #include "DataFormats/Math/interface/Point3D.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
 //#include "DataFormats/RecoCandidate/interface/TrackAssociation.h"
-//#include "DataFormats/RecoCandidate/interface/TrackCandidateAssociation.h"
-//#include "DataFormats/Common/interface/Association.h"
+#include "DataFormats/RecoCandidate/interface/TrackCandidateAssociation.h"
+#include "DataFormats/Common/interface/Association.h"
 #include "DataFormats/TrackReco/interface/DeDxData.h"
 #include "DataFormats/TrackerRecHit2D/interface/SiStripRecHit1D.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -91,7 +91,7 @@
 // Root include files
 #include "TTree.h"
 
-class TrackAnalyzer : public edm::EDAnalyzer {
+class TrackAnalyzer : public edm::one::EDAnalyzer<> {
 
   public:
     explicit TrackAnalyzer(const edm::ParameterSet&);
