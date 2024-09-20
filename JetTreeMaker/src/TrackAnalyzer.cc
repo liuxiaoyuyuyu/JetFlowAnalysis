@@ -312,10 +312,12 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
         dau_phi.push_back(      vphi);
         dau_theta.push_back(    vtheta);
 
+        /*
         dau_pt_STAR.push_back(       vptSTAR);
         dau_eta_STAR.push_back(      vetaSTAR);
         dau_phi_STAR.push_back(      vphiSTAR);
         dau_theta_STAR.push_back(    vthetaSTAR);
+        */
 
         dau_vz.push_back(       vdauVZ);
         dau_vy.push_back(       vdauVY);
