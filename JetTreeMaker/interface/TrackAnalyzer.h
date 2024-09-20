@@ -1,6 +1,10 @@
 #ifndef TRKANALYZER_H
 #define TRKANALYZER_H
 
+#include "TVector3.h"
+#include "TMath.h"
+#include "TLorentzVector.h"
+#include <iostream>
 // system include files
 #include <memory>
 #include <iostream>
