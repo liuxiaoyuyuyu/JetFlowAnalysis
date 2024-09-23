@@ -135,8 +135,8 @@ void MyClass::Loop(int job, std::string fList){
         }
     }
 
-    TH2D* hjet_eta_phi_before_veto=new TH2D(Form("jet_eta_phi_before_veto","jet_eta_phi_before_veto",82,-5.191,5.191,72,-TMath::Pi(),TMath::Pi()));
-    TH2D* hjet_eta_phi_after_veto=new TH2D(Form("jet_eta_phi_before_veto","jet_eta_phi_before_veto",82,-5.191,5.191,72,-TMath::Pi(),TMath::Pi()));
+    TH2D* hjet_eta_phi_before_veto=new TH2D(Form("jet_eta_phi_before_veto"),Form("jet_eta_phi_before_veto"),82,-5.191,5.191,72,-TMath::Pi(),TMath::Pi());
+    TH2D* hjet_eta_phi_after_veto=new TH2D(Form("jet_eta_phi_before_veto"),Form("jet_eta_phi_before_veto"),82,-5.191,5.191,72,-TMath::Pi(),TMath::Pi());
 
 
     //NEW THING                        
