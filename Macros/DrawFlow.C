@@ -7,7 +7,7 @@ void DrawFlow(){
     //TFile* f_bkg= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/Bkg_highMult_jets_run3.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/new_default_complete_vn.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch.root","READ");
-    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_2023_2024_allNch_newBkg.root","READ");
+    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_2022_allNch_jetveto_CD_part1_newBkg.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin_newBkg_for_high_Nch.root","READ");
     
@@ -72,7 +72,7 @@ void DrawFlow(){
             h1DFlow[i][j]->Draw();
         }
     } 
-    c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_2023_2024.pdf(");
+    c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_2022_CD_part1.pdf(");
     //c1->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2_unc_new.pdf(");
 
     TCanvas *c2 = new TCanvas("canvas", "Fourier Series Fits", 800, 1200);
@@ -83,7 +83,7 @@ void DrawFlow(){
             h1DFlow[i+5][j]->Draw();
         }
     } 
-    c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_2023_2024.pdf)");
+    c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run3_allNch_2022_CD_part1.pdf)");
     //c2->SaveAs("/Users/xl155/Documents/JetFlow_Run3_data/Flow_run2_unc_new.pdf)");
     
     /* 

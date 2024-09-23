@@ -101,6 +101,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJet_Pass550     = new TH1D("hJet_Pass550"  ,"hJet_Pass550"  , trackbin,bin0,trackbin);
     TH1D* hJet_Pass550_hltCor     = new TH1D("hJet_Pass550_hltCor"  ,"hJet_Pass550_hltCor"  , trackbin,bin0,trackbin);
     TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i150,i100,i3500);
+    TH1D* hJetPt_wo_ptcut = new TH1D("hJetPt_wo_ptcut"  ,"hJetPt_wo_ptcut" ,i150,i100,i3500);
     TH1D* hBinDist_cor_single = new TH1D("hBinDist_cor_single","hBinDist_cor_single",bin360,bin0,bin120);
     TH1D* hBinDist_unc_single = new TH1D("hBinDist_unc_single","hBinDist_unc_single",bin120,bin0,bin120);
 
@@ -133,6 +134,9 @@ void MyClass::Loop(int job, std::string fList){
             }
         }
     }
+
+    TH2D* hjet_eta_phi_before_veto=new TH2D(Form("jet_eta_phi_before_veto","jet_eta_phi_before_veto",82,-5.191,5.191,72,-TMath::Pi(),TMath::Pi()));
+    TH2D* hjet_eta_phi_after_veto=new TH2D(Form("jet_eta_phi_before_veto","jet_eta_phi_before_veto",82,-5.191,5.191,72,-TMath::Pi(),TMath::Pi()));
 
 
     //NEW THING                        
@@ -221,14 +225,33 @@ void MyClass::Loop(int job, std::string fList){
 
             int jetCounter = jetPt->size();
             if(jetCounter == 0) continue;
-            
+
+            //apply jet veto map
+            //jet veto, reference: https://cms-jerc.web.cern.ch/Recommendations/#run-3
+            //"The safest procedure would be to veto events if ANY jet with a loose selection lies in the veto regions."
+            bool jetvetoBool=0;
+            for(int ijet=0; ijet < jetCounter; ijet++){
+                hjet_eta_phi_before_veto->Fill((*jetEta)[ijet],(*jetPhi)[ijet]);
+                
+                //if( (*jetPt)[ijet] > 15){
+                    if(jet_veto_map->GetBinContent(jet_veto_map->FindBin((*jetEta)[ijet],(*jetPhi)[ijet]))>0){
+                        jetvetoBool=1;
+                        break;
+                    } 
+                //}
+
+            }
+
+            if(jetvetoBool) continue;
+
             //=================ENTERING JET LOOP==================
             for(int ijet=0; ijet < jetCounter; ijet++){
+                hjet_eta_phi_after_veto->Fill((*jetEta)[ijet],(*jetPhi)[ijet]);
+                
                 long int NNtrk = (dau_pt->at(ijet)).size();
                 gRandom->SetSeed(0);
                 double eta_smear;
                 eta_smear=0;
-
                 if( fabs(((*jetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
                 //if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
                 //hJetPt->Fill((*jetPt)[ijet]);
@@ -245,18 +268,6 @@ void MyClass::Loop(int job, std::string fList){
 
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
-                
-                //jet veto, reference: https://cms-jerc.web.cern.ch/Recommendations/#run-3
-                //"The safest procedure would be to veto events if ANY jet with a loose selection lies in the veto regions."
-                //Maybe this process should be moved to the jet tree maker in the future, 
-                //to take care of events with 15<jet<100 GeV that falls into the jet veto region but jets>100 GeV don't.
-                
-                bool jetvetoBool=0;
-                if( (*jetPt)[ijet] > 15){
-                    if(jet_veto_map->GetBinContent(jet_veto_map->FindBin((*jetEta)[ijet],(*jetPhi)[ijet]))>0) jetvetoBool=1;
-                }
-                if(jetvetoBool) break;
-
 
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;//charge
@@ -280,7 +291,7 @@ void MyClass::Loop(int job, std::string fList){
                 h_lab_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
                 h_lab_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
 
-
+                hJetPt_wo_ptcut->Fill((*jetPt)[ijet]);    
                 if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
                 hJetPt->Fill((*jetPt)[ijet]);
 
@@ -515,7 +526,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/allNch/jetveto_CD/job_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/allNch/jetveto_CD/job_C_%s.root",subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
         hBinDist_unc[wtrk-1]->Write();

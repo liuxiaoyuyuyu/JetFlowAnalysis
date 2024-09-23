@@ -3,7 +3,7 @@ void Draw2DCorr(){
     TH2D* hBkg[5][2];
     TH2D* h2DCorr[5][2];
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_newBkg_for_high_Nch.root","READ");
-    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/output_parkersbin_newBkg_for_high_Nch.root","READ");
+    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_2023_newBkg_for_high_Nch.root","READ");
     //TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/new_default_complete_vn.root","READ");
     //int   trackbinbounds[5]= {76,78,80,81,82};
     //int ptbinbounds[2]={3,5};
@@ -44,7 +44,7 @@ void Draw2DCorr(){
     }
     
     //TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run2_PG_ana_eta_phi_bw.root","RECREATE");
-    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run2_allNch.root","RECREATE");
+    TFile* fout= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/2DCorr_run3_allNch_2023.root","RECREATE");
     
     for(int i=0;i<10;i++){
         for(int j=0;j<2;j++){
