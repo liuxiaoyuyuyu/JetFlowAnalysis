@@ -545,6 +545,7 @@ void MyClass::Loop(int job, std::string fList){
     hAvg_Atrk_Weight->Write();
     hAvg_NtrigCorrected_Bump->Write();
     hJetPt->Write();
+    hJetPt_wo_ptcut->Write(); 
     hEvent_Pass->Write();
     hJet_Pass->Write();
     hJet_Pass550->Write();
@@ -556,7 +557,10 @@ void MyClass::Loop(int job, std::string fList){
     h_jet_etastar->Write();
     h_lab_JetMult_pT->Write();
     h_lab_JetMult_phi->Write();
-    h_lab_JetMult_eta->Write(); 
+    h_lab_JetMult_eta->Write();
+
+    hjet_eta_phi_before_veto->Write();
+    hjet_eta_phi_after_veto->Write();
 
     fS_tempA->Close();
 }
