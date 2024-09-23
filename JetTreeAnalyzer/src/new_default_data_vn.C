@@ -199,6 +199,12 @@ void MyClass::Loop(int job, std::string fList){
         hReco2D[f]->Divide(hGen2D[f]);
         int thisEffTable =f_from_file;
         */
+
+        TFile* jet_veto_file[2];
+        jet_veto_file[0]="~/StorageArea/Summer22_23Sep2023_RunCD_v1.root";
+        jet_veto_file[1]="~/StorageArea/Summer22EE_23Sep2023_RunEFG_v1.root";
+        TH2D* jet_veto_map=(TH2D*)jet_veto_file[0]->Get("jetvetomap");
+
         
         // ENTERING EVENT LOOP
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
@@ -210,7 +216,7 @@ void MyClass::Loop(int job, std::string fList){
             if(!F_eventpass(jetPt, jetN, jetPtCut_Dist)){
                 continue;
             }
-
+            
             hEvent_Pass->Fill(1);
 
             int jetCounter = jetPt->size();
@@ -240,6 +246,18 @@ void MyClass::Loop(int job, std::string fList){
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
                 
+                //jet veto, reference: https://cms-jerc.web.cern.ch/Recommendations/#run-3
+                //"The safest procedure would be to veto events if ANY jet with a loose selection lies in the veto regions."
+                //Maybe this process should be moved to the jet tree maker in the future, 
+                //to take care of events with 15<jet<100 GeV that falls into the jet veto region but jets>100 GeV don't.
+                
+                bool jetvetoBool=0;
+                if( (*jetPt)[ijet] > 15){
+                    if(jet_veto_map->GetBinContent(jet_veto_map->FindBin((*jetEta)[ijet],(*jetPhi)[ijet]))>0) jetvetoBool=1;
+                }
+                if(jetvetoBool) break;
+
+
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*dau_chg)[ijet][A_trk] == 0) continue;//charge
                     if(fabs((*dau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
@@ -497,7 +515,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2024_root_out/allNch/job_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/allNch/jetveto_CD/job_%s.root",subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
         hBinDist_unc[wtrk-1]->Write();
