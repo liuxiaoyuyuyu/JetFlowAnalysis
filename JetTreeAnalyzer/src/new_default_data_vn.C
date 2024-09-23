@@ -201,8 +201,8 @@ void MyClass::Loop(int job, std::string fList){
         */
 
         TFile* jet_veto_file[2];
-        jet_veto_file[0]="~/StorageArea/Summer22_23Sep2023_RunCD_v1.root";
-        jet_veto_file[1]="~/StorageArea/Summer22EE_23Sep2023_RunEFG_v1.root";
+        jet_veto_file[0]=new TFile("~/StorageArea/Summer22_23Sep2023_RunCD_v1.root","read");
+        jet_veto_file[1]=new TFile("~/StorageArea/Summer22EE_23Sep2023_RunEFG_v1.root","read");
         TH2D* jet_veto_map=(TH2D*)jet_veto_file[0]->Get("jetvetomap");
 
         
