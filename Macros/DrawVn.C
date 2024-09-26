@@ -4,8 +4,8 @@ void DrawVn(){
     TH1D* h1DFlow[10][2];
     TH1D* hBinDist[10];
     
-    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_2022_allNch_jetveto_CD_part1_newBkg.root","READ");
-    TFile* fstat= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_allNch_2022_jetveto_CD_part1.root","READ");
+    TFile* f= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_2022_jetveto_C_newBkg.root","READ");
+    TFile* fstat= new TFile("/Users/xl155/Documents/JetFlow_Run3_data/ana_run3_2022_jetveto_C.root","READ");
     
     //int   trackbinbounds[5]= {76,78,80,81,82};
     int ptbinbounds[2]={3,5};
@@ -90,7 +90,7 @@ void DrawVn(){
     TLine* l1=new TLine(9.0,0.0,90.0,0.0);
     TCanvas* cVn=new TCanvas("cVn","cVn",600,500);
     gVn[0][1]->Draw("AP");
-    gVn[0][1]->SetTitle("Run 3 2022 partial, jet veto applied");
+    gVn[0][1]->SetTitle("Run 3 2022 C, jet veto applied");
     gVn[0][1]->GetXaxis()->SetTitle("N_{ch}^{j}");
     gVn[0][1]->GetXaxis()->SetRange(5,95); 
     gVn[0][1]->GetYaxis()->SetTitle("V^{*}_{n#Delta}{2,|#Delta#eta^{*}|>2}"); 
