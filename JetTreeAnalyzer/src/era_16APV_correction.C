@@ -416,7 +416,8 @@ void MyClass::Loop(int job, std::string fList){
     //TFile* fS_tempA = new TFile(Form("out_correction_18/job_%s.root",subList.c_str()), "recreate");
     //TFile* fS_tempA = new TFile(Form("out_correction_17/job_%s.root",subList.c_str()), "recreate");
     //TFile* fS_tempA = new TFile(Form("out_correction_16/job_%s.root",subList.c_str()), "recreate");
-    TFile* fS_tempA = new TFile(Form("correct_by_era/out_correction_16APV/job_%s.root",subList.c_str()), "recreate");
+    //TFile* fS_tempA = new TFile(Form("correct_by_era/out_correction_16APV/job_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("correction_test.root"), "recreate");
    
 
     hjetPtReco->Write();
