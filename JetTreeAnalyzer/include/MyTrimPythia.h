@@ -48,7 +48,6 @@ public :
    vector<float>   *dau_pt_sum;
    vector<vector<int> > *dau_chg;
    vector<vector<int> > *dau_pid;
-   vector<vector<unsigned int> > *dau_vref;
    vector<vector<float> > *dau_pt;
    vector<vector<float> > *dau_ptError;
    vector<vector<float> > *dau_XYDCAsig;
@@ -56,15 +55,6 @@ public :
    vector<vector<float> > *dau_eta;
    vector<vector<float> > *dau_phi;
    vector<vector<float> > *dau_theta;
-   vector<vector<float> > *dau_vz;
-   vector<vector<float> > *dau_vy;
-   vector<vector<float> > *dau_vx;
-   vector<vector<float> > *dau_vrefz;
-   vector<vector<float> > *dau_vrefy;
-   vector<vector<float> > *dau_vrefx;
-   vector<vector<float> > *dau_vp_difZ;
-   vector<vector<float> > *dau_vp_difY;
-   vector<vector<float> > *dau_vp_difX;
    Float_t         genQScale;
    Float_t         genWeight;
    Int_t           genSignalProcessID;
@@ -99,7 +89,6 @@ public :
    TBranch        *b_dau_pt_sum;   //!
    TBranch        *b_dau_chg;   //!
    TBranch        *b_dau_pid;   //!
-   TBranch        *b_dau_vref;   //!
    TBranch        *b_dau_pt;   //!
    TBranch        *b_dau_ptError;   //!
    TBranch        *b_dau_XYDCAsig;   //!
@@ -107,15 +96,6 @@ public :
    TBranch        *b_dau_eta;   //!
    TBranch        *b_dau_phi;   //!
    TBranch        *b_dau_theta;   //!
-   TBranch        *b_dau_vz;   //!
-   TBranch        *b_dau_vy;   //!
-   TBranch        *b_dau_vx;   //!
-   TBranch        *b_dau_vrefz;   //!
-   TBranch        *b_dau_vrefy;   //!
-   TBranch        *b_dau_vrefx;   //!
-   TBranch        *b_dau_vp_difZ;   //!
-   TBranch        *b_dau_vp_difY;   //!
-   TBranch        *b_dau_vp_difX;   //!
    TBranch        *b_genQScale;   //!
    TBranch        *b_genWeight;   //!
    TBranch        *b_genSignalProcessID;   //!
@@ -216,7 +196,6 @@ void MyClass::Init(TTree *tree)
    dau_pt_sum = 0;
    dau_chg = 0;
    dau_pid = 0;
-   dau_vref = 0;
    dau_pt = 0;
    dau_ptError = 0;
    dau_XYDCAsig = 0;
@@ -224,15 +203,6 @@ void MyClass::Init(TTree *tree)
    dau_eta = 0;
    dau_phi = 0;
    dau_theta = 0;
-   dau_vz = 0;
-   dau_vy = 0;
-   dau_vx = 0;
-   dau_vrefz = 0;
-   dau_vrefy = 0;
-   dau_vrefx = 0;
-   dau_vp_difZ = 0;
-   dau_vp_difY = 0;
-   dau_vp_difX = 0;
    genJetEta = 0;
    genJetPt = 0;
    genJetPhi = 0;
@@ -268,7 +238,6 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("dau_pt_sum", &dau_pt_sum, &b_dau_pt_sum);
    fChain->SetBranchAddress("dau_chg", &dau_chg, &b_dau_chg);
    fChain->SetBranchAddress("dau_pid", &dau_pid, &b_dau_pid);
-   fChain->SetBranchAddress("dau_vref", &dau_vref, &b_dau_vref);
    fChain->SetBranchAddress("dau_pt", &dau_pt, &b_dau_pt);
    fChain->SetBranchAddress("dau_ptError", &dau_ptError, &b_dau_ptError);
    fChain->SetBranchAddress("dau_XYDCAsig", &dau_XYDCAsig, &b_dau_XYDCAsig);
@@ -276,15 +245,6 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("dau_eta", &dau_eta, &b_dau_eta);
    fChain->SetBranchAddress("dau_phi", &dau_phi, &b_dau_phi);
    fChain->SetBranchAddress("dau_theta", &dau_theta, &b_dau_theta);
-   fChain->SetBranchAddress("dau_vz", &dau_vz, &b_dau_vz);
-   fChain->SetBranchAddress("dau_vy", &dau_vy, &b_dau_vy);
-   fChain->SetBranchAddress("dau_vx", &dau_vx, &b_dau_vx);
-   fChain->SetBranchAddress("dau_vrefz", &dau_vrefz, &b_dau_vrefz);
-   fChain->SetBranchAddress("dau_vrefy", &dau_vrefy, &b_dau_vrefy);
-   fChain->SetBranchAddress("dau_vrefx", &dau_vrefx, &b_dau_vrefx);
-   fChain->SetBranchAddress("dau_vp_difZ", &dau_vp_difZ, &b_dau_vp_difZ);
-   fChain->SetBranchAddress("dau_vp_difY", &dau_vp_difY, &b_dau_vp_difY);
-   fChain->SetBranchAddress("dau_vp_difX", &dau_vp_difX, &b_dau_vp_difX);
    fChain->SetBranchAddress("genQScale", &genQScale, &b_genQScale);
    fChain->SetBranchAddress("genWeight", &genWeight, &b_genWeight);
    fChain->SetBranchAddress("genSignalProcessID", &genSignalProcessID, &b_genSignalProcessID);
