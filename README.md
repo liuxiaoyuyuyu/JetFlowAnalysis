@@ -25,14 +25,14 @@ cmsenv
 ```  
 >[!Note] 
 >`cmsenv` in the CMSSW_13_3_0/src directory will set the specific enviroment for the CMS release CMSSW_13_3_0.
+
 Compile JetTreeMaker
 ```Linux
 git clone https://github.com/liuxiaoyuyuyu/JetFlowAnalysis/
-cd JetFlowAnalysis/JetTreeMaker
 scram b -j8
 ```  
 >[!Note] 
->`scram b` only compile codes two directories down CMSSW_*/src. In this case: CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/.
+>`scram b` only compile codes two directories down CMSSW_*/src. In this case: CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/ and CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeAnalyzer/.
 
 ### Local test
 ```Linux
@@ -130,5 +130,6 @@ makeBkg_for_highMult_jets.C
 
 ### Vn vs. Nch
 DrawVn.C
+
 Use makeBkg_for_highMult_jets.C first to generate new background dis. for high Nch bins then extract Vn.
 
