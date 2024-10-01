@@ -362,8 +362,8 @@ void TrackAnalyzer::fillGen(const edm::Event& iEvent){
     edm::Handle< std::vector< reco::GenJet > > genJets;
     iEvent.getByToken(packedGenJetToken_,genJets);
 
-    edm::Handle< std::vector< PileupSummaryInfo > > puSummary;
-    iEvent.getByToken(puSummary_, puSummary);
+    //edm::Handle< std::vector< PileupSummaryInfo > > puSummary;
+    //iEvent.getByToken(puSummary_, puSummary);
 
     //jets and their  constituents
     for(size_t i=0; i<(*genJets).size();i++){
