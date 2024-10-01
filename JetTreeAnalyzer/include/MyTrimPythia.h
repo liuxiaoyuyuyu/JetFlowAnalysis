@@ -36,14 +36,6 @@ public :
    vector<float>   *zVtx;
    vector<int>     *nTracksVtx;
    vector<float>   *ptSumVtx;
-   vector<float>   *trkPt;
-   vector<float>   *trkEta;
-   vector<float>   *trkPhi;
-   vector<char>    *trkCharge;
-   vector<int>     *trkPDFId;
-   vector<char>    *trkNHits;
-   vector<bool>    *highPurity;
-   vector<int>     *trkAssociatedVtxIndx;
    vector<int>     *jetNumDaughters;
    vector<float>   *jetEta;
    vector<float>   *jetPt;
@@ -85,16 +77,9 @@ public :
    vector<vector<float> > *genDau_pt;
    vector<vector<float> > *genDau_eta;
    vector<vector<float> > *genDau_phi;
-   Int_t           nPu;
-   Int_t           nTruePu;
-   vector<float>   *puZ;
-   vector<float>   *puPthat;
-   vector<float>   *puSumPt0p1;
-   vector<float>   *puSumPt0p5;
-   vector<int>     *puNTrk0p1;
-   vector<int>     *puNTrk0p5;
 
    // List of branches
+   TBranch        *b_nRun;   //!
    TBranch        *b_nRun;   //!
    TBranch        *b_nLumi;   //!
    TBranch        *b_xVtx;   //!
@@ -102,14 +87,6 @@ public :
    TBranch        *b_zVtx;   //!
    TBranch        *b_nTracksVtx;   //!
    TBranch        *b_ptSumVtx;   //!
-   TBranch        *b_trkPt;   //!
-   TBranch        *b_trkEta;   //!
-   TBranch        *b_trkPhi;   //!
-   TBranch        *b_trkCharge;   //!
-   TBranch        *b_trkPDFId;   //!
-   TBranch        *b_trkNHits;   //!
-   TBranch        *b_highPurity;   //!
-   TBranch        *b_trkAssociatedVtxIndx;   //!
    TBranch        *b_jetNumDaughters;   //!
    TBranch        *b_jetEta;   //!
    TBranch        *b_jetPt;   //!
@@ -151,14 +128,7 @@ public :
    TBranch        *b_genDau_pt;   //!
    TBranch        *b_genDau_eta;   //!
    TBranch        *b_genDau_phi;   //!
-   TBranch        *b_nPu;   //!
-   TBranch        *b_nTruePu;   //!
-   TBranch        *b_puZ;   //!
-   TBranch        *b_puPthat;   //!
-   TBranch        *b_puSumPt0p1;   //!
-   TBranch        *b_puSumPt0p5;   //!
-   TBranch        *b_puNTrk0p1;   //!
-   TBranch        *b_puNTrk0p5;   //!
+
 
    //MyClass(TTree *tree=0);
    MyClass(std::vector<std::string> _fileList);
@@ -235,14 +205,6 @@ void MyClass::Init(TTree *tree)
    zVtx = 0;
    nTracksVtx = 0;
    ptSumVtx = 0;
-   trkPt = 0;
-   trkEta = 0;
-   trkPhi = 0;
-   trkCharge = 0;
-   trkPDFId = 0;
-   trkNHits = 0;
-   highPurity = 0;
-   trkAssociatedVtxIndx = 0;
    jetNumDaughters = 0;
    jetEta = 0;
    jetPt = 0;
@@ -280,14 +242,6 @@ void MyClass::Init(TTree *tree)
    genDau_pt = 0;
    genDau_eta = 0;
    genDau_phi = 0;
-   /*
-   puZ = 0;
-   puPthat = 0;
-   puSumPt0p1 = 0;
-   puSumPt0p5 = 0;
-   puNTrk0p1 = 0;
-   puNTrk0p5 = 0;
-   */
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -302,14 +256,6 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("zVtx", &zVtx, &b_zVtx);
    fChain->SetBranchAddress("nTracksVtx", &nTracksVtx, &b_nTracksVtx);
    fChain->SetBranchAddress("ptSumVtx", &ptSumVtx, &b_ptSumVtx);
-   fChain->SetBranchAddress("trkPt", &trkPt, &b_trkPt);
-   fChain->SetBranchAddress("trkEta", &trkEta, &b_trkEta);
-   fChain->SetBranchAddress("trkPhi", &trkPhi, &b_trkPhi);
-   fChain->SetBranchAddress("trkCharge", &trkCharge, &b_trkCharge);
-   fChain->SetBranchAddress("trkPDFId", &trkPDFId, &b_trkPDFId);
-   fChain->SetBranchAddress("trkNHits", &trkNHits, &b_trkNHits);
-   fChain->SetBranchAddress("highPurity", &highPurity, &b_highPurity);
-   fChain->SetBranchAddress("trkAssociatedVtxIndx", &trkAssociatedVtxIndx, &b_trkAssociatedVtxIndx);
    fChain->SetBranchAddress("jetNumDaughters", &jetNumDaughters, &b_jetNumDaughters);
    fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
@@ -351,14 +297,6 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("genDau_pt", &genDau_pt, &b_genDau_pt);
    fChain->SetBranchAddress("genDau_eta", &genDau_eta, &b_genDau_eta);
    fChain->SetBranchAddress("genDau_phi", &genDau_phi, &b_genDau_phi);
-   //fChain->SetBranchAddress("nPu", &nPu, &b_nPu);
-   //fChain->SetBranchAddress("nTruePu", &nTruePu, &b_nTruePu);
-   //fChain->SetBranchAddress("puZ", &puZ, &b_puZ);
-   //fChain->SetBranchAddress("puPthat", &puPthat, &b_puPthat);
-   //fChain->SetBranchAddress("puSumPt0p1", &puSumPt0p1, &b_puSumPt0p1);
-   //fChain->SetBranchAddress("puSumPt0p5", &puSumPt0p5, &b_puSumPt0p5);
-   //fChain->SetBranchAddress("puNTrk0p1", &puNTrk0p1, &b_puNTrk0p1);
-   //fChain->SetBranchAddress("puNTrk0p5", &puNTrk0p5, &b_puNTrk0p5);
    Notify();
 }
 

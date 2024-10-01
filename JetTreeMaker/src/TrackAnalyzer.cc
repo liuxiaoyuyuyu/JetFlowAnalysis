@@ -199,7 +199,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
 
         std::vector<int>		vcharge;
         std::vector<int>	        vpid;
-        std::vector<unsigned int>	vVertRef;
+        //std::vector<unsigned int>	vVertRef;
         std::vector<float>		vpt;
 
         std::vector<float>      vptError;
@@ -213,6 +213,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
         std::vector<float>		veta;
         std::vector<float>		vphi;
         std::vector<float>              vtheta;
+        /*
         std::vector<float>		vdauVZ;
         std::vector<float>		vdauVY;
         std::vector<float>		vdauVX;
@@ -222,7 +223,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
         std::vector<float>		vp_difZ;
         std::vector<float>		vp_difY;
         std::vector<float>		vp_difX;
-
+        */
         /*
         std::vector<double>		vptSTAR;
         std::vector<double>		vetaSTAR;
@@ -265,6 +266,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
             vtheta.push_back(       dau.theta());
 
             Ndau_pt_sum = Ndau_pt_sum + dau.pt();
+            /*
             float dauVZ    = dau.vertex().z();
             float dauVrefZ = recoVertices->at(dau.vertexRef().key()).position().z();
             float dauVY    = dau.vertex().y();
@@ -274,7 +276,9 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
             float V_percent_difZ = 100 * fabs(fabs(dauVrefZ/dauVZ) - 1);
             float V_percent_difY = 100 * fabs(fabs(dauVrefY/dauVY) - 1);
             float V_percent_difX = 100 * fabs(fabs(dauVrefX/dauVX) - 1);
+            */
 
+            /*
             vVertRef.push_back(  	dau.vertexRef().key());
             vdauVZ.push_back(	dauVZ);
             vdauVY.push_back(       dauVY);
@@ -285,6 +289,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
             vp_difZ.push_back(    	V_percent_difZ);
             vp_difY.push_back(      V_percent_difY);
             vp_difX.push_back(      V_percent_difX);
+            */
 
             /*
             double jet_dau_pt    =  ptWRTJet((double)(j.pt()), (double)(j.eta()), (double)(j.phi()), (double)(dau.pt()), (double)(dau.eta()), (double)(dau.phi()));
@@ -302,7 +307,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
 
         dau_chg.push_back(	vcharge);
         dau_pid.push_back(      vpid);
-        dau_vref.push_back(     vVertRef);
+        //dau_vref.push_back(     vVertRef);
 
         dau_pt.push_back(       vpt);
         dau_ptError.push_back(       vptError);
@@ -319,6 +324,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
         dau_theta_STAR.push_back(    vthetaSTAR);
         */
 
+        /*
         dau_vz.push_back(       vdauVZ);
         dau_vy.push_back(       vdauVY);
         dau_vx.push_back(       vdauVX);
@@ -328,6 +334,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
         dau_vp_difZ.push_back(  vp_difZ);
         dau_vp_difY.push_back(  vp_difY);
         dau_vp_difX.push_back(  vp_difX);
+        */
 
         passer = passer +1;
         //if(dau.charge()  ==0 ) continue;
@@ -540,7 +547,7 @@ void TrackAnalyzer::beginJob()
     trackTree_->Branch("dau_pt_sum",      &dau_pt_sum);
     trackTree_->Branch("dau_chg",		&dau_chg); 
     trackTree_->Branch("dau_pid",		&dau_pid);	 
-    trackTree_->Branch("dau_vref",	&dau_vref);
+    //trackTree_->Branch("dau_vref",	&dau_vref);
     trackTree_->Branch("dau_pt",		&dau_pt);
     trackTree_->Branch("dau_ptError",     &dau_ptError);
     trackTree_->Branch("dau_XYDCAsig",    &dau_XYDCAsig);
@@ -557,6 +564,7 @@ void TrackAnalyzer::beginJob()
     trackTree_->Branch("dau_theta_STAR",	&dau_theta_STAR);
     */
 
+    /*
     trackTree_->Branch("dau_vz",		&dau_vz	 );
     trackTree_->Branch("dau_vy",		&dau_vy	 );
     trackTree_->Branch("dau_vx",		&dau_vx	 );
@@ -566,6 +574,7 @@ void TrackAnalyzer::beginJob()
     trackTree_->Branch("dau_vp_difZ",	&dau_vp_difZ);
     trackTree_->Branch("dau_vp_difY",	&dau_vp_difY);
     trackTree_->Branch("dau_vp_difX",	&dau_vp_difX);
+    */
 
     if(doGen){ 
         trackTree_->Branch("genQScale",&genQScale);

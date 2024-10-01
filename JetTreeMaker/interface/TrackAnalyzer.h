@@ -160,9 +160,9 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
 
      //Branch entries
      UInt_t nRun;
-     bool MAINpassTrig1;//didHLTFire400;
-     bool MAINpassTrig2;//didHLTFire400;
-     bool MAINpassTrig3;//didHLTFire400;
+     //bool MAINpassTrig1;//didHLTFire400;
+     //bool MAINpassTrig2;//didHLTFire400;
+     //bool MAINpassTrig3;//didHLTFire400;
      //bool didHLTFire500;
      //bool didHLTFire550;
      //bool didHLTFire550NOT;
@@ -229,7 +229,7 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
 
      std::vector<std::vector<int>>		dau_chg;
      std::vector<std::vector<int>>	        dau_pid;
-     std::vector<std::vector<unsigned int>>	dau_vref;
+     //std::vector<std::vector<unsigned int>>	dau_vref;
      std::vector<std::vector<float>>        dau_ptError;
      std::vector<std::vector<float>>        dau_ZDCAsig;
      std::vector<std::vector<float>>        dau_XYDCAsig;
@@ -244,7 +244,8 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
      std::vector<std::vector<double>>		dau_phi_STAR;
      std::vector<std::vector<double>>      	dau_theta_STAR;
      */
-     
+
+     /* 
      std::vector<std::vector<float>>		dau_vz;
      std::vector<std::vector<float>>		dau_vy;
      std::vector<std::vector<float>>		dau_vx;
@@ -254,13 +255,14 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
      std::vector<std::vector<float>>		dau_vp_difZ;
      std::vector<std::vector<float>>		dau_vp_difY;
      std::vector<std::vector<float>>		dau_vp_difX;
+    */
      std::vector<std::vector<int>>          gendau_chg;
      std::vector<std::vector<int>>          gendau_pid;
      std::vector<std::vector<float>>        gendau_pt;
      std::vector<std::vector<float>>        gendau_eta;
      std::vector<std::vector<float>>        gendau_phi;
 
-
+    /*
     int pu;
     int puTrue;
     std::vector< float > puZ;
@@ -269,7 +271,8 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
     std::vector< float > puSumPt0p5;
     std::vector< int > puNTrk0p1;
     std::vector< int > puNTrk0p5;
-
+    */
+    
     float minJetPt;
     float maxJetEta;
 
@@ -325,7 +328,7 @@ void TrackAnalyzer::clearVectors(){
 
 dau_chg.clear();
 dau_pid.clear();
-dau_vref.clear();
+//dau_vref.clear();
 dau_pt.clear();
 dau_ptError.clear();
 dau_XYDCAsig.clear();
@@ -341,6 +344,7 @@ dau_phi_STAR.clear();
 dau_theta_STAR.clear();
 */
 
+/*
 dau_vz.clear();
 dau_vy.clear();
 dau_vx.clear();
@@ -350,6 +354,7 @@ dau_vrefx.clear();
 dau_vp_difZ.clear();
 dau_vp_difY.clear();
 dau_vp_difX.clear();
+*/
 //dau_cohort.clear();
 dau_pt_sum.clear();
 //jetN.clear();
