@@ -7,13 +7,13 @@ endif
 
 MKDIR_BIN=mkdir -p $(PWD)/bin
 
-all: mkdirBin  bin/new_default_data_vn.exe
+all: mkdirBin  bin/era_16APV_correction.exe
 
 mkdirBin:
 	$(MKDIR_BIN)
 
-bin/new_default_data_vn.exe: src/new_default_data_vn.C
-	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/new_default_data_vn.exe src/new_default_data_vn.C
+bin/era_16APV_correction.exe: src/era_16APV_correction.C
+	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/era_16APV_correction.exe src/era_16APV_correction.C
 
 
 clean:
