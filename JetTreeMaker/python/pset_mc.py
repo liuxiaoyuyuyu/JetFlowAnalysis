@@ -61,7 +61,7 @@ process.analyzerOffline = cms.EDAnalyzer('TrackAnalyzer',
     doGen = cms.untracked.bool(True),
     genEvtInfo = cms.InputTag("generator"),
     packedGen = cms.InputTag("packedGenParticles"),
-    genJets = cms.InputTag("slimmedGenJets"),
+    genJets = cms.InputTag("slimmedGenJetsAK8"),
     #puSummaryInfo = cms.InputTag("slimmedAddPileupInfo")
 )
 #process.analyzer260 = process.analyzer.clone()
