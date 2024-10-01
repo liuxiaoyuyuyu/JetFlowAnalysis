@@ -13,7 +13,7 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
     maxJetEta = iConfig.getUntrackedParameter<double>("maxJetEta",2.5);
     trackPtMin_ = iConfig.getUntrackedParameter<double>("trackPtMin",0.01);
 
-    doTrack_ = iConfig.getUntrackedParameter<bool>("doTrack",false);
+    doTrack_ = iConfig.getUntrackedParameter<bool>("doTrack",true);
     doGen = iConfig.getUntrackedParameter< bool >("doGen",false);
 
     vertexSrcLabel_ = iConfig.getParameter<edm::InputTag>("vertexSrc");
