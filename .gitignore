@@ -5,7 +5,11 @@
 *.root
 *.jdl
 __pycache__/
-JetTreeAnalyzer/batch/
+JetTreeAnalyzer/batch/Run3_tree_list
+JetTreeAnalyzer/batch/condor_log
+JetTreeAnalyzer/batch/xiaoyul.cc
+JetTreeAnalyzer/batch/printHistogramEntriesFromDirectory.C
+JetTreeAnalyzer/batch/printTotalTreeEntries.C
 JetTreeAnalyzer/bin/
 JetTreeMaker/crab_log/
 JetTreeMaker/python/*root
