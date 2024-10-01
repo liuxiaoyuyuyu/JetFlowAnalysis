@@ -127,8 +127,8 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
      edm::EDGetTokenT<edm::View<pat::PackedCandidate>> lostTracksSrc_;
      //edm::EDGetTokenT<pat::PackedCandidateCollection> lostTracksSrc_;
 
-     edm::EDGetTokenT<reco::BeamSpot> beamSpotProducer_;
-     edm::EDGetTokenT< std::vector< PileupSummaryInfo > > puSummary_;
+     //edm::EDGetTokenT<reco::BeamSpot> beamSpotProducer_;
+     //edm::EDGetTokenT< std::vector< PileupSummaryInfo > > puSummary_;
      //edm::InputTag jets1_;
      //edm::EDGetTokenT<pat::JetCollection> jets1Token_;
      edm::InputTag jets2_;
@@ -369,7 +369,7 @@ dau_pt_sum.clear();
   gendau_eta.clear();
   gendau_phi.clear();
 
-
+/*
   pu = -1;
   puTrue = -1;
   puZ.clear();
@@ -379,7 +379,7 @@ dau_pt_sum.clear();
   puNTrk0p1.clear();
   puNTrk0p5.clear();
 
-
+*/
 }
 
 #endif 
