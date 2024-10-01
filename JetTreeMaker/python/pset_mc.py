@@ -51,7 +51,7 @@ process.eventFilterHLT500 = cms.Sequence(process.hlt500)
 process.analyzerOffline = cms.EDAnalyzer('TrackAnalyzer',
     minJetPt = cms.untracked.double(100),
     maxJetEta = cms.untracked.double(2.5),
-    doTrack = cms.untracked.bool(True),
+    #doTrack = cms.untracked.bool(True),
     trackPtMin = cms.untracked.double(0.01),
     vertexSrc = cms.InputTag("offlineSlimmedPrimaryVertices"),
     packedCandSrc = cms.InputTag("packedPFCandidates"),
@@ -62,7 +62,7 @@ process.analyzerOffline = cms.EDAnalyzer('TrackAnalyzer',
     genEvtInfo = cms.InputTag("generator"),
     packedGen = cms.InputTag("packedGenParticles"),
     genJets = cms.InputTag("slimmedGenJets"),
-    puSummaryInfo = cms.InputTag("slimmedAddPileupInfo")
+    #puSummaryInfo = cms.InputTag("slimmedAddPileupInfo")
 )
 #process.analyzer260 = process.analyzer.clone()
 #process.analyzerOnline = cms.EDAnalyzer('TrackAnalyzer_jet',

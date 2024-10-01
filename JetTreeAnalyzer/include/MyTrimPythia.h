@@ -30,9 +30,6 @@ public :
    // Declaration of leaf types
    ULong64_t       nRun;
    UInt_t          nEv;
-   Bool_t          didHLTFire400;
-   Bool_t          didHLTFire500;
-   Bool_t          didHLTFire550;
    UInt_t          nLumi;
    vector<float>   *xVtx;
    vector<float>   *yVtx;
@@ -99,9 +96,6 @@ public :
 
    // List of branches
    TBranch        *b_nRun;   //!
-   TBranch        *b_didHLTFire400;   //!
-   TBranch        *b_didHLTFire500;   //!
-   TBranch        *b_didHLTFire550;   //!
    TBranch        *b_nLumi;   //!
    TBranch        *b_xVtx;   //!
    TBranch        *b_yVtx;   //!
@@ -286,12 +280,14 @@ void MyClass::Init(TTree *tree)
    genDau_pt = 0;
    genDau_eta = 0;
    genDau_phi = 0;
+   /*
    puZ = 0;
    puPthat = 0;
    puSumPt0p1 = 0;
    puSumPt0p5 = 0;
    puNTrk0p1 = 0;
    puNTrk0p5 = 0;
+   */
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -300,9 +296,6 @@ void MyClass::Init(TTree *tree)
 
    fChain->SetBranchAddress("nRun", &nRun, &b_nRun);
    fChain->SetBranchAddress("nEv", &nEv, &b_nRun);
-   fChain->SetBranchAddress("didHLTFire400", &didHLTFire400, &b_didHLTFire400);
-   fChain->SetBranchAddress("didHLTFire500", &didHLTFire500, &b_didHLTFire500);
-   fChain->SetBranchAddress("didHLTFire550", &didHLTFire550, &b_didHLTFire550);
    fChain->SetBranchAddress("nLumi", &nLumi, &b_nLumi);
    fChain->SetBranchAddress("xVtx", &xVtx, &b_xVtx);
    fChain->SetBranchAddress("yVtx", &yVtx, &b_yVtx);
@@ -358,14 +351,14 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("genDau_pt", &genDau_pt, &b_genDau_pt);
    fChain->SetBranchAddress("genDau_eta", &genDau_eta, &b_genDau_eta);
    fChain->SetBranchAddress("genDau_phi", &genDau_phi, &b_genDau_phi);
-   fChain->SetBranchAddress("nPu", &nPu, &b_nPu);
-   fChain->SetBranchAddress("nTruePu", &nTruePu, &b_nTruePu);
-   fChain->SetBranchAddress("puZ", &puZ, &b_puZ);
-   fChain->SetBranchAddress("puPthat", &puPthat, &b_puPthat);
-   fChain->SetBranchAddress("puSumPt0p1", &puSumPt0p1, &b_puSumPt0p1);
-   fChain->SetBranchAddress("puSumPt0p5", &puSumPt0p5, &b_puSumPt0p5);
-   fChain->SetBranchAddress("puNTrk0p1", &puNTrk0p1, &b_puNTrk0p1);
-   fChain->SetBranchAddress("puNTrk0p5", &puNTrk0p5, &b_puNTrk0p5);
+   //fChain->SetBranchAddress("nPu", &nPu, &b_nPu);
+   //fChain->SetBranchAddress("nTruePu", &nTruePu, &b_nTruePu);
+   //fChain->SetBranchAddress("puZ", &puZ, &b_puZ);
+   //fChain->SetBranchAddress("puPthat", &puPthat, &b_puPthat);
+   //fChain->SetBranchAddress("puSumPt0p1", &puSumPt0p1, &b_puSumPt0p1);
+   //fChain->SetBranchAddress("puSumPt0p5", &puSumPt0p5, &b_puSumPt0p5);
+   //fChain->SetBranchAddress("puNTrk0p1", &puNTrk0p1, &b_puNTrk0p1);
+   //fChain->SetBranchAddress("puNTrk0p5", &puNTrk0p5, &b_puNTrk0p5);
    Notify();
 }
 

@@ -13,7 +13,7 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
     maxJetEta = iConfig.getUntrackedParameter<double>("maxJetEta",2.5);
     trackPtMin_ = iConfig.getUntrackedParameter<double>("trackPtMin",0.01);
 
-    doTrack_ = iConfig.getUntrackedParameter<bool>("doTrack",true);
+    doTrack_ = iConfig.getUntrackedParameter<bool>("doTrack",false);
     doGen = iConfig.getUntrackedParameter< bool >("doGen",false);
 
     vertexSrcLabel_ = iConfig.getParameter<edm::InputTag>("vertexSrc");
@@ -25,16 +25,16 @@ TrackAnalyzer::TrackAnalyzer(const edm::ParameterSet& iConfig)
     lostTracksLabel_ = iConfig.getParameter<edm::InputTag>("lostTracksSrc");
     lostTracksSrc_ = consumes<edm::View<pat::PackedCandidate>>(lostTracksLabel_);
 
-    beamSpotProducer_ = consumes<reco::BeamSpot>(iConfig.getUntrackedParameter<edm::InputTag>("beamSpotSrc",edm::InputTag("offlineBeamSpot")));
+    //beamSpotProducer_ = consumes<reco::BeamSpot>(iConfig.getUntrackedParameter<edm::InputTag>("beamSpotSrc",edm::InputTag("offlineBeamSpot")));
 
     if(doGen){
         genEvtInfo_ = consumes< GenEventInfoProduct >(iConfig.getParameter<edm::InputTag>("genEvtInfo"));
         packedGenToken_ = consumes<edm::View<pat::PackedGenParticle> >(iConfig.getParameter<edm::InputTag>("packedGen"));
         packedGenJetToken_ = consumes< std::vector< reco::GenJet > >(iConfig.getParameter<edm::InputTag>("genJets"));
-        puSummary_ = consumes< std::vector< PileupSummaryInfo> >(iConfig.getParameter<edm::InputTag>("puSummaryInfo")); 
+        //puSummary_ = consumes< std::vector< PileupSummaryInfo> >(iConfig.getParameter<edm::InputTag>("puSummaryInfo")); 
     }
 
-    tok_triggerResults_ = consumes<edm::TriggerResults>(edm::InputTag("TriggerResults::HLT"));
+    //tok_triggerResults_ = consumes<edm::TriggerResults>(edm::InputTag("TriggerResults::HLT"));
 
     //jets1Token_      = consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jets1"));
     jets2Token_      = consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jets2"));
@@ -58,7 +58,7 @@ void TrackAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     //***********************************************
     //***********************************************
     //maybe delete this section??
-
+/*
 edm::Handle<edm::TriggerResults> trigResults; //our trigger result object
 edm::InputTag trigResultsTag("TriggerResults","","HLT"); //make sure have correct process on MC
 //data process=HLT, MC depends, Spring11 is REDIGI311X
@@ -92,7 +92,7 @@ if(trigNames.size() >0){
     if(passTrig3) break;
     }
 }
-
+*/
 
 /*    std::string pathName="HLT_AK8PFJet500_v*";
     //bool passTrig1 = (trigNames.triggerIndex(pathName) < trigNames.size());
@@ -164,7 +164,7 @@ void TrackAnalyzer::fillVertices(const edm::Event& iEvent) {
         for( auto ref = recoVertices->at(i).tracks_begin(); ref != recoVertices->at(i).tracks_end(); ref++){
             ptSum += (*ref)->pt();
         }
-        ptSumVtx.push_back( ptSum );
+        ptSumVtx.push_back( ptSum );//sum pt of all the tracks associated with this vertex.
     }   
 }
 //--------------------------------------------------------------------------------------------------
@@ -408,7 +408,7 @@ void TrackAnalyzer::fillGen(const edm::Event& iEvent){
         gendau_chg.push_back(tempChg);   
 
     }
-
+    /*
     //pileup info
     for(unsigned int i = 0; i<(*puSummary).size(); i++){
         int bc = (*puSummary).at(i).getBunchCrossing(); 
@@ -423,6 +423,7 @@ void TrackAnalyzer::fillGen(const edm::Event& iEvent){
             puNTrk0p1 = (*puSummary).at(i).getPU_ntrks_lowpT();
         }
     }
+    */
 }
 
 
@@ -499,9 +500,9 @@ void TrackAnalyzer::beginJob()
 
     //trackTree_->Branch("didHLTFire400",&didHLTFire400);
     //trackTree_->Branch("didHLTFire500",&didHLTFire500);
-    trackTree_->Branch("didHLTFire400",&MAINpassTrig1);
-    trackTree_->Branch("didHLTFire500",&MAINpassTrig2);
-    trackTree_->Branch("didHLTFire550",&MAINpassTrig3);
+    //trackTree_->Branch("didHLTFire400",&MAINpassTrig1);
+    //trackTree_->Branch("didHLTFire500",&MAINpassTrig2);
+    //trackTree_->Branch("didHLTFire550",&MAINpassTrig3);
     //trackTree_->Branch("didHLTFire550NOT",&didHLTFire550NOT);
 
     trackTree_->Branch("nLumi",&nLumi,"nLumi/i");
@@ -513,6 +514,7 @@ void TrackAnalyzer::beginJob()
     trackTree_->Branch("nTracksVtx",&nTracksVtx);
     trackTree_->Branch("ptSumVtx",&ptSumVtx);
 
+    /*
     // Tracks
     trackTree_->Branch("trkPt",&trkPt);
     trackTree_->Branch("trkEta",&trkEta);
@@ -522,7 +524,7 @@ void TrackAnalyzer::beginJob()
     trackTree_->Branch("trkNHits",&trkNHits);
     trackTree_->Branch("highPurity",&highPurity);
     trackTree_->Branch("trkAssociatedVtxIndx",&trkAssociatedVtxIndx);
-
+    */
     // Jets
     trackTree_->Branch("jetNumDaughters",&jetNumDaughters);
     trackTree_->Branch("jetEta",&jetEta);
@@ -580,7 +582,7 @@ void TrackAnalyzer::beginJob()
         trackTree_->Branch("genDau_pt",		&gendau_pt);
         trackTree_->Branch("genDau_eta",		&gendau_eta);	 
         trackTree_->Branch("genDau_phi",		&gendau_phi );
-
+        /*
         trackTree_->Branch("nPu",&pu);  
         trackTree_->Branch("nTruePu",&puTrue);
         trackTree_->Branch("puZ",&puZ);
@@ -589,6 +591,7 @@ void TrackAnalyzer::beginJob()
         trackTree_->Branch("puSumPt0p5",&puSumPt0p5);  
         trackTree_->Branch("puNTrk0p1",&puNTrk0p1);  
         trackTree_->Branch("puNTrk0p5",&puNTrk0p5);  
+        */
     }
 }
 
