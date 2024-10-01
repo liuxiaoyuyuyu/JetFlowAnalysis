@@ -172,7 +172,7 @@ void MyClass::Loop(int job, std::string fList){
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
-        TTree *tree = (TTree*)fFile->Get("analyzer/trackTree");
+        TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
         Init(tree);
         std::cout << "File " << f+1 << " out of " << fileList.size() << std::endl;
         Long64_t nbytes = 0, nb = 0;
