@@ -15,4 +15,5 @@ echo $HOSTNAME
 #../bin/data_QA.exe ./run3_data/list_25_hlt260/list_job$1 0 1
 #../bin/data_statistics.exe ./run3_data/list_25/list_job$1 0 1
 #../bin/new_default_data_vn.exe ./Run3_tree_list/2023/list_25/list_job$1 0 1
-../bin/new_default_data_vn.exe ./list_test.txt 0 1
+#../bin/new_default_data_vn.exe ./list_test.txt 0 1
+../bin/era_16APV_correction.exe ./list_test.txt 0 1
