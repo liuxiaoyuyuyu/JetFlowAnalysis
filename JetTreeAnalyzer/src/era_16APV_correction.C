@@ -141,7 +141,7 @@ void MyClass::Loop(int job, std::string fList){
         cout << "genQ file: " << ff << endl;
         fFile = TFile::Open(fileList.at(ff).c_str(),"read");
 
-        TTree *tree = (TTree*)fFile->Get("analyzer/trackTree");
+        TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
         Init(tree);
 
         for( int i = 0; i < tree->GetEntries(); i++){
