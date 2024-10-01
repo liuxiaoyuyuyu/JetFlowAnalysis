@@ -8,5 +8,5 @@ __pycache__/
 JetTreeAnalyzer/batch/
 JetTreeAnalyzer/bin/
 JetTreeMaker/crab_log/
-JetTreeMaker/python/
+JetTreeMaker/python/*root
 
