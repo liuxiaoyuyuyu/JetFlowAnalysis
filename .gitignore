@@ -1,2 +1,12 @@
-
 .vscode/settings.json
+.*
+*.txt
+*.list
+*.root
+*.jdl
+__pycache__/
+JetTreeAnalyzer/batch/
+JetTreeAnalyzer/bin/
+JetTreeMaker/crab_log/
+JetTreeMaker/python/
+
