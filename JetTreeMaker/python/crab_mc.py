@@ -15,14 +15,14 @@ config.section_('Data')
 #config.Data.inputDataset = '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
 #config.Data.inputDataset = '/JetMET0/Run2023B-19Dec2023-v1/MINIAOD'
 #config.Data.inputDataset = '/JetMET1/Run2023D-22Sep2023_v2-v1/MINIAOD'
-config.Data.inputDataset = '/JetMET/Run2022G-22Sep2023-v2/MINIAOD'
+config.Data.inputDataset = '/QCD_Pt-470To600_TuneCP5_13p6TeV-pythia8/Run3Summer22EEMiniAODv4-Poisson60KeepRAW_130X_mcRun3_2022_realistic_postEE_v6-v2/MINIAODSIM'
 
 config.Data.inputDBS = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
 
 #config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt'
 #config.Data.lumiMask = '/afs/cern.ch/user/x/xiaoyul/Cert_Collisions2023_366442_370790_Golden_JSON.txt'
 #.txt file convert from raw data of /eos/user/c/cmsdqm/www/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json
-config.Data.lumiMask = '/afs/cern.ch/user/x/xiaoyul/Cert_Collisions2022_355100_362760_Golden_JSON.txt'
+#config.Data.lumiMask = '/afs/cern.ch/user/x/xiaoyul/Cert_Collisions2022_355100_362760_Golden_JSON.txt'
 
 config.Data.splitting = 'Automatic'
 #config.Data.unitsPerJob = 150
@@ -31,9 +31,9 @@ config.Data.publication = False
 #config.Data.outLFNDirBase = '/store/user/pgardner/MINIAOD_2018_UL_D_ak8_new'
 #config.Data.outLFNDirBase = '/store/group/phys_heavyions/flowcorr/Run3_jet_trees/'
 
-config.Data.outLFNDirBase = '/store/group/phys_heavyions/xiaoyul/Run3_2022_jet_trees/test_mc/'
+config.Data.outLFNDirBase = '/store/group/phys_heavyions/xiaoyul/Run3_2022_jet_trees/MC/'
 
-#config.Data.totalUnits        = 1 # root file or lumi section for test only
+config.Data.totalUnits        = 1 # root file or lumi section for test only
 
 config.section_('User')
 config.section_('Site')
