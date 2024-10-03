@@ -31,7 +31,7 @@ config.Data.publication = False
 #config.Data.outLFNDirBase = '/store/user/pgardner/MINIAOD_2018_UL_D_ak8_new'
 #config.Data.outLFNDirBase = '/store/group/phys_heavyions/flowcorr/Run3_jet_trees/'
 
-config.Data.outLFNDirBase = '/store/group/phys_heavyions/xiaoyul/Run3_2022_jet_trees/MC/'
+config.Data.outLFNDirBase = '/store/group/phys_heavyions/xiaoyul/Run3_2022_jet_trees/MC_CD/'
 
 config.Data.totalUnits        = 1 # root file or lumi section for test only
 
