@@ -15,7 +15,8 @@ config.section_('Data')
 #config.Data.inputDataset = '/JetHT/Run2018D-12Nov2019_UL2018-v4/MINIAOD'
 #config.Data.inputDataset = '/JetMET0/Run2023B-19Dec2023-v1/MINIAOD'
 #config.Data.inputDataset = '/JetMET1/Run2023D-22Sep2023_v2-v1/MINIAOD'
-config.Data.inputDataset = '/QCD_Pt-470To600_TuneCP5_13p6TeV-pythia8/Run3Summer22EEMiniAODv4-Poisson60KeepRAW_130X_mcRun3_2022_realistic_postEE_v6-v2/MINIAODSIM'
+#config.Data.inputDataset = '/QCD_PT-600to800_TuneCP5_13p6TeV_pythia8/Run3Summer22MiniAODv4-130X_mcRun3_2022_realistic_v5-v2/MINIAODSIM' 
+config.Data.inputDataset = '/QCD_PT-600to800_TuneCP5_13p6TeV_pythia8/Run3Summer22MiniAODv4-130X_mcRun3_2022_realistic_v5_ext1-v2/MINIAODSIM' 
 
 config.Data.inputDBS = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
 
@@ -33,7 +34,7 @@ config.Data.publication = False
 
 config.Data.outLFNDirBase = '/store/group/phys_heavyions/xiaoyul/Run3_2022_jet_trees/MC_CD/'
 
-config.Data.totalUnits        = 1 # root file or lumi section for test only
+#config.Data.totalUnits        = 1 # root file or lumi section for test only
 
 config.section_('User')
 config.section_('Site')
