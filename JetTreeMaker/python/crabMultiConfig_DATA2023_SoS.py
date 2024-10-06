@@ -10,7 +10,7 @@ from CRABClient.UserUtilities import config
 config = config()
 
 config.section_("General")
-config.General.workArea = 'crab_projects'
+config.General.workArea = '/afs/cern.ch/user/x/xiaoyul/MYDEMOANALYZER/CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeMaker/crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs = False
 
