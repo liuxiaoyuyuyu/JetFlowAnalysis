@@ -1,6 +1,7 @@
-from CRABAPI.RawCommand import crabCommand
-from CRABClient.ClientExceptions import ClientException
-from http.client import HTTPException  # updated import for Python 3
+#from CRABAPI.RawCommand import crabCommand
+#from CRABClient.ClientExceptions import ClientException
+#from http.client import HTTPException  # updated import for Python 3
+from WMCore.Configuration import Configuration
 
 # We want to put all the CRAB project directories from the tasks we submit here into one common directory.
 # That's why we need to set this parameter (here or above in the configuration file, it does not matter, we will not overwrite it).
