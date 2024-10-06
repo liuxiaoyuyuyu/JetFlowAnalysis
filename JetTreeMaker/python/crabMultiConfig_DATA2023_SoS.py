@@ -86,8 +86,8 @@ for key, val in dataMap.items():
     #config.General.requestName = 'SoS_'+key+'_HIRun2023_PromptReco_MBZDCOR_test_20240903v2'
     config.Data.inputDataset = val["PD"]
     #config.Data.unitsPerJob = val["Units"]
-    config.JobType.maxMemoryMB = val["Memory"]
-    config.JobType.maxJobRuntimeMin = val["RunTime"]
+    #config.JobType.maxMemoryMB = val["Memory"]
+    #config.JobType.maxJobRuntimeMin = val["RunTime"]
     config.JobType.psetName = val["PSet"]
     #config.Data.outputDatasetTag = config.General.requestName
     config.Data.outLFNDirBase = '/store/group/phys_heavyions/xiaoyul/Run3_2022_jet_trees/MC_CD/' 
