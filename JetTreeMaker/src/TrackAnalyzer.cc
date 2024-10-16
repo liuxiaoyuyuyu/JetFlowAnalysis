@@ -199,6 +199,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
 
         std::vector<int>		vcharge;
         std::vector<int>	        vpid;
+        std::vector<float>          vmass;
         //std::vector<unsigned int>	vVertRef;
         std::vector<float>		vpt;
 
@@ -237,6 +238,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
 
             vcharge.push_back(	dau.charge());
             vpid.push_back(		dau.pdgId());
+            vmass.push_back(		dau.mass());
             vpt.push_back(		dau.pt());
 
 
@@ -307,6 +309,7 @@ void TrackAnalyzer::fillJets2(const edm::Event& iEvent) {
 
         dau_chg.push_back(	vcharge);
         dau_pid.push_back(      vpid);
+        dau_mass.push_back(      vmass);
         //dau_vref.push_back(     vVertRef);
 
         dau_pt.push_back(       vpt);
@@ -547,6 +550,7 @@ void TrackAnalyzer::beginJob()
     trackTree_->Branch("dau_pt_sum",      &dau_pt_sum);
     trackTree_->Branch("dau_chg",		&dau_chg); 
     trackTree_->Branch("dau_pid",		&dau_pid);	 
+    trackTree_->Branch("dau_mass",		&dau_mass);	 
     //trackTree_->Branch("dau_vref",	&dau_vref);
     trackTree_->Branch("dau_pt",		&dau_pt);
     trackTree_->Branch("dau_ptError",     &dau_ptError);

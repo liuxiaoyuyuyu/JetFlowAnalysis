@@ -6,7 +6,7 @@ const float ptmax                       = 1000.0;
 
 const int mm = 1000;
 
-const int   trackbinbounds[trackbin]         = { 0,20,30,40,50,59,66,76,83,78};
+const int   trackbinbounds[trackbin]         = { 0,20,30,40,50,59,66,76,83,76};
 const int   trackbinboundsUpper[trackbin]    = {20,30,40,50,59,66,76,83,mm,mm};
 
 //const int   trackbinbounds[trackbin]         = {76,78,80,81,82};

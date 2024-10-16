@@ -115,6 +115,10 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hEPDrawCor[trackbin][ptbin][PUbin];
     TH2D* hSignalShiftedCor[trackbin][ptbin][PUbin];
     TH2D* hBckrndShiftedCor[trackbin][ptbin][PUbin];
+    TH2D* hEPDrawCor[trackbin][ptbin][PUbin];
+    TH2D* hSignalShiftedCor[trackbin][ptbin][PUbin];
+    TH2D* hBckrndShiftedCor[trackbin][ptbin][PUbin];
+    
     TH1D* hTotalWeight                = new TH1D("hTotalWeight","hTotalWeight"                          , bin500,-bin2,bin3);
     TH1D* hAvg_Atrk_Weight            = new TH1D("hAvg_Atrk_Weight","hAvg_Atrk_Weight"                  , bin500,-bin2,bin3);
     TH1D* hAvg_NtrigCorrected_Bump    = new TH1D("hAvg_NtrigCorrected_Bump","hAvg_NtrigCorrected_Bump"  , bin22 ,-bin2,bin20);
@@ -131,6 +135,10 @@ void MyClass::Loop(int job, std::string fList){
                 hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]   = new TH2D(Form("hBckrndS_Cor_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
                 hSignalShiftedCor[wtrk-1][wppt-1][wpPU-1]   = new TH2D(Form("hSignalS_Cor_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
                 hEPDrawCor[wtrk-1][wppt-1][wpPU-1]          = new TH2D(Form( "hEPDraw_Cor_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hEPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
+                
+                hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]   = new TH2D(Form("hBckrndS_Unc_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_Unc_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hSignalShiftedUnc[wtrk-1][wppt-1][wpPU-1]   = new TH2D(Form("hSignalS_Unc_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hSignalS_Unc_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hEPDrawUnc[wtrk-1][wppt-1][wpPU-1]          = new TH2D(Form( "hEPDraw_Unc_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hEPDraw_Unc_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
             }
         }
     }
@@ -142,9 +150,9 @@ void MyClass::Loop(int job, std::string fList){
     //NEW THING                        
     //NEW THING                        
     //NEW THING                         
-    /*
     TH2D* hReco2D[fileList.size()];
     TH2D* hGen2D[fileList.size()];
+    /*
     TH1D* hdid500;
     TH1D* hdid400;
 
@@ -153,6 +161,7 @@ void MyClass::Loop(int job, std::string fList){
     hdid400 = (TH1D*)f_jet_HLT_lookup->Get("d400")->Clone("did400");
     hdid500->Divide(hdid400);
     */
+
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
@@ -167,26 +176,13 @@ void MyClass::Loop(int job, std::string fList){
         cout<<"Total Entries is:"<<endl;
         cout<< nentries <<endl;
 
-        /*
         vector<string> era_vec;
         vector<string> matched_cor_table_vec;
-        era_vec.push_back("2018D_"); matched_cor_table_vec.push_back("18_v2");
-        era_vec.push_back("2018C_"); matched_cor_table_vec.push_back("18_v2");
-        era_vec.push_back("2018B_"); matched_cor_table_vec.push_back("18_v2");
-        era_vec.push_back("2018A_"); matched_cor_table_vec.push_back("18_v2");
-        era_vec.push_back("2017B_"); matched_cor_table_vec.push_back("17_v2");
-        era_vec.push_back("2017C_"); matched_cor_table_vec.push_back("17_v2");
-        era_vec.push_back("2017D_"); matched_cor_table_vec.push_back("17_v2");
-        era_vec.push_back("2017E_"); matched_cor_table_vec.push_back("17_v2");
-        era_vec.push_back("2017F_"); matched_cor_table_vec.push_back("17_v2");
-        era_vec.push_back("2016Bv2_"); matched_cor_table_vec.push_back("16apv_v2");
-        era_vec.push_back("2016C_"); matched_cor_table_vec.push_back("16apv_v2");
-        era_vec.push_back("2016D_"); matched_cor_table_vec.push_back("16apv_v2");
-        era_vec.push_back("2016E_"); matched_cor_table_vec.push_back("16apv_v2");
-        era_vec.push_back("2016F-HIPM_"); matched_cor_table_vec.push_back("16apv_v2");
-        era_vec.push_back("2016F_"); matched_cor_table_vec.push_back("16_v2");
-        era_vec.push_back("2016G_"); matched_cor_table_vec.push_back("16_v2");
-        era_vec.push_back("2016H_"); matched_cor_table_vec.push_back("16_v2");
+        era_vec.push_back("2022CD_"); matched_cor_table_vec.push_back("correction_2022CD");
+        era_vec.push_back("2022EFG_"); matched_cor_table_vec.push_back("correction_2022EFG");
+        era_vec.push_back("2023C_"); matched_cor_table_vec.push_back("correction_2023C");
+        era_vec.push_back("2023D_"); matched_cor_table_vec.push_back("correction_2023D");
+        era_vec.push_back("2024_"); matched_cor_table_vec.push_back("correction_2024");
         int i_keep=999;
         for(int i=0; i<era_vec.size(); i++){
             if(isSubstring(era_vec[i],fileList.at(f).c_str())){
@@ -202,7 +198,7 @@ void MyClass::Loop(int job, std::string fList){
         hGen2D[f] = (TH2D*)f_pt_eta_DCA_lookup->Get("h2_Dau_Gen_Pt_Eta_Lab_All")->Clone(Form("h2_Dau_Gen_Pt_Eta_Lab_All_%d",f));
         hReco2D[f]->Divide(hGen2D[f]);
         int thisEffTable =f_from_file;
-        */
+
 
         TFile* jet_veto_file[2];
         jet_veto_file[0]=new TFile("~/StorageArea/Summer22_23Sep2023_RunCD_v1.root","read");
@@ -346,8 +342,8 @@ void MyClass::Loop(int job, std::string fList){
                     //NEW THING                        
 
                     //getting et pt efficiency for A track in beam frame
-                    //double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
-                    double Atrk_weight=1.0; 
+                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    //double Atrk_weight=1.0; 
 
                     //in the case where the total jet mult and the individual daughter pt is acceptable for this track bin and pt bin, we increase the Ntrig count.
                     for(int i = 0; i < trackbin; i++){
@@ -364,8 +360,8 @@ void MyClass::Loop(int job, std::string fList){
                 for(int i = 0; i < trackbin; i++){
                     for(int j = 0; j < ptbin; j++){
                         hNtrig->Fill(i,j,Ntrig[i][j]);
-                        //hNtrigCorrected->Fill(i,j, NtrigCorrected[i][j]);
-                        //hAvg_NtrigCorrected_Bump->Fill(NtrigCorrected[i][j] - Ntrig[i][j]);
+                        hNtrigCorrected->Fill(i,j, NtrigCorrected[i][j]);
+                        hAvg_NtrigCorrected_Bump->Fill(NtrigCorrected[i][j] - Ntrig[i][j]);
                     }
                 }
 
@@ -401,7 +397,8 @@ void MyClass::Loop(int job, std::string fList){
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
                     if(jet_dau_eta > track_eta_lim) continue;
                     //getting et pt efficiency for A track in beam frame
-                    double Atrk_weight = 1.0;//(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    //double Atrk_weight = 1.0;//(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     hAvg_Atrk_Weight->Fill(1.0/(Atrk_weight));
 
                     for(int i = 0; i < trackbin; i++){
@@ -409,6 +406,7 @@ void MyClass::Loop(int job, std::string fList){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                 int k_PU=0;
                                 hEPDrawCor[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0*jet_HLT_weight/(Atrk_weight * NtrigCorrected[i][j] ));
+                                hEPDrawUnc[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0*jet_HLT_weight/(Ntrig[i][j] ));
                             }
                         }
                     }
@@ -443,7 +441,8 @@ void MyClass::Loop(int job, std::string fList){
                         //NEW THING                        
                         //NEW THING                        
                         //getting et pt efficiency for T track in beam frame
-                        double Ttrk_weight =1.0; //(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
+                        //double Ttrk_weight =1.0; //(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
+                        double Ttrk_weight =(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
 
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){
@@ -464,6 +463,13 @@ void MyClass::Loop(int job, std::string fList){
                                     hTotalWeight->Fill(1.0 /(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
 
                                     int k_PU=0;
+                                    hSignalShiftedUnc[i][j][k_PU]->Fill(deltaEta, deltaPhi,                  1.0*jet_HLT_weight/(Ntrig[i][j] ));
+                                    hSignalShiftedUnc[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                 1.0*jet_HLT_weight/(Ntrig[i][j] ));
+                                    hSignalShiftedUnc[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                 1.0*jet_HLT_weight/(Ntrig[i][j] ));
+                                    hSignalShiftedUnc[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,                1.0*jet_HLT_weight/(Ntrig[i][j] ));
+                                    hSignalShiftedUnc[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi,  1.0*jet_HLT_weight/(Ntrig[i][j] ));
+                                    hSignalShiftedUnc[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi,  1.0*jet_HLT_weight/(Ntrig[i][j] ));
+                                    
                                     hSignalShiftedCor[i][j][k_PU]->Fill(deltaEta, deltaPhi,                  1.0*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
                                     hSignalShiftedCor[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                 1.0*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
                                     hSignalShiftedCor[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                 1.0*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
@@ -495,20 +501,34 @@ void MyClass::Loop(int job, std::string fList){
                 //long int NENT =  hPairsPU[wpPU-1]->GetBinContent(wtrk, wppt);
                 long int NENT =  hPairs->GetBinContent(wtrk, wppt);
                 long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                //float A_ETA[XENT] = {0};
-                //float A_PHI[XENT] = {0};
+                float A_ETA[XENT] = {0};
+                float A_PHI[XENT] = {0};
                 float A_ETA_Cor[XENT] = {0};
                 float A_PHI_Cor[XENT] = {0};
                 for(int x = 0; x<XENT; x++){
                     gRandom->SetSeed(0);
 
+                    double WEta1, WPhi1;//making the pseudoparticles
+                    hEPDrawUnc[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1, WPhi1);
+                    A_ETA[x] = WEta1;
+                    A_PHI[x] = WPhi1;
+                    
                     double WEta1_Cor, WPhi1_Cor;//making the pseudoparticles
                     hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1_Cor, WPhi1_Cor);
                     A_ETA_Cor[x] = WEta1_Cor;
                     A_PHI_Cor[x] = WPhi1_Cor;
                 }
+
                 for(long int i = 0; i < (XENT-1); i++){
                     for(long int j = (i+1); j < XENT; j++){
+                        double WdeltaEta = (A_ETA[i]-A_ETA[j]);
+                        double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-A_PHI[j])));
+                        hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi,   1);//./XENT);
+                        hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi,  1);//./XENT);
+                        hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi,  1);//./XENT);
+                        hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//./XENT);
+                        hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//./XENT);
+                        hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//./XENT);
 
                         double WdeltaEta_Cor = (A_ETA_Cor[i]-A_ETA_Cor[j]);
                         double WdeltaPhi_Cor = (TMath::ACos(TMath::Cos(A_PHI_Cor[i]-A_PHI_Cor[j])));
@@ -526,12 +546,16 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/allNch/jetveto_CD/job_D_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/allNch/jetveto_CD/job_%s.root",subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
         hBinDist_unc[wtrk-1]->Write();
         for(int wppt =1; wppt <ptbin+1; wppt++){
             for(int wpPU =1; wpPU<PUbin+1; wpPU++){
+                hSignalShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Unc_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
+                hBckrndShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_Unc_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
+                hEPDrawUnc[wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_Unc_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU  ));
+                
                 hSignalShiftedCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
                 hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
                 hEPDrawCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU  ));

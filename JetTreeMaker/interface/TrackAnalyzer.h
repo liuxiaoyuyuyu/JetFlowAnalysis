@@ -229,6 +229,7 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
 
      std::vector<std::vector<int>>		dau_chg;
      std::vector<std::vector<int>>	        dau_pid;
+     std::vector<std::vector<float>>	        dau_mass;
      //std::vector<std::vector<unsigned int>>	dau_vref;
      std::vector<std::vector<float>>        dau_ptError;
      std::vector<std::vector<float>>        dau_ZDCAsig;
@@ -328,6 +329,7 @@ void TrackAnalyzer::clearVectors(){
 
 dau_chg.clear();
 dau_pid.clear();
+dau_mass.clear();
 //dau_vref.clear();
 dau_pt.clear();
 dau_ptError.clear();
