@@ -188,7 +188,7 @@ void MyClass::Loop(int job, std::string fList){
         TFile* jet_veto_file[2];
         jet_veto_file[0]=new TFile("~/StorageArea/Summer22_23Sep2023_RunCD_v1.root","read");
         jet_veto_file[1]=new TFile("~/StorageArea/Summer22EE_23Sep2023_RunEFG_v1.root","read");
-        TH2D* jet_veto_map=(TH2D*)jet_veto_file[0]->Get("jetvetomap");
+        TH2D* jet_veto_map=(TH2D*)jet_veto_file[1]->Get("jetvetomap");
 
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
             Long64_t jevent = LoadTree(ievent);
@@ -444,7 +444,7 @@ void MyClass::Loop(int job, std::string fList){
     //TFile* fS_tempA = new TFile(Form("out_correction_17/job_%s.root",subList.c_str()), "recreate");
     //TFile* fS_tempA = new TFile(Form("out_correction_16/job_%s.root",subList.c_str()), "recreate");
     //TFile* fS_tempA = new TFile(Form("correct_by_era/out_correction_16APV/job_%s.root",subList.c_str()), "recreate");
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/correction_CD/job_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/correction_EFG/job_%s.root",subList.c_str()), "recreate");
    
     hpthat->Write(); 
     hleadingJetPt->Write(); 
