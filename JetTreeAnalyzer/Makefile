@@ -7,13 +7,13 @@ endif
 
 MKDIR_BIN=mkdir -p $(PWD)/bin
 
-all: mkdirBin  bin/era_16APV_correction.exe
+all: mkdirBin  bin/era_run3_2022_correction.exe
 
 mkdirBin:
 	$(MKDIR_BIN)
 
-bin/era_16APV_correction.exe: src/era_16APV_correction.C
-	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/era_16APV_correction.exe src/era_16APV_correction.C
+bin/era_run3_2022_correction.exe: src/era_run3_2022_correction.C
+	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/era_run3_2022_correction.exe src/era_run3_2022_correction.C
 
 
 clean:

@@ -9,4 +9,5 @@ eval `scramv1 runtime -sh`
 cd ~xiaoyul/MYDEMOANALYZER/CMSSW_13_3_0/src/JetFlowAnalysis/JetTreeAnalyzer/batch
 echo PWD: $PWD
 echo $HOSTNAME
-../bin/new_default_data_vn.exe ./Run3_tree_list/2022/list_C_25/list_job$1 0 1
+#../bin/new_default_data_vn.exe ./Run3_tree_list/2022/list_C_25/list_job$1 0 1
+../bin/era_run3_2022_correction.exe ./Run3_tree_list/2022/list_CD_25_MC/list_job$1 0 1
