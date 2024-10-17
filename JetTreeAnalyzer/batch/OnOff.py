@@ -14,7 +14,7 @@ Error      = condor_log/submit_v0.$(Process).err
 Queue
 '''
 
-with open('MCList_Run3_2022_CD.list') as fs:
+with open('MCList_Run3_2022_EFG.list') as fs:
     line_count = 0
     for line in fs:
         line_count += 1
