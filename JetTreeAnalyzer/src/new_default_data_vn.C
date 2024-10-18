@@ -188,11 +188,18 @@ void MyClass::Loop(int job, std::string fList){
         vector<string> era_vec;
         vector<string> matched_cor_table_vec;
         vector<string> matched_jet_veto_vec;
-        era_vec.push_back("2022CD_"); matched_cor_table_vec.push_back("correction_2022CD"); matched_jet_veto_vec.push_back("Summer22_23Sep2023_RunCD_v1");
-        era_vec.push_back("2022EFG_"); matched_cor_table_vec.push_back("correction_2022EFG"); matched_jet_veto_vec.push_back("Summer22EE_23Sep2023_RunEFG_v1");
-        era_vec.push_back("2023C_"); matched_cor_table_vec.push_back("correction_2023C");
-        era_vec.push_back("2023D_"); matched_cor_table_vec.push_back("correction_2023D");
-        era_vec.push_back("2024_"); matched_cor_table_vec.push_back("correction_2024");
+        era_vec.push_back("2022C"); matched_cor_table_vec.push_back("correction_2022CD"); matched_jet_veto_vec.push_back("Summer22_23Sep2023_RunCD_v1");
+        era_vec.push_back("2022D"); matched_cor_table_vec.push_back("correction_2022CD"); matched_jet_veto_vec.push_back("Summer22_23Sep2023_RunCD_v1");
+        era_vec.push_back("2022E"); matched_cor_table_vec.push_back("correction_2022EFG"); matched_jet_veto_vec.push_back("Summer22EE_23Sep2023_RunEFG_v1");
+        era_vec.push_back("2022F"); matched_cor_table_vec.push_back("correction_2022EFG"); matched_jet_veto_vec.push_back("Summer22EE_23Sep2023_RunEFG_v1");
+        era_vec.push_back("2022G"); matched_cor_table_vec.push_back("correction_2022EFG"); matched_jet_veto_vec.push_back("Summer22EE_23Sep2023_RunEFG_v1");
+        era_vec.push_back("2023C"); matched_cor_table_vec.push_back("correction_2023C");
+        era_vec.push_back("2023D"); matched_cor_table_vec.push_back("correction_2023D");
+        era_vec.push_back("2024C"); matched_cor_table_vec.push_back("correction_2024");
+        era_vec.push_back("2024D"); matched_cor_table_vec.push_back("correction_2024");
+        era_vec.push_back("2024E"); matched_cor_table_vec.push_back("correction_2024");
+        era_vec.push_back("2024F"); matched_cor_table_vec.push_back("correction_2024");
+        era_vec.push_back("2024G"); matched_cor_table_vec.push_back("correction_2024");
         int i_keep=999;
         for(int i=0; i<era_vec.size(); i++){
             if(isSubstring(era_vec[i],fileList.at(f).c_str())){
@@ -210,7 +217,7 @@ void MyClass::Loop(int job, std::string fList){
         int thisEffTable =f_from_file;
 
         bool applyjetveto=0;
-        if(i_keep<2){
+        if(i_keep<5){
             applyjetveto=1;
             string jetvetofilename = "~/StorageArea/"+matched_jet_veto_vec[i_keep]+".root";
             TFile *f_jet_veto_lookup = new TFile(jetvetofilename.c_str());
@@ -567,7 +574,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_2022_root_out/corrected/job_CD_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_root_out/corrected/2022-2023/job_%s.root",subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
         hBinDist_unc[wtrk-1]->Write();
@@ -600,9 +607,18 @@ void MyClass::Loop(int job, std::string fList){
     
     h_jet_jT->Write();
     h_jet_etastar->Write();
+    h_jet_cor_jT->Write();
+    h_jet_cor_etastar->Write();
+
     h_lab_JetMult_pT->Write();
     h_lab_JetMult_phi->Write();
     h_lab_JetMult_eta->Write();
+    h_lab_cor_JetMult_pT->Write();
+    h_lab_cor_JetMult_phi->Write();
+    h_lab_cor_JetMult_eta->Write();
+
+    p_jT_JetMult->Write();
+    p_jT_JetMult_cor->Write();
 
     hjet_eta_phi_before_veto->Write();
     hjet_eta_phi_after_veto->Write();
