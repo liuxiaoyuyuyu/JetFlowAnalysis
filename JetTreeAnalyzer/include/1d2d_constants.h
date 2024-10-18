@@ -1,5 +1,6 @@
 //const int   trackbin                    = 5;
 const int   trackbin                    = 10;
+//const int   ptbin                       = 5;
 const int   ptbin                       = 2;
 const float ptmin                       = 0.0;
 const float ptmax                       = 1000.0;
@@ -13,6 +14,8 @@ const int   trackbinboundsUpper[trackbin]    = {20,30,40,50,59,66,76,83,mm,mm};
 //const int   trackbinboundsUpper[trackbin]    = {mm,mm,mm,mm,mm};
 const float ptbinbounds_lo[ptbin]       = {0.3,0.5};
 const float ptbinbounds_hi[ptbin]       = {3.0,3.0};
+//const float ptbinbounds_lo[ptbin]       = {0.3,0.5,0.3,1.0,0.3};
+//const float ptbinbounds_hi[ptbin]       = {3.0,3.0,1.0,3.0,3.0};
 
 const float ptbinmin                    = 0.0;
 const float ptbinmax                    = 30.0;
@@ -74,4 +77,3 @@ const float special625_jetPtCut=625;
 
 const float jetPtCut_Event    = 550.0;
 const float jetPtCut_Jet    = 550.0;
-const float jetPtCut_Dist    = 100.0;
