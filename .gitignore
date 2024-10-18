@@ -13,4 +13,7 @@ JetTreeAnalyzer/batch/printTotalTreeEntries.C
 JetTreeAnalyzer/bin/
 JetTreeMaker/crab_log/
 JetTreeMaker/python/*root
-
+JetTreeAnalyzer/Makefile
+JetTreeAnalyzer/batch/OnOff.py
+JetTreeAnalyzer/batch/data_vn500.sh
+JetTreeAnalyzer/batch/data_vn500_test.sh
