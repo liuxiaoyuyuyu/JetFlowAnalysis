@@ -548,8 +548,10 @@ void MyClass::Loop(int job, std::string fList){
         }
     }
 
+    int namejetpt_lo=(int)jetPtCut_Jet_lo;
+    int namejetpt_up=(int)jetPtCut_Jet_up; 
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_root_out/uncorrected/HLT275_Nch40/job_jet_pt_%d_%d_%s.root",jetPtCut_Jet_lo,jetPtCut_Jet_up,subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_root_out/uncorrected/HLT275_Nch40/job_jet_pt_%d_%d_%s.root",namejetpt_lo,namejetpt_up,subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         //hBinDist_cor[wtrk-1]->Write();
         hBinDist_unc[wtrk-1]->Write();
