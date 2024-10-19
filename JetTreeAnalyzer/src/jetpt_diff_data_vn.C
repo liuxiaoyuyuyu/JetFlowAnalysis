@@ -340,7 +340,7 @@ void MyClass::Loop(int job, std::string fList){
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                //NtrigCorrected[i][j] += (1.0/Atrk_weight);
+                                NtrigCorrected[i][j] += (1.0/Atrk_weight);
                                 Ntrig[i][j] += 1;
                             }
                         }
