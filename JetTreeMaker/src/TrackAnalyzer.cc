@@ -391,6 +391,7 @@ void TrackAnalyzer::fillGen(const edm::Event& iEvent){
         std::vector< float > tempEta;
         std::vector< float > tempPhi;
         std::vector< int > tempPiD;
+        std::vector< float > tempMass;
         std::vector< int > tempChg;
         for( size_t j = 0; j < jt->numberOfDaughters(); j++){
             const reco::Candidate * p = jt->daughter(j);

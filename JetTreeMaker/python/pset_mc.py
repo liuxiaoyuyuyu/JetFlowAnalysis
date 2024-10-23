@@ -14,7 +14,8 @@ process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
         #"file:/eos/cms/store/group/phys_heavyions/davidlw/JetMET0/Jet260_RAWMINIAODSkim/240210_104720/0000/skim_23.root"
         #"file:/eos/user/x/xiaoyul/13cdeae8-0c59-401a-a6f9-defef27d998e.root"
-        "root://cms-xrd-global.cern.ch///store/mc/Run3Summer22MiniAODv4/QCD_PT-600to800_TuneCP5_13p6TeV_pythia8/MINIAODSIM/130X_mcRun3_2022_realistic_v5_ext1-v2/2520000/adb545f7-1d39-4e33-95b3-cb3bdc24717e.root"
+        "root://cms-xrd-global.cern.ch///store/mc/Run3Summer22MiniAODv4/QCD_PT-1400to1800_TuneCP5_13p6TeV_pythia8/MINIAODSIM/130X_mcRun3_2022_realistic_v5-v2/2520000/22db9a48-e398-45af-9567-505e82b0cc8d.root"
+        #"root://cms-xrd-global.cern.ch///store/mc/Run3Summer22MiniAODv4/QCD_PT-600to800_TuneCP5_13p6TeV_pythia8/MINIAODSIM/130X_mcRun3_2022_realistic_v5_ext1-v2/2520000/adb545f7-1d39-4e33-95b3-cb3bdc24717e.root"
         #"file:/afs/cern.ch/user/p/pgardner/StorageArea/Output_all_275_24.root"
         #"file:/afs/cern.ch/user/p/pgardner/CMSSW_10_6_4_patch1/src/HeavyIonsAnalysis/TrackAnalysis/python/puppi/highMultJets.root"
         #"file:highMultJets.root"
