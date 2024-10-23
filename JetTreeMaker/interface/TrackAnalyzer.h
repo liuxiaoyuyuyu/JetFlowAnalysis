@@ -259,6 +259,7 @@ class TrackAnalyzer : public edm::one::EDAnalyzer<> {
     */
      std::vector<std::vector<int>>          gendau_chg;
      std::vector<std::vector<int>>          gendau_pid;
+     std::vector<std::vector<float>>	      gendau_mass;
      std::vector<std::vector<float>>        gendau_pt;
      std::vector<std::vector<float>>        gendau_eta;
      std::vector<std::vector<float>>        gendau_phi;
@@ -372,6 +373,7 @@ dau_pt_sum.clear();
 
   gendau_chg.clear();
   gendau_pid.clear();
+  gendau_mass.clear();
   gendau_pt.clear();
   gendau_eta.clear();
   gendau_phi.clear();

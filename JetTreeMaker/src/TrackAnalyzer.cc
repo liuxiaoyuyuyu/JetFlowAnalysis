@@ -397,6 +397,7 @@ void TrackAnalyzer::fillGen(const edm::Event& iEvent){
 
             tempChg.push_back(p->charge());
             tempPiD.push_back(p->pdgId());
+            tempMass.push_back(p->mass());
 
             //check photons for mom to see if direct
             //if(p->pdgId() == 22) std::cout << (p->mother())->pdgId() << std::endl;
@@ -415,6 +416,7 @@ void TrackAnalyzer::fillGen(const edm::Event& iEvent){
         gendau_eta.push_back(tempEta);   
         gendau_phi.push_back(tempPhi);   
         gendau_pid.push_back(tempPiD);   
+        gendau_mass.push_back(tempMass);   
         gendau_chg.push_back(tempChg);   
 
     }
@@ -592,6 +594,7 @@ void TrackAnalyzer::beginJob()
 
         trackTree_->Branch("genDau_chg",		&gendau_chg); 
         trackTree_->Branch("genDau_pid",		&gendau_pid);	 
+        trackTree_->Branch("gendau_mass",		&gendau_mass);	 
         trackTree_->Branch("genDau_pt",		&gendau_pt);
         trackTree_->Branch("genDau_eta",		&gendau_eta);	 
         trackTree_->Branch("genDau_phi",		&gendau_phi );

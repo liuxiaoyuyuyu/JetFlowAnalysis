@@ -41,7 +41,7 @@ process.TFileService = cms.Service("TFileService",
 
 process.hlt = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
 #process.hlt.HLTPaths = ['HLT_AK8PF*'] # for allphysics
-process.hlt.HLTPaths = ['HLT_AK8PFJet500*'] # for allphysics
+#process.hlt.HLTPaths = ['HLT_AK8PFJet500*'] # for allphysics
 #500 is the highest jet energy without prescale
 process.hlt.andOr = cms.bool(True)
 process.hlt.throw = cms.bool(False)
@@ -73,8 +73,7 @@ process.analyzerOffline = cms.EDAnalyzer('TrackAnalyzer',
 #
 #main forest sequence
 process.runAnalyzer500 = cms.Path(
-    #process.analyzerOnline *
-    process.eventFilterHLT500 *
+    #process.eventFilterHLT500 *
     process.analyzerOffline
     )
 
