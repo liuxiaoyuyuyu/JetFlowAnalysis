@@ -587,6 +587,8 @@ void MyClass::Loop(int job, std::string fList){
                         T_ETA_Cor[x] = WEta2_Cor;
                         T_PHI_Cor[x] = WPhi2_Cor;
                     }
+                    
+                    cout<<"wtrk="<<wtrk<<" wppt="<<wppt<<" wpptA="<<wpptA<<" wpPU="<<wpPU<<endl;
 
                     for(long int i = 0; i < XENT; i++){
                         for(long int j = 0; j < XENT; j++){
@@ -636,12 +638,12 @@ void MyClass::Loop(int job, std::string fList){
                 }
             }
             for(int wppt=1;wppt<ptbin_T+1;wppt++){
-                hEPDrawCor_T[wtrk-1][wppt-1][wpPU-1]->Write();
                 hEPDrawUnc_T[wtrk-1][wppt-1][wpPU-1]->Write();
+                hEPDrawCor_T[wtrk-1][wppt-1][wpPU-1]->Write();
             }
             for(int wpptA=1;wpptA<ptbin_A+1;wpptA++){
-                hEPDrawCor_A[wtrk-1][wpptA-1][wpPU-1]->Write();
                 hEPDrawUnc_A[wtrk-1][wpptA-1][wpPU-1]->Write();
+                hEPDrawCor_A[wtrk-1][wpptA-1][wpPU-1]->Write();
             }
         }
     }
