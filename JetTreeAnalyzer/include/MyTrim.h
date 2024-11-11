@@ -38,7 +38,7 @@ public :
    vector<float>   *jetPhi;
    vector<int>     *chargedMultiplicity;
    Int_t           jetN;
-   vector<vector<float> > *dau_PuppiW;
+   //vector<vector<float> > *dau_PuppiW;
    vector<vector<int> > *dau_chg;
    vector<vector<float> > *dau_pt;
    vector<vector<float> > *dau_ptError;
@@ -47,9 +47,9 @@ public :
    vector<vector<float> > *dau_theta;
    vector<vector<float> > *dau_XYDCAsig;
    vector<vector<float> > *dau_ZDCAsig;
-   vector<vector<float> > *dau_vz;
-   vector<vector<float> > *dau_vy;
-   vector<vector<float> > *dau_vx;
+   //vector<vector<float> > *dau_vz;
+   //vector<vector<float> > *dau_vy;
+   //vector<vector<float> > *dau_vx;
 
    // List of branches
    TBranch        *b_nRun;   //!
@@ -61,7 +61,7 @@ public :
    TBranch        *b_jetPhi;   //!
    TBranch        *b_chargedMultiplicity;   //!
    TBranch        *b_jetN;   //!
-   TBranch        *b_dau_PuppiW;   //!
+   //TBranch        *b_dau_PuppiW;   //!
    TBranch        *b_dau_chg;   //!
    TBranch        *b_dau_pt;   //!
    TBranch        *b_dau_ptError;   //!
@@ -70,9 +70,9 @@ public :
    TBranch        *b_dau_theta;   //!
    TBranch        *b_dau_XYDCAsig;   //!
    TBranch        *b_dau_ZDCAsig;   //!
-   TBranch        *b_dau_vz;   //!
-   TBranch        *b_dau_vy;   //!
-   TBranch        *b_dau_vx;   //!
+   //TBranch        *b_dau_vz;   //!
+   //TBranch        *b_dau_vy;   //!
+   //TBranch        *b_dau_vx;   //!
 
    MyClass(std::vector<std::string> _fileList);
    virtual ~MyClass();
@@ -142,7 +142,7 @@ void MyClass::Init(TTree *tree)
    jetPt = 0;
    jetPhi = 0;
    chargedMultiplicity = 0;
-   dau_PuppiW = 0;
+   //dau_PuppiW = 0;
    dau_chg = 0;
    dau_pt = 0;
    dau_ptError = 0;
@@ -151,9 +151,9 @@ void MyClass::Init(TTree *tree)
    dau_theta = 0;
    dau_XYDCAsig = 0;
    dau_ZDCAsig = 0;
-   dau_vz = 0;
-   dau_vy = 0;
-   dau_vx = 0;
+   //dau_vz = 0;
+   //dau_vy = 0;
+   //dau_vx = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -169,7 +169,7 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("jetPhi", &jetPhi, &b_jetPhi);
    fChain->SetBranchAddress("chargedMultiplicity", &chargedMultiplicity, &b_chargedMultiplicity);
    fChain->SetBranchAddress("jetN", &jetN, &b_jetN);
-   fChain->SetBranchAddress("dau_PuppiW", &dau_PuppiW, &b_dau_PuppiW);
+   //fChain->SetBranchAddress("dau_PuppiW", &dau_PuppiW, &b_dau_PuppiW);
    fChain->SetBranchAddress("dau_chg", &dau_chg, &b_dau_chg);
    fChain->SetBranchAddress("dau_pt", &dau_pt, &b_dau_pt);
    fChain->SetBranchAddress("dau_ptError", &dau_ptError, &b_dau_ptError);
@@ -178,9 +178,9 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("dau_theta", &dau_theta, &b_dau_theta);
    fChain->SetBranchAddress("dau_XYDCAsig", &dau_XYDCAsig, &b_dau_XYDCAsig);
    fChain->SetBranchAddress("dau_ZDCAsig", &dau_ZDCAsig, &b_dau_ZDCAsig);
-   fChain->SetBranchAddress("dau_vz", &dau_vz, &b_dau_vz);
-   fChain->SetBranchAddress("dau_vy", &dau_vy, &b_dau_vy);
-   fChain->SetBranchAddress("dau_vx", &dau_vx, &b_dau_vx);
+   //fChain->SetBranchAddress("dau_vz", &dau_vz, &b_dau_vz);
+   //fChain->SetBranchAddress("dau_vy", &dau_vy, &b_dau_vy);
+   //fChain->SetBranchAddress("dau_vx", &dau_vx, &b_dau_vx);
    Notify();
 }
 
