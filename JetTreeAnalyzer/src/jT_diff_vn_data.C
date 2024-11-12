@@ -589,11 +589,12 @@ void MyClass::Loop(int job, std::string fList){
                     }
                     
                     cout<<"wtrk="<<wtrk<<" wppt="<<wppt<<" wpptA="<<wpptA<<" wpPU="<<wpPU<<endl;
-
+                    cout<<"# of pseudoparticles"<<XENT<<endl;
                     for(long int i = 0; i < XENT; i++){
                         for(long int j = 0; j < XENT; j++){
                             double WdeltaEta = (A_ETA[i]-T_ETA[j]);
                             double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
+                            if(wtrk==1) cout<<WdeltaEta<<" "<<WdeltaPhi<<endl;
                             hBckrndShiftedUnc[wtrk-1][wppt-1][wpptA-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi,   1);//./XENT);
                             hBckrndShiftedUnc[wtrk-1][wppt-1][wpptA-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi,  1);//./XENT);
                             hBckrndShiftedUnc[wtrk-1][wppt-1][wpptA-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi,  1);//./XENT);
