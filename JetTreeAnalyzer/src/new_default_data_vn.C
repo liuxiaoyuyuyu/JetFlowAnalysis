@@ -367,7 +367,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(fabs(dcaZ)   > 3     && dauptnow > 0.5) continue;
 
                     double jet_dau_pt = ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet], (double)(*jetPhi)[ijet], (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
-                    double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
+                    double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet]  , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
 
                     for(int i = 0; i < ptbin; i++){
                         if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
@@ -429,6 +429,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(fabs(dcaZ)   > 3     && dauptnow > 0.5) continue;
 
                     gRandom->SetSeed(0);
+                    //smear on jet phi but in the jet daughter loop?? Anyway, it is set to zero for now.
                     double phi_smear;
                         phi_smear=0;
 
