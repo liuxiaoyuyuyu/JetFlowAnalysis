@@ -114,12 +114,19 @@ void MyClass::Loop(int job, std::string fList){
     
     TProfile* p_jT_JetMult=new TProfile("p_jT_JetMult","p_jT_JetMult",120,0.5,120.5);
     TProfile* p_jT_JetMult_cor=new TProfile("p_jT_JetMult_cor","p_jT_JetMult_cor",360,0.5,120.5);
-    
+
+    /* 
     TH1D* h_jet_jT=new TH1D("jet_jT","jet_jT",200,0,20);
     TH1D* h_jet_etastar=new TH1D("jet_etastar","jet_etastar",100,0,10);
     TH1D* h_jet_cor_jT=new TH1D("jet_cor_jT","jet_cor_jT",200,0,20);
     TH1D* h_jet_cor_etastar=new TH1D("jet_cor_etastar","jet_cor_etastar",100,0,10);
+    */
 
+    TH1D* h_jet_jT[trackbin];
+    TH1D* h_jet_etastar[trackbin];
+    TH1D* h_jet_cor_jT[trackbin];
+    TH1D* h_jet_cor_etastar[trackbin];
+    
     TH2D* hEPDrawCor[trackbin][ptbin][PUbin];
     TH2D* hSignalShiftedCor[trackbin][ptbin][PUbin];
     TH2D* hBckrndShiftedCor[trackbin][ptbin][PUbin];
@@ -138,6 +145,12 @@ void MyClass::Loop(int job, std::string fList){
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]    = new TH1D(Form("hBinDist_cor_%d",wtrk),Form("hBinDist_cor_%d",wtrk), bin360, bin0, bin120);
         hBinDist_unc[wtrk-1]    = new TH1D(Form("hBinDist_unc_%d",wtrk),Form("hBinDist_unc_%d",wtrk), bin360, bin0, bin120);
+        
+        h_jet_jT[wtrk-1]=new TH1D(Form("jet_jT_%d",wtrk),Form("jet_jT_%d",wtrk),200,0,20);
+        h_jet_etastar[wtrk-1]=new TH1D(Form("jet_etastar_%d",wtrk),Form("jet_etastar_%d",wtrk),100,0,10);
+        h_jet_cor_jT[wtrk-1]=new TH1D(Form("jet_cor_jT_%d",wtrk),Form("jet_cor_jT_%d",wtrk),200,0,20);
+        h_jet_cor_etastar[wtrk-1]=new TH1D(Form("jet_cor_etastar_%d",wtrk),Form("jet_cor_etastar_%d",wtrk),100,0,10);
+        
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
                 hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]   = new TH2D(Form("hBckrndS_Cor_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
@@ -354,6 +367,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(fabs(dcaZ)   > 3     && dauptnow > 0.5) continue;
 
                     double jet_dau_pt = ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet], (double)(*jetPhi)[ijet], (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
+                    double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
 
                     for(int i = 0; i < ptbin; i++){
                         if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
@@ -371,6 +385,13 @@ void MyClass::Loop(int job, std::string fList){
 
                     //in the case where the total jet mult and the individual daughter pt is acceptable for this track bin and pt bin, we increase the Ntrig count.
                     for(int i = 0; i < trackbin; i++){
+                        if(tkBool[i]==1){
+                            h_jet_jT[i]->Fill(jet_dau_pt);
+                            h_jet_etastar[i]->Fill(jet_dau_eta);
+                            h_jet_cor_jT[i]->Fill(jet_dau_pt,1.0/(Atrk_weight));
+                            h_jet_cor_etastar[i]->Fill(jet_dau_eta,1.0/(Atrk_weight));
+                        } 
+
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                 NtrigCorrected[i][j] += (1.0/Atrk_weight);
@@ -423,10 +444,12 @@ void MyClass::Loop(int job, std::string fList){
                     
                     if(jet_dau_eta > track_eta_lim) continue;
                     
+                    /*
                     h_jet_jT->Fill(jet_dau_pt);
                     h_jet_etastar->Fill(jet_dau_eta);
                     h_jet_cor_jT->Fill(jet_dau_pt,1.0/(Atrk_weight));
                     h_jet_cor_etastar->Fill(jet_dau_eta,1.0/(Atrk_weight));
+                    */
 
                     p_jT_JetMult->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion,jet_dau_pt);
                     p_jT_JetMult_cor->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,jet_dau_pt,1.0/(Atrk_weight));
