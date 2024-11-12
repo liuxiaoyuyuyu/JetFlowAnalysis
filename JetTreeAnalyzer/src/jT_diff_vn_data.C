@@ -564,6 +564,9 @@ void MyClass::Loop(int job, std::string fList){
                     float T_PHI[XENT] = {0};
                     float T_ETA_Cor[XENT] = {0};
                     float T_PHI_Cor[XENT] = {0};
+                    
+                    cout<<"wtrk="<<wtrk<<" wppt="<<wppt<<" wpptA="<<wpptA<<endl;
+
                     for(int x = 0; x<XENT; x++){
                         gRandom->SetSeed(0);
 
@@ -571,28 +574,31 @@ void MyClass::Loop(int job, std::string fList){
                         hEPDrawUnc_A[wtrk-1][wpptA-1][wpPU-1]->GetRandom2(WEta1, WPhi1);
                         A_ETA[x] = WEta1;
                         A_PHI[x] = WPhi1;
-                        
+                        cout<<"A_eta="<<A_ETA[x]<<" A_phi"<<A_PHI[x]<<endl;
+
                         double WEta1_Cor, WPhi1_Cor;//making the pseudoparticles
                         hEPDrawCor_A[wtrk-1][wpptA-1][wpPU-1]->GetRandom2(WEta1_Cor, WPhi1_Cor);
                         A_ETA_Cor[x] = WEta1_Cor;
                         A_PHI_Cor[x] = WPhi1_Cor;
+                        cout<<"A_eta_cor="<<A_ETA_Cor[x]<<" A_phi_cor"<<A_PHI_Cor[x]<<endl;
 
                         double WEta2, WPhi2;//making the pseudoparticles
                         hEPDrawUnc_T[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta2, WPhi2);
                         T_ETA[x] = WEta2;
                         T_PHI[x] = WPhi2;
+                        cout<<"T_eta="<<T_ETA[x]<<" T_phi"<<T_PHI[x]<<endl;
                         
                         double WEta2_Cor, WPhi2_Cor;//making the pseudoparticles
                         hEPDrawCor_T[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta2_Cor, WPhi2_Cor);
                         T_ETA_Cor[x] = WEta2_Cor;
                         T_PHI_Cor[x] = WPhi2_Cor;
+                        cout<<"T_eta_cor="<<T_ETA_Cor[x]<<" T_phi_cor"<<T_PHI_Cor[x]<<endl;
                     }
                     
                     for(long int i = 0; i < XENT; i++){
                         for(long int j = 0; j < XENT; j++){
                             double WdeltaEta = (A_ETA[i]-T_ETA[j]);
                             double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
-                            cout<<"wtrk="<<wtrk<<" A_eta="<<A_ETA[i]<<" T_eta="<<T_ETA[j]<<" "<<WdeltaEta<<endl;
                             hBckrndShiftedUnc[wtrk-1][wppt-1][wpptA-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi,   1);//./XENT);
                             hBckrndShiftedUnc[wtrk-1][wppt-1][wpptA-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi,  1);//./XENT);
                             hBckrndShiftedUnc[wtrk-1][wppt-1][wpptA-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi,  1);//./XENT);
