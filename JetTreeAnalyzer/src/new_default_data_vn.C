@@ -604,6 +604,10 @@ void MyClass::Loop(int job, std::string fList){
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
         hBinDist_unc[wtrk-1]->Write();
+        h_jet_jT[wtrk-1]->Write();
+        h_jet_etastar[wtrk-1]->Write();
+        h_jet_cor_jT[wtrk-1]->Write();
+        h_jet_cor_etastar[wtrk-1]->Write();
         for(int wppt =1; wppt <ptbin+1; wppt++){
             for(int wpPU =1; wpPU<PUbin+1; wpPU++){
                 hSignalShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Unc_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
@@ -631,10 +635,6 @@ void MyClass::Loop(int job, std::string fList){
     hBinDist_cor_single->Write();
     hBinDist_unc_single->Write();
     
-    h_jet_jT->Write();
-    h_jet_etastar->Write();
-    h_jet_cor_jT->Write();
-    h_jet_cor_etastar->Write();
 
     h_lab_JetMult_pT->Write();
     h_lab_JetMult_phi->Write();
