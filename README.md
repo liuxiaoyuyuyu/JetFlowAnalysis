@@ -8,6 +8,7 @@ Parker Gardner's code for the jet collectivity study
 - [Analyze Jet Trees](#analyze-jet-trees) 
   - [JetTreeAnalyzer](#jettreeanalyzer)
   - [Batch jobs](#batch-jobs)
+  - [Code summary](#code-summary)
 - [Macros](#macros) 
   - [Make new background](#make-new-background)
   - [Vn vs Nch](#vn-vs-nch)
@@ -123,6 +124,22 @@ Submit condor jobs:
 ```Linux
 python3 OnOff.py
 ```
+
+### Code summary
+| code   | note  |
+|------------|------------|
+|era_run3_2022_correction.C|make MC correction table for 2022, jet veto implemented|
+|era_run3_2023_correction.C|make MC correction table for 2023/24, no jet veto|
+|new_default_data_vn.C| basic analysis (HLT500, all Run3 years)| 
+|jetpt_diff_data_vn.C| jet-pT-dependent vn study, 2024 data, implemented jetPtCut_Jet_lo and jetPtCut_Jet_up, removed the jet veto part since it is only used for the 2022 data| 
+|jT_diff_vn_data.C|jT-dependent vn study|
+|||
+|era_16APV_correction.C|Parker's code|
+|era_18_correction.C|Parker's code|
+|new_default_data_1d2d.C|old code|
+|data_QA.C|data QA|
+
+
 
 ## Macros 
 ### Make new background
