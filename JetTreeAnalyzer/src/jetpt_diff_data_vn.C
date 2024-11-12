@@ -193,11 +193,14 @@ void MyClass::Loop(int job, std::string fList){
         era_vec.push_back("2022G"); matched_cor_table_vec.push_back("correction_2022EFG"); matched_jet_veto_vec.push_back("Summer22EE_23Sep2023_RunEFG_v1");
         era_vec.push_back("2023C"); matched_cor_table_vec.push_back("correction_2023C");
         era_vec.push_back("2023D"); matched_cor_table_vec.push_back("correction_2023D");
+        era_vec.push_back("2024B"); matched_cor_table_vec.push_back("correction_2024");
         era_vec.push_back("2024C"); matched_cor_table_vec.push_back("correction_2024");
         era_vec.push_back("2024D"); matched_cor_table_vec.push_back("correction_2024");
         era_vec.push_back("2024E"); matched_cor_table_vec.push_back("correction_2024");
         era_vec.push_back("2024F"); matched_cor_table_vec.push_back("correction_2024");
         era_vec.push_back("2024G"); matched_cor_table_vec.push_back("correction_2024");
+        era_vec.push_back("2024H"); matched_cor_table_vec.push_back("correction_2024");
+        era_vec.push_back("2024I"); matched_cor_table_vec.push_back("correction_2024");
         int i_keep=999;
         for(int i=0; i<era_vec.size(); i++){
             if(isSubstring(era_vec[i],fileList.at(f).c_str())){
