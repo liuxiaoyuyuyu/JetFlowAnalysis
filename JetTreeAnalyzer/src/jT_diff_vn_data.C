@@ -396,8 +396,8 @@ void MyClass::Loop(int job, std::string fList){
                             if(tkBool[i] + T_ptBool[A_trk][j] == 2){
                                 NtrigCorrected[i][j] += (1.0/Atrk_weight);
                                 Ntrig[i][j] += 1;
-                                cout<<"itrack="<<i<<" ipT="<<j<<" NtrigCorrected="<<NtrigCorrected[i][j]<<endl;
-                                cout<<"itrack="<<i<<" ipT="<<j<<" Ntrig="<<Ntrig[i][j]<<endl;
+                                //cout<<"itrack="<<i<<" ipT="<<j<<" NtrigCorrected="<<NtrigCorrected[i][j]<<endl;
+                                //cout<<"itrack="<<i<<" ipT="<<j<<" Ntrig="<<Ntrig[i][j]<<endl;
                             }
                         }
                     }
