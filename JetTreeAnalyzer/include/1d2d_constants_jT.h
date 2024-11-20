@@ -1,8 +1,10 @@
 //const int   trackbin                    = 5;
 const int   trackbin                    = 10;
 //const int   ptbin                       = 5;
-const int   ptbin_T                     = 3;
-const int   ptbin_A                       = 1;
+//const int   ptbin_T                     = 3;
+//const int   ptbin_A                       = 1;
+const int   ptbin_T                     = 7;
+const int   ptbin_A                       = 2;
 const float ptmin                       = 0.0;
 const float ptmax                       = 1000.0;
 
@@ -13,10 +15,16 @@ const int   trackbinboundsUpper[trackbin]    = {20,30,40,50,59,66,76,83,mm,mm};
 
 //const int   trackbinbounds[trackbin]         = {76,78,80,81,82};
 //const int   trackbinboundsUpper[trackbin]    = {mm,mm,mm,mm,mm};
-const float pt_T_lo[ptbin_T]       = {0.3,1.0,0.3};
-const float pt_T_hi[ptbin_T]       = {1.0,3.0,3.0};
-const float pt_A_lo[ptbin_A]={0.3};
-const float pt_A_hi[ptbin_A]={3.0};
+//const float pt_T_lo[ptbin_T]       = {0.3,1.0,0.3};
+//const float pt_T_hi[ptbin_T]       = {1.0,3.0,3.0};
+//const float pt_A_lo[ptbin_A]={0.3};
+//const float pt_A_hi[ptbin_A]={3.0};
+
+const float pt_T_lo[ptbin_T]       = {0.0,0.3,0.7,1.3,2.0,0.3,0.0};
+const float pt_T_hi[ptbin_T]       = {0.3,0.7,1.3,2.0,3.0,3.0,3.0};
+const float pt_A_lo[ptbin_A]={0.3,0.0};
+const float pt_A_hi[ptbin_A]={3.0,3.0};
+
 //const float ptbinbounds_lo[ptbin]       = {0.3,0.5,0.3,1.0,0.3};
 //const float ptbinbounds_hi[ptbin]       = {3.0,3.0,1.0,3.0,3.0};
 
