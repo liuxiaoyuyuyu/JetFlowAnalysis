@@ -245,7 +245,6 @@ void MyClass::Loop(int job, std::string fList){
 
             //=================ENTERING JET LOOP==================
             for(int ijet=0; ijet < jetCounter; ijet++){
-                hjet_eta_phi_after_veto->Fill((*jetEta)[ijet],(*jetPhi)[ijet]);
                 
                 long int NNtrk = (dau_pt->at(ijet)).size();
                 gRandom->SetSeed(0);
