@@ -589,7 +589,7 @@ void MyClass::Loop(int job, std::string fList){
         }
     }
 
-    string subList = fList.substr(fList.size() - 3);
+    string subList = fList.substr(fList.size() - 8);
     TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run2_root_out/jTDiff/job_%s.root",subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
