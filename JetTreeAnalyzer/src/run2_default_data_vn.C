@@ -174,7 +174,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hdid500;
     TH1D* hdid400;
 
-    TFile *f_jet_HLT_lookup = new TFile("did400500_v2_all.root");
+    TFile *f_jet_HLT_lookup = new TFile("~/StorageArea/did400500_v2_all.root");
     hdid500 = (TH1D*)f_jet_HLT_lookup->Get("d500")->Clone("did500");
     hdid400 = (TH1D*)f_jet_HLT_lookup->Get("d400")->Clone("did400");
     hdid500->Divide(hdid400);
