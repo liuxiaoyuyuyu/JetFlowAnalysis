@@ -614,9 +614,6 @@ void MyClass::Loop(int job, std::string fList){
     p_jT_JetMult->Write();
     p_jT_JetMult_cor->Write();
 
-    hjet_eta_phi_before_veto->Write();
-    hjet_eta_phi_after_veto->Write();
-
     fS_tempA->Close();
 }
 
