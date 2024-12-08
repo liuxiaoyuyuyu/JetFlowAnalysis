@@ -220,6 +220,8 @@ void MyClass::Loop(int job, std::string fList){
             }
         }
 
+        if(i_keep==999) continue;
+
         string filename = "~/StorageArea/"+matched_cor_table_vec[i_keep]+".root";
         TFile *f_pt_eta_DCA_lookup = new TFile(filename.c_str());
         
