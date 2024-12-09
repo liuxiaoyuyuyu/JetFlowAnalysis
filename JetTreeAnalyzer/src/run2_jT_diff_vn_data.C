@@ -263,7 +263,7 @@ void MyClass::Loop(int job, std::string fList){
                 // filling distrivutions within track bins
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
-                double jet_HLT_weight;// = 1.0;
+                double jet_HLT_weight=1.0;
                 
                 if((*jetPt)[ijet] < 880 && (*jetPt)[ijet] > 550){
                     jet_HLT_weight = 1.0/(hdid500->GetBinContent(hdid500->FindBin((*jetPt)[ijet]) ) );
