@@ -126,6 +126,9 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* h_jet_etastar[trackbin];
     TH1D* h_jet_cor_jT[trackbin];
     TH1D* h_jet_cor_etastar[trackbin];
+
+    TH2D* h_jet_jT_etaster[trackbin];
+    TH2D* h_jet_cor_jT_etaster[trackbin];
     
     TH2D* hEPDrawCor[trackbin][ptbin][PUbin];
     TH2D* hSignalShiftedCor[trackbin][ptbin][PUbin];
@@ -151,6 +154,9 @@ void MyClass::Loop(int job, std::string fList){
         h_jet_cor_jT[wtrk-1]=new TH1D(Form("jet_cor_jT_%d",wtrk),Form("jet_cor_jT_%d",wtrk),200,0,20);
         h_jet_cor_etastar[wtrk-1]=new TH1D(Form("jet_cor_etastar_%d",wtrk),Form("jet_cor_etastar_%d",wtrk),100,0,10);
         
+        h_jet_jT_etastar[wtrk-1]=new TH2D(Form("jet_jT_etastar_%d",wtrk),Form("jet_jT_etastar_%d",wtrk),100,0,10,200,0,20);
+        h_jet_cor_jT_etastar[wtrk-1]=new TH2D(Form("jet_cor_jT_etastar_%d",wtrk),Form("jet_cor_jT_etastar_%d",wtrk),100,0,10,200,0,20);
+
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
                 hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]   = new TH2D(Form("hBckrndS_Cor_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
@@ -352,10 +358,12 @@ void MyClass::Loop(int job, std::string fList){
                     //in the case where the total jet mult and the individual daughter pt is acceptable for this track bin and pt bin, we increase the Ntrig count.
                     for(int i = 0; i < trackbin; i++){
                         if(tkBool[i]==1){
-                            h_jet_jT[i]->Fill(jet_dau_pt);
-                            h_jet_etastar[i]->Fill(jet_dau_eta);
-                            h_jet_cor_jT[i]->Fill(jet_dau_pt,1.0/(Atrk_weight));
-                            h_jet_cor_etastar[i]->Fill(jet_dau_eta,1.0/(Atrk_weight));
+                            h_jet_jT[i]->Fill(jet_dau_pt,1.0*jet_HLT_weight);
+                            h_jet_etastar[i]->Fill(jet_dau_eta,1.0*jet_HLT_weight);
+                            h_jet_cor_jT[i]->Fill(jet_dau_pt,1.0*jet_HLT_weight/(Atrk_weight));
+                            h_jet_cor_etastar[i]->Fill(jet_dau_eta,1.0*jet_HLT_weight/(Atrk_weight));
+                            h_jet_jT_etastar[i]->Fill(jet_dau_eta,jet_dau_pt,1.0*jet_HLT_weight);
+                            h_jet_cor_jT_etastar[i]->Fill(jet_dau_eta,jet_dau_pt,1.0*jet_HLT_weight/(Atrk_weight));
                         } 
 
                         for(int j = 0; j < ptbin; j++){
@@ -575,6 +583,8 @@ void MyClass::Loop(int job, std::string fList){
         h_jet_etastar[wtrk-1]->Write();
         h_jet_cor_jT[wtrk-1]->Write();
         h_jet_cor_etastar[wtrk-1]->Write();
+        h_jet_jT_etastar[wtrk-1]->Write();
+        h_jet_cor_jT_etastar[wtrk-1]->Write();
         for(int wppt =1; wppt <ptbin+1; wppt++){
             for(int wpPU =1; wpPU<PUbin+1; wpPU++){
                 hSignalShiftedUnc[wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Unc_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
