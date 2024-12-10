@@ -127,8 +127,8 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* h_jet_cor_jT[trackbin];
     TH1D* h_jet_cor_etastar[trackbin];
 
-    TH2D* h_jet_jT_etaster[trackbin];
-    TH2D* h_jet_cor_jT_etaster[trackbin];
+    TH2D* h_jet_jT_etastar[trackbin];
+    TH2D* h_jet_cor_jT_etastar[trackbin];
     
     TH2D* hEPDrawCor[trackbin][ptbin][PUbin];
     TH2D* hSignalShiftedCor[trackbin][ptbin][PUbin];
