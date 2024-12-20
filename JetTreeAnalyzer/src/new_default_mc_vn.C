@@ -176,7 +176,7 @@ void MyClass::Loop(int job, std::string fList){
             //=================ENTERING JET LOOP==================
             for(int ijet=0; ijet < jetCounter; ijet++){
                 
-                long int NNtrk = (genJetPt->at(ijet)).size();
+                long int NNtrk = (genDau_pt->at(ijet)).size();
                 gRandom->SetSeed(0);
                 double eta_smear;
                 eta_smear=0;
