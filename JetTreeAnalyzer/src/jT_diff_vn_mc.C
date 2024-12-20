@@ -229,7 +229,8 @@ void MyClass::Loop(int job, std::string fList){
                     if((*genDau_pt)[ijet][A_trk] < 0.3) continue;
                     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
 
-                    double jet_dau_pt = ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet], (double)(*jetPhi)[ijet], (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
+                    double jet_dau_pt = ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                    double jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet]  , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                     for(int i = 0; i < ptbin_T; i++){
                         if(jet_dau_pt >= pt_T_lo[i] && jet_dau_pt < pt_T_hi[i]){
@@ -261,7 +262,6 @@ void MyClass::Loop(int job, std::string fList){
                 //continuation of main loops. Here is where the 2D Corr plots are created using the above booleans and 
                 for(int i = 0; i < trackbin; i++){
                     for(int j = 0; j < ptbin_T; j++){
-                        hNtrig->Fill(i,j,Ntrig[i][j]);
                         hNtrigCorrected->Fill(i,j, NtrigCorrected[i][j]);
                     }
                 }
@@ -341,8 +341,6 @@ void MyClass::Loop(int job, std::string fList){
                                         */
                                             continue;}
                                         if(NtrigCorrected[i][j] == 0){ cout << "NtrigCorrected[i][j] = 0!" << endl; continue;}
-
-                                        hTotalWeight->Fill(1.0 /(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
 
                                         int k_PU=0;
                                         
@@ -444,7 +442,6 @@ void MyClass::Loop(int job, std::string fList){
     for(int i=0;i<ptbin_A;i++){
         hPairs[i]->Write();
     }
-    hNtrig->Write();
     hNtrigCorrected->Write();
     hJetPt->Write();
     hJetPt_wo_ptcut->Write(); 
