@@ -100,7 +100,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJet_Pass550     = new TH1D("hJet_Pass550"  ,"hJet_Pass550"  , trackbin,bin0,trackbin);
     TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i340,i100,i3500);
     TH1D* hJetPt_wo_ptcut = new TH1D("hJetPt_wo_ptcut"  ,"hJetPt_wo_ptcut" ,i340,i100,i3500);
-    TH1D* hBinDist_cor_single = new TH1D("hBinDist_cor_single","hBinDist_cor_single",bin360,bin0,bin120);
+    TH1D* hBinDist_cor_single = new TH1D("hBinDist_cor_single","hBinDist_cor_single",600,0,200);
 
     TH2D* h_lab_cor_JetMult_pT=new TH2D("lab_cor_JetMult_pT","lab_cor_JetMult_pT",340,100,3500,360,0.5,120.5);
     TH2D* h_lab_cor_JetMult_phi=new TH2D("lab_cor_JetMult_phi","lab_cor_JetMult_phi",30,-TMath::Pi(),TMath::Pi(),360,0.5,120.5);
@@ -128,7 +128,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_cor[trackbin];
 
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
-        hBinDist_cor[wtrk-1]    = new TH1D(Form("hBinDist_cor_%d",wtrk),Form("hBinDist_cor_%d",wtrk), bin360, bin0, bin120);
+        hBinDist_cor[wtrk-1]    = new TH1D(Form("hBinDist_cor_%d",wtrk),Form("hBinDist_cor_%d",wtrk), 600, 0, 200);
         
         h_jet_cor_jT[wtrk-1]=new TH1D(Form("jet_cor_jT_%d",wtrk),Form("jet_cor_jT_%d",wtrk),200,0,20);
         h_jet_cor_etastar[wtrk-1]=new TH1D(Form("jet_cor_etastar_%d",wtrk),Form("jet_cor_etastar_%d",wtrk),100,0,10);
