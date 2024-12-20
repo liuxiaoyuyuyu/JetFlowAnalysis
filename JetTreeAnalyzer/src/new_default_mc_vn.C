@@ -118,10 +118,11 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* h_jet_cor_jT[trackbin];
     TH1D* h_jet_cor_etastar[trackbin];
     
+    TH2D* h_jet_cor_jT_etastar[trackbin];
+    
     TH2D* hEPDrawCor[trackbin][ptbin][PUbin];
     TH2D* hSignalShiftedCor[trackbin][ptbin][PUbin];
     TH2D* hBckrndShiftedCor[trackbin][ptbin][PUbin];
-    
 
     //For recording Nch dis. and calculating <Nch> per Nch bin.
     TH1D* hBinDist_cor[trackbin];
@@ -132,6 +133,7 @@ void MyClass::Loop(int job, std::string fList){
         h_jet_cor_jT[wtrk-1]=new TH1D(Form("jet_cor_jT_%d",wtrk),Form("jet_cor_jT_%d",wtrk),200,0,20);
         h_jet_cor_etastar[wtrk-1]=new TH1D(Form("jet_cor_etastar_%d",wtrk),Form("jet_cor_etastar_%d",wtrk),100,0,10);
         
+        h_jet_cor_jT_etastar[wtrk-1]=new TH2D(Form("jet_cor_jT_etastar_%d",wtrk),Form("jet_cor_jT_etastar_%d",wtrk),100,0,10,200,0,20);
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
                 hBckrndShiftedCor[wtrk-1][wppt-1][wpPU-1]   = new TH2D(Form("hBckrndS_Cor_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
@@ -162,7 +164,7 @@ void MyClass::Loop(int job, std::string fList){
             Long64_t jevent = LoadTree(ievent);
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
-            if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
+            if(!F_eventpass(genJetPt, genJetPt->size(), jetPtCut_Event)){
                 continue;
             }
             
@@ -178,52 +180,36 @@ void MyClass::Loop(int job, std::string fList){
                 gRandom->SetSeed(0);
                 double eta_smear;
                 eta_smear=0;
-                if( fabs(((*jetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
-                if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
-                hJetPt->Fill((*jetPt)[ijet]);
+                if( fabs(((*genJetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
+                if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
+                hJetPt->Fill((*genJetPt)[ijet]);
                 // filling distrivutions within track bins
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
                 double jet_HLT_weight = 1.0;
-                /*
-                if((*jetPt)[ijet] < 880 && (*jetPt)[ijet] > 550){
-                    jet_HLT_weight = 1.0/(hdid500->GetBinContent(hdid500->FindBin((*jetPt)[ijet]) ) );
-                }
-                */
                 int tkBool[trackbin] = {0};
 
-                int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 double n_ChargeMult_DCA_labPt_Eta_exclusion_Cor =0;
 
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
-                    if((*dau_chg)[ijet][A_trk] == 0) continue;//charge
-                    if(fabs((*dau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
-                    if(fabs((*dau_eta)[ijet][A_trk]) > 2.4)     continue;//lab eta
+                    if((*genDau_chg)[ijet][A_trk] == 0) continue;//charge
+                    if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
+                    if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4)     continue;//lab eta
 
-                    double dauptnow = (*dau_pt)[ijet][A_trk]; double pterr_R_pt =0; double dcaXY = 0; double dcaZ = 0;
-                    pterr_R_pt= ( (*dau_ptError)[ijet][A_trk] ) / ( (*dau_pt)[ijet][A_trk] );
-                    dcaXY = (*dau_XYDCAsig)[ijet][A_trk];
-                    dcaZ = (*dau_ZDCAsig)[ijet][A_trk];
-
-                    if(pterr_R_pt   > 0.1   && dauptnow > 0.5)  continue;
-                    if(fabs(dcaXY)  > 3     && dauptnow > 0.5)  continue;
-                    if(fabs(dcaZ)   > 3     && dauptnow > 0.5)  continue;
-                    n_ChargeMult_DCA_labPt_Eta_exclusion += 1;
                     double nUnc_weight = 1.0;//(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
                 }
 
-                h_lab_cor_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
-                h_lab_cor_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
-                h_lab_cor_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
+                h_lab_cor_JetMult_pT->Fill((*genJetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
+                h_lab_cor_JetMult_phi->Fill((*genJetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
+                h_lab_cor_JetMult_eta->Fill((*genJetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
                 
                 hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
                 for(int i = 0; i < trackbin; i++){
-                    if( n_ChargeMult_DCA_labPt_Eta_exclusion >= trackbinbounds[i] && n_ChargeMult_DCA_labPt_Eta_exclusion < trackbinboundsUpper[i]){
+                    if( n_ChargeMult_DCA_labPt_Eta_exclusion_Cor >= trackbinbounds[i] && n_ChargeMult_DCA_labPt_Eta_exclusion_Cor < trackbinboundsUpper[i]){
                         tkBool[i] = 1;
                         hJet_Pass                   ->Fill(i);
-                        if((*jetPt)[ijet] >= jetPtCut_Event) hJet_Pass550                           ->Fill(i);
-                        if((*jetPt)[ijet] >= jetPtCut_Event) hJet_Pass550_hltCor                   ->Fill(i,1.0*jet_HLT_weight);
+                        if((*genJetPt)[ijet] >= jetPtCut_Event) hJet_Pass550                           ->Fill(i);
 
                         hBinDist_cor[i]             ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,1.0*jet_HLT_weight);
                     }
@@ -238,33 +224,18 @@ void MyClass::Loop(int job, std::string fList){
                 // In each case I create a true falsse for that daughter falling in to the specific pt bin.
                 // Note this is NOT jet x daughter. It's pt bin x daughtr
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
-                    if((*dau_chg)[ijet][A_trk] == 0) continue;
-                    if((*dau_pt)[ijet][A_trk] < 0.3) continue;
-                    if(fabs((*dau_eta)[ijet][A_trk]) > 2.4) continue;
+                    if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                    if((*genDau_pt)[ijet][A_trk] < 0.3) continue;
+                    if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
 
-                    double dauptnow = (*dau_pt)[ijet][A_trk];
-                    double pterr_R_pt =0;
-                    double dcaXY = 0;
-                    double dcaZ = 0;
-                    pterr_R_pt= ( (*dau_ptError)[ijet][A_trk] ) / ( (*dau_pt)[ijet][A_trk] );
-                    dcaXY = (*dau_XYDCAsig)[ijet][A_trk];
-                    dcaZ = (*dau_ZDCAsig)[ijet][A_trk];
-                    if(pterr_R_pt   > 0.1   && dauptnow > 0.5) continue;
-                    if(fabs(dcaXY)  > 3     && dauptnow > 0.5) continue;
-                    if(fabs(dcaZ)   > 3     && dauptnow > 0.5) continue;
-
-                    double jet_dau_pt = ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet], (double)(*jetPhi)[ijet], (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
-                    double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet]  , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
+                    double jet_dau_pt = ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                    double jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet]  , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                     for(int i = 0; i < ptbin; i++){
                         if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
                             A_ptBool[A_trk][i] = 1;
                         }
                     }
-
-                    //NEW THING                        
-                    //NEW THING                        
-                    //NEW THING                        
 
                     //getting et pt efficiency for A track in beam frame
                     //double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
@@ -275,6 +246,7 @@ void MyClass::Loop(int job, std::string fList){
                         if(tkBool[i]==1){
                             h_jet_cor_jT[i]->Fill(jet_dau_pt,1.0/(Atrk_weight));
                             h_jet_cor_etastar[i]->Fill(jet_dau_eta,1.0/(Atrk_weight));
+                            h_jet_cor_jT_etastar[i]->Fill(jet_dau_eta,jet_dau_pt,1.0*jet_HLT_weight/(Atrk_weight));
                         } 
 
                         for(int j = 0; j < ptbin; j++){
@@ -296,30 +268,19 @@ void MyClass::Loop(int job, std::string fList){
 
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
-                    if((*dau_chg)[ijet][A_trk] == 0) continue;
-                    if((*dau_pt)[ijet][A_trk] < 0.3) continue;
-                    if(fabs((*dau_eta)[ijet][A_trk]) > 2.4) continue;
+                    if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                    if((*genDau_pt)[ijet][A_trk] < 0.3) continue;
+                    if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
                     //if((*highPurity)[ijet][A_trk] == 0) continue;
-
-                    double dauptnow = (*dau_pt)[ijet][A_trk];
-                    double pterr_R_pt =0;
-                    double dcaXY = 0;
-                    double dcaZ = 0;
-                    pterr_R_pt= ( (*dau_ptError)[ijet][A_trk] ) / ( (*dau_pt)[ijet][A_trk] );
-                    dcaXY = (*dau_XYDCAsig)[ijet][A_trk];
-                    dcaZ = (*dau_ZDCAsig)[ijet][A_trk];
-                    if(pterr_R_pt   > 0.1   && dauptnow > 0.5) continue;
-                    if(fabs(dcaXY)  > 3     && dauptnow > 0.5) continue;
-                    if(fabs(dcaZ)   > 3     && dauptnow > 0.5) continue;
 
                     gRandom->SetSeed(0);
                     //smear on jet phi but in the jet daughter loop?? Anyway, it is set to zero for now.
                     double phi_smear;
-                        phi_smear=0;
+                    phi_smear=0;
 
-                    double jet_dau_pt    =  ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
-                    double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
-                    double jet_dau_phi   = phiWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
+                    double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                    double jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                    double jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
                     
                     //getting et pt efficiency for A track in beam frame
@@ -328,14 +289,6 @@ void MyClass::Loop(int job, std::string fList){
                     
                     if(jet_dau_eta > track_eta_lim) continue;
                     
-                    /*
-                    h_jet_jT->Fill(jet_dau_pt);
-                    h_jet_etastar->Fill(jet_dau_eta);
-                    h_jet_cor_jT->Fill(jet_dau_pt,1.0/(Atrk_weight));
-                    h_jet_cor_etastar->Fill(jet_dau_eta,1.0/(Atrk_weight));
-                    */
-
-                    p_jT_JetMult->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion,jet_dau_pt);
                     p_jT_JetMult_cor->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor,jet_dau_pt,1.0/(Atrk_weight));
 
 
@@ -350,33 +303,19 @@ void MyClass::Loop(int job, std::string fList){
                     if(A_trk == NNtrk - 1) continue;
                     for(long int T_trk=A_trk+1; T_trk< NNtrk; T_trk++ ){
 
-                        if((*dau_chg)[ijet][T_trk] == 0) continue;
-                        if((*dau_pt)[ijet][T_trk] < 0.3) continue;
-                        if(fabs((*dau_eta)[ijet][T_trk]) > 2.4) continue;
+                        if((*genDau_chg)[ijet][T_trk] == 0) continue;
+                        if((*genDau_pt)[ijet][T_trk] < 0.3) continue;
+                        if(fabs((*genDau_eta)[ijet][T_trk]) > 2.4) continue;
 
-                        double T_dauptnow = (*dau_pt)[ijet][T_trk];
-                        double T_pterr_R_pt =0;
-                        double T_dcaXY = 0;
-                        double T_dcaZ = 0;
-                        T_pterr_R_pt= ( (*dau_ptError)[ijet][T_trk] ) / ( (*dau_pt)[ijet][T_trk] );
-                        T_dcaXY = (*dau_XYDCAsig)[ijet][T_trk];
-                        T_dcaZ = (*dau_ZDCAsig)[ijet][T_trk];
-                        if(T_pterr_R_pt   > 0.1   && T_dauptnow > 0.5) continue;
-                        if(fabs(T_dcaXY)  > 3     && T_dauptnow > 0.5) continue;
-                        if(fabs(T_dcaZ)   > 3     && T_dauptnow > 0.5) continue;
-
-                        double T_jet_dau_pt    =  ptWRTJet( (double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][T_trk], (double)(*dau_eta)[ijet][T_trk], (double)(*dau_phi)[ijet][T_trk]);
-                        double T_jet_dau_eta   = etaWRTJet( (double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][T_trk], (double)(*dau_eta)[ijet][T_trk], (double)(*dau_phi)[ijet][T_trk]);
-                        double T_jet_dau_phi   = phiWRTJet( (double)(*jetPt)[ijet], (double)(*jetEta)[ijet] +eta_smear    , (double)(*jetPhi)[ijet] +phi_smear      , (double)(*dau_pt)[ijet][T_trk], (double)(*dau_eta)[ijet][T_trk], (double)(*dau_phi)[ijet][T_trk]);
-
+                        double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                        double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                        double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                         if(T_jet_dau_eta > track_eta_lim) continue;
 
                         double deltaEta = (jet_dau_eta - T_jet_dau_eta);
                         double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
-                        //NEW THING                        
-                        //NEW THING                        
-                        //NEW THING                        
+                        
                         //getting et pt efficiency for T track in beam frame
                         double Ttrk_weight =1.0; //(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
                         //double Ttrk_weight =(hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
@@ -400,12 +339,6 @@ void MyClass::Loop(int job, std::string fList){
                                     hTotalWeight->Fill(1.0 /(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
 
                                     int k_PU=0;
-                                    hSignalShiftedUnc[i][j][k_PU]->Fill(deltaEta, deltaPhi,                  1.0*jet_HLT_weight/(Ntrig[i][j] ));
-                                    hSignalShiftedUnc[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                 1.0*jet_HLT_weight/(Ntrig[i][j] ));
-                                    hSignalShiftedUnc[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                 1.0*jet_HLT_weight/(Ntrig[i][j] ));
-                                    hSignalShiftedUnc[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,                1.0*jet_HLT_weight/(Ntrig[i][j] ));
-                                    hSignalShiftedUnc[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi,  1.0*jet_HLT_weight/(Ntrig[i][j] ));
-                                    hSignalShiftedUnc[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi,  1.0*jet_HLT_weight/(Ntrig[i][j] ));
                                     
                                     hSignalShiftedCor[i][j][k_PU]->Fill(deltaEta, deltaPhi,                  1.0*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
                                     hSignalShiftedCor[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                 1.0*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
@@ -468,11 +401,12 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run3_root_out/corrected/2022-2023/job_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/MC/13TeV/pythia8/basicAna/job_%s.root",subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
         h_jet_cor_jT[wtrk-1]->Write();
         h_jet_cor_etastar[wtrk-1]->Write();
+        h_jet_cor_jT_etastar[wtrk-1]->Write();
         for(int wppt =1; wppt <ptbin+1; wppt++){
             for(int wpPU =1; wpPU<PUbin+1; wpPU++){
                 hSignalShiftedCor[wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_Cor_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU ));
@@ -496,7 +430,6 @@ void MyClass::Loop(int job, std::string fList){
     h_lab_cor_JetMult_phi->Write();
     h_lab_cor_JetMult_eta->Write();
 
-    p_jT_JetMult->Write();
     p_jT_JetMult_cor->Write();
 
     fS_tempA->Close();
