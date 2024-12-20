@@ -170,13 +170,13 @@ void MyClass::Loop(int job, std::string fList){
             
             hEvent_Pass->Fill(1);
 
-            int jetCounter = jetPt->size();
+            int jetCounter = genJetPt->size();
             if(jetCounter == 0) continue;
 
             //=================ENTERING JET LOOP==================
             for(int ijet=0; ijet < jetCounter; ijet++){
                 
-                long int NNtrk = (dau_pt->at(ijet)).size();
+                long int NNtrk = (genJetPt->at(ijet)).size();
                 gRandom->SetSeed(0);
                 double eta_smear;
                 eta_smear=0;
@@ -336,8 +336,6 @@ void MyClass::Loop(int job, std::string fList){
                                         continue;}
                                     if(NtrigCorrected[i][j] == 0){ cout << "NtrigCorrected[i][j] = 0!" << endl; continue;}
 
-                                    hTotalWeight->Fill(1.0 /(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
-
                                     int k_PU=0;
                                     
                                     hSignalShiftedCor[i][j][k_PU]->Fill(deltaEta, deltaPhi,                  1.0*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
@@ -422,7 +420,6 @@ void MyClass::Loop(int job, std::string fList){
     hEvent_Pass->Write();
     hJet_Pass->Write();
     hJet_Pass550->Write();
-    hJet_Pass550_hltCor->Write();
     hBinDist_cor_single->Write();
     
 
