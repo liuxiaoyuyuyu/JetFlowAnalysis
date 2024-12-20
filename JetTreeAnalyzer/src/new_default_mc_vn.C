@@ -307,9 +307,9 @@ void MyClass::Loop(int job, std::string fList){
                         if((*genDau_pt)[ijet][T_trk] < 0.3) continue;
                         if(fabs((*genDau_eta)[ijet][T_trk]) > 2.4) continue;
 
-                        double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-                        double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-                        double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                        double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+                        double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+                        double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet] +eta_smear    , (double)(*genJetPhi)[ijet] +phi_smear      , (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
 
                         if(T_jet_dau_eta > track_eta_lim) continue;
 
