@@ -347,10 +347,6 @@ void MyClass::Loop(int job, std::string fList){
                         }
                     }
 
-                    //NEW THING                        
-                    //NEW THING                        
-                    //NEW THING                        
-
                     //getting et pt efficiency for A track in beam frame
                     double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                     //double Atrk_weight=1.0; 
