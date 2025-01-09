@@ -32,6 +32,7 @@ public :
    UInt_t           nRun;
    ULong64_t           nEv;
    UInt_t           nLumi;
+   vector<int>     *nTracksVtx;
    vector<int>     *jetNumDaughters;
    vector<float>   *jetEta;
    vector<float>   *jetPt;
@@ -55,6 +56,7 @@ public :
    TBranch        *b_nRun;   //!
    TBranch        *b_nEv;   //!
    TBranch        *b_nLumi;   //!
+   TBranch        *b_nTracksVtx;
    TBranch        *b_jetNumDaughters;   //!
    TBranch        *b_jetEta;   //!
    TBranch        *b_jetPt;   //!
@@ -137,6 +139,7 @@ void MyClass::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
+   nTracksVtx = 0;
    jetNumDaughters = 0;
    jetEta = 0;
    jetPt = 0;
@@ -163,6 +166,7 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("nRun", &nRun, &b_nRun);
    fChain->SetBranchAddress("nEv", &nEv, &b_nEv);
    fChain->SetBranchAddress("nLumi", &nLumi, &b_nLumi);
+   fChain->SetBranchAddress("nTracksVtx", &nTracksVtx, &b_nTracksVtx);
    fChain->SetBranchAddress("jetNumDaughters", &jetNumDaughters, &b_jetNumDaughters);
    fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
