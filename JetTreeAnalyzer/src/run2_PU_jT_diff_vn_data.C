@@ -652,20 +652,25 @@ void MyClass::Loop(int job, std::string fList){
             }
         }
     }
-    for(int i=0;i<ptbin_A;i++){
-        hPairs[i]->Write();
+    for(int wpPU =1; wpPU<PUbin+1; wpPU++){
+        for(int i=0;i<ptbin_A;i++){
+            hPairs[i][wpPU-1]->Write();
+        }
+        hPairs[wpPU-1]->Write();
+        hNtrig[wpPU-1]->Write();
+        hNtrigCorrected[wpPU-1]->Write();
+        
+        hJet_Pass[wpPU-1]->Write();
+        hJet_Pass550[wpPU-1]->Write();
+        hJet_Pass550_hltCor[wpPU-1]->Write();
     }
-    hNtrig->Write();
-    hNtrigCorrected->Write();
+    
     hTotalWeight->Write();
     hAvg_Atrk_Weight->Write();
     hAvg_NtrigCorrected_Bump->Write();
     hJetPt->Write();
     hJetPt_wo_ptcut->Write(); 
     hEvent_Pass->Write();
-    hJet_Pass->Write();
-    hJet_Pass550->Write();
-    hJet_Pass550_hltCor->Write();
     hBinDist_cor_single->Write();
     hBinDist_unc_single->Write();
     
