@@ -104,8 +104,8 @@ void MyClass::Loop(int job, std::string fList){
             hPairs[i][k_PU]= new TH2D(Form("hPairs_A_%d_PU_%d",i,k_PU+1),Form("hPairs_A_%d_PU_%d",i,k_PU+1),  trackbin, bin0,trackbin, ptbin_T, bin0, ptbin_T);
         }
         //hPairs[k_PU]       = new TH2D(Form("hPairs_PU_%d",k_PU+1),Form("hPairs_PU_%d",k_PU+1),  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
-        hNtrig[k_PU]        = new TH2D(Form("hNtrig_PU_%d",k_PU+1),Form("hNtrig_PU_%d",k_PU+1),  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
-        hNtrigCorrected[k_PU]        = new TH2D(Form("hNtrigCorrected_PU_%d",k_PU+1),Form("hNtrigCorrected_PU_%d",k_PU+1),  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
+        hNtrig[k_PU]        = new TH2D(Form("hNtrig_PU_%d",k_PU+1),Form("hNtrig_PU_%d",k_PU+1),  trackbin, bin0,trackbin, ptbin_T, bin0, ptbin_T);
+        hNtrigCorrected[k_PU]        = new TH2D(Form("hNtrigCorrected_PU_%d",k_PU+1),Form("hNtrigCorrected_PU_%d",k_PU+1),  trackbin, bin0,trackbin, ptbin_T, bin0, ptbin_T);
 
         hJet_Pass[k_PU]     = new TH1D(Form("hJet_Pass_PU_%d",k_PU+1)  ,Form("hJet_Pass_PU_%d",k_PU+1)  , trackbin,bin0,trackbin);
         hJet_Pass550[k_PU]     = new TH1D(Form("hJet_Pass550_PU_%d",k_PU+1)  ,Form("hJet_Pass550_PU_%d",k_PU+1)  , trackbin,bin0,trackbin);
@@ -553,7 +553,7 @@ void MyClass::Loop(int job, std::string fList){
                     //us 10 times as many pairs as we have in the signal histogrm.
 
                     //long int NENT =  hPairsPU[wpPU-1]->GetBinContent(wtrk, wppt);
-                    long int NENT =  hPairs[wpptA-1]->GetBinContent(wtrk, wppt);
+                    long int NENT =  hPairs[wpPU-1][wpptA-1]->GetBinContent(wtrk, wppt);
                     //long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2);
                     long int XENT =  floor(sqrt(backMult*NENT));
                     float A_ETA[XENT] = {0};
@@ -656,7 +656,6 @@ void MyClass::Loop(int job, std::string fList){
         for(int i=0;i<ptbin_A;i++){
             hPairs[i][wpPU-1]->Write();
         }
-        hPairs[wpPU-1]->Write();
         hNtrig[wpPU-1]->Write();
         hNtrigCorrected[wpPU-1]->Write();
         
