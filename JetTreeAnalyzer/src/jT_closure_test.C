@@ -147,7 +147,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D * hjetPtGen = new  TH1D("JetPtGen",";p_{T}^{gen};#sigma (pb)",i150,i100,i3500);
 
     TH1D* reco_hBinDist_cor_single = new TH1D("reco_hBinDist_single","reco_hBinDist_single",bin360,bin0,bin120);
-    TH1D* reco_hBinDist_unc_single = new TH1D("reco_hBinDist_unc_single","reco_hBinDist_unc_single",bin120,bin0,bin120);
+    TH1D* reco_hBinDist_unc_single = new TH1D("reco_hBinDist_unc_single","reco_hBinDist_unc_single",bin360,bin0,bin120);
     TH1D* reco_h_jet_unc_jT[trackbin];
     TH1D* reco_h_jet_unc_etastar[trackbin];
     TH1D* reco_h_jet_cor_jT[trackbin];
@@ -155,7 +155,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* reco_hBinDist_cor[trackbin];
     TH1D* reco_hBinDist_unc[trackbin];
     
-    TH1D* gen_hBinDist_unc_single = new TH1D("gen_hBinDist_single","gen_hBinDist_single",bin120,bin0,bin120);
+    TH1D* gen_hBinDist_unc_single = new TH1D("gen_hBinDist_single","gen_hBinDist_single",bin360,bin0,bin120);
     TH1D* gen_h_jet_unc_jT[trackbin];
     TH1D* gen_h_jet_unc_etastar[trackbin];
     TH1D* gen_hBinDist_unc[trackbin];
