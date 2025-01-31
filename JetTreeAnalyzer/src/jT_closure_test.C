@@ -123,7 +123,7 @@ void MyClass::Loop(int job, std::string fList){
 
         TTree *tree = (TTree*)fFile->Get("analyzer/trackTree");
         if(!fFile || fFile->IsZombie()){
-                std::cout << "File " << f+1 << " out of " << fileList.size() <<" is a Zombie, skipped."<< std::endl;
+                std::cout << "File " << ff+1 << " out of " << fileList.size() <<" is a Zombie, skipped."<< std::endl;
                 continue;
         } 
         Init(tree);
