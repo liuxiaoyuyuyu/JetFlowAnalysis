@@ -146,7 +146,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D * hjetPtReco = new TH1D("JetPtReco",";p_{T}^{gen};#sigma (pb)",i150,i100,i3500);
     TH1D * hjetPtGen = new  TH1D("JetPtGen",";p_{T}^{gen};#sigma (pb)",i150,i100,i3500);
 
-    TH1D* reco_hBinDist_cor_single = new TH1D("reco_hBinDist_cor_single","reco_hBinDist_cor_single",bin360,bin0,bin120);
+    TH1D* reco_hBinDist_cor_single = new TH1D("reco_hBinDist_single","reco_hBinDist_single",bin360,bin0,bin120);
     TH1D* reco_hBinDist_unc_single = new TH1D("reco_hBinDist_unc_single","reco_hBinDist_unc_single",bin120,bin0,bin120);
     TH1D* reco_h_jet_unc_jT[trackbin];
     TH1D* reco_h_jet_unc_etastar[trackbin];
@@ -155,19 +155,19 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* reco_hBinDist_cor[trackbin];
     TH1D* reco_hBinDist_unc[trackbin];
     
-    TH1D* gen_hBinDist_unc_single = new TH1D("gen_hBinDist_unc_single","gen_hBinDist_unc_single",bin120,bin0,bin120);
+    TH1D* gen_hBinDist_unc_single = new TH1D("gen_hBinDist_single","gen_hBinDist_single",bin120,bin0,bin120);
     TH1D* gen_h_jet_unc_jT[trackbin];
     TH1D* gen_h_jet_unc_etastar[trackbin];
     TH1D* gen_hBinDist_unc[trackbin];
 
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         reco_hBinDist_unc[wtrk-1]    = new TH1D(Form("reco_hBinDist_unc_%d",wtrk),Form("reco_hBinDist_unc_%d",wtrk), bin360, bin0, bin120);
-        reco_h_jet_unc_jT[wtrk-1]=new TH1D(Form("reco_jet_jT_%d",wtrk),Form("reco_jet_jT_%d",wtrk),200,0,20);
-        reco_h_jet_unc_etastar[wtrk-1]=new TH1D(Form("reco_jet_etastar_%d",wtrk),Form("reco_jet_etastar_%d",wtrk),100,0,10);
-        reco_hBinDist_cor[wtrk-1]    = new TH1D(Form("reco_hBinDist_cor_%d",wtrk),Form("reco_hBinDist_cor_%d",wtrk), bin360, bin0, bin120);
-        reco_h_jet_cor_jT[wtrk-1]=new TH1D(Form("reco_jet_cor_jT_%d",wtrk),Form("reco_jet_cor_jT_%d",wtrk),200,0,20);
-        reco_h_jet_cor_etastar[wtrk-1]=new TH1D(Form("reco_jet_cor_etastar_%d",wtrk),Form("reco_jet_cor_etastar_%d",wtrk),100,0,10);
-        gen_hBinDist_unc[wtrk-1]    = new TH1D(Form("gen_hBinDist_unc_%d",wtrk),Form("gen_hBinDist_unc_%d",wtrk), bin360, bin0, bin120);
+        reco_h_jet_unc_jT[wtrk-1]=new TH1D(Form("reco_jet_jT_unc_%d",wtrk),Form("reco_jet_jT_unc_%d",wtrk),200,0,20);
+        reco_h_jet_unc_etastar[wtrk-1]=new TH1D(Form("reco_jet_etastar_unc_%d",wtrk),Form("reco_jet_etastar_unc_%d",wtrk),100,0,10);
+        reco_hBinDist_cor[wtrk-1]    = new TH1D(Form("reco_hBinDist_%d",wtrk),Form("reco_hBinDist_%d",wtrk), bin360, bin0, bin120);
+        reco_h_jet_cor_jT[wtrk-1]=new TH1D(Form("reco_jet_jT_%d",wtrk),Form("reco_jet_jT_%d",wtrk),200,0,20);
+        reco_h_jet_cor_etastar[wtrk-1]=new TH1D(Form("reco_jet_etastar_%d",wtrk),Form("reco_jet_etastar_%d",wtrk),100,0,10);
+        gen_hBinDist_unc[wtrk-1]    = new TH1D(Form("gen_hBinDist_%d",wtrk),Form("gen_hBinDist_%d",wtrk), bin360, bin0, bin120);
         gen_h_jet_unc_jT[wtrk-1]=new TH1D(Form("gen_jet_jT_%d",wtrk),Form("gen_jet_jT_%d",wtrk),200,0,20);
         gen_h_jet_unc_etastar[wtrk-1]=new TH1D(Form("gen_jet_etastar_%d",wtrk),Form("gen_jet_etastar_%d",wtrk),100,0,10);
     }
@@ -181,7 +181,7 @@ void MyClass::Loop(int job, std::string fList){
     for(int f = 0; f<fileList.size(); f++){
         int f_from_file = f;
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
-        TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
+        TTree *tree = (TTree*)fFile->Get("analyzer/trackTree");
         if(!fFile || fFile->IsZombie()){
                 std::cout << "File " << f+1 << " out of " << fileList.size() <<" is a Zombie, skipped."<< std::endl;
                 continue;
@@ -489,7 +489,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("jT_closure_test.root"), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/MC/13TeV/closure/job_%s.root",subList.c_str()), "recreate");
    
     hpthat->Write();
     hleadingJetPt->Write(); 
