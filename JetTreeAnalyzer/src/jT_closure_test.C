@@ -32,19 +32,8 @@
 using TMath::ATan;
 using TMath::Exp;
 
-const int bin100 = 100;
-const int bin200 = 200;
-const float bin1 = 1;
-const float bin1a = 2;
-const float bin1b = 2;
-const float etarange = 3.2;
-const float pi = 3.14159;
-const float bin0= 0;
-
 
 //---------------------------------------------------------------------CUTS
-const float jetEtaCut   = 1.6;
-const float jetPtCut    = 550.0;
 const double ptscale = 1000;
 const double etascale = 3.2;
 const double phiscale = 2*3.14159;
@@ -59,6 +48,28 @@ bool F_eventpass(std::vector< float > *jetPt, int jetnumber){
     //if((*jetPt)[0] < jetPtCut) return false;
 
     return true;
+}
+
+bool isSubstring(string s1, string s2)
+{
+    int M = s1.length();
+    int N = s2.length();
+
+    /* A loop to slide pat[] one by one */
+    for (int i = 0; i <= N - M; i++) {
+        int j;
+
+        /* For current index i, check for
+         *  pattern match */
+        for (j = 0; j < M; j++)
+            if (s2[i + j] != s1[j])
+                break;
+
+        if (j == M)
+            return 1;
+    }
+
+    return 0;
 }
 
 std::vector<int> F_JetSort(std::vector< float > * vphi, std::vector< float > * vphi2) {
@@ -168,6 +179,7 @@ void MyClass::Loop(int job, std::string fList){
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
+        int f_from_file = f;
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
         TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
         if(!fFile || fFile->IsZombie()){
@@ -356,7 +368,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
                 if( fabs((*jetEta)[indicesR[ijet]]) > jetEtaCut) continue;
-                if( fabs((*jetPt)[indicesR[ijet]])  < jetPtCut)  continue;
+                if( fabs((*jetPt)[indicesR[ijet]])  < jetPtCut_Jet)  continue;
         //daughter loop:		
             //gen: calculate Nch
                 int gen_n_ChargeMult_DCA_labPt_Eta_exclusion =0;
@@ -459,10 +471,10 @@ void MyClass::Loop(int job, std::string fList){
                     double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[kjet][A_trk] , (*dau_eta)[kjet][A_trk] )));
                     for(int i = 0; i < trackbin; i++){
                         if(tkBool[i]==1){
-                            reco_h_jet_cor_jt[i]->fill(jet_dau_pt,1.0*genWeightPy/(Atrk_weight));
-                            reco_h_jet_cor_etastar[i]->fill(jet_dau_eta,1.0*genWeightPy/(Atrk_weight));
-                            reco_h_jet_unc_jt[i]->fill(jet_dau_pt,1.0*genWeightPy);
-                            reco_h_jet_unc_etastar[i]->fill(jet_dau_eta,1.0*genWeightPy);
+                            reco_h_jet_cor_jT[i]->Fill(jet_dau_pt,1.0*genWeightPy/(Atrk_weight));
+                            reco_h_jet_cor_etastar[i]->Fill(jet_dau_eta,1.0*genWeightPy/(Atrk_weight));
+                            reco_h_jet_unc_jT[i]->Fill(jet_dau_pt,1.0*genWeightPy);
+                            reco_h_jet_unc_etastar[i]->Fill(jet_dau_eta,1.0*genWeightPy);
                         } 
                     }
                 }
