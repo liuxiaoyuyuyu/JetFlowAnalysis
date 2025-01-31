@@ -500,7 +500,7 @@ void MyClass::Loop(int job, std::string fList){
     reco_hBinDist_unc_single->Write();
     gen_hBinDist_unc_single->Write();
 
-    for(int i;i<trackbin;i++){
+    for(int i=0;i<trackbin;i++){
         reco_h_jet_unc_jT[i]->Write();
         reco_h_jet_unc_etastar[i]->Write();
         reco_h_jet_cor_jT[i]->Write();
