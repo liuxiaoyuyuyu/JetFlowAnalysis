@@ -122,6 +122,10 @@ void MyClass::Loop(int job, std::string fList){
         fFile = TFile::Open(fileList.at(ff).c_str(),"read");
 
         TTree *tree = (TTree*)fFile->Get("analyzer/trackTree");
+        if(!fFile || fFile->IsZombie()){
+                std::cout << "File " << f+1 << " out of " << fileList.size() <<" is a Zombie, skipped."<< std::endl;
+                continue;
+        } 
         Init(tree);
 
         for( int i = 0; i < tree->GetEntries(); i++){
@@ -152,6 +156,8 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* reco_h_jet_unc_etastar[trackbin];
     TH1D* reco_h_jet_cor_jT[trackbin];
     TH1D* reco_h_jet_cor_etastar[trackbin];
+    TH2D* reco_h_jet_unc_jT_etastar[trackbin];
+    TH2D* reco_h_jet_cor_jT_etastar[trackbin];
     TH1D* reco_hBinDist_cor[trackbin];
     TH1D* reco_hBinDist_unc[trackbin];
     
@@ -159,6 +165,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* gen_h_jet_unc_jT[trackbin];
     TH1D* gen_h_jet_unc_etastar[trackbin];
     TH1D* gen_hBinDist_unc[trackbin];
+    TH2D* gen_h_jet_unc_jT_etastar[trackbin]; 
 
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         reco_hBinDist_unc[wtrk-1]    = new TH1D(Form("reco_hBinDist_unc_%d",wtrk),Form("reco_hBinDist_unc_%d",wtrk), bin360, bin0, bin120);
@@ -167,9 +174,15 @@ void MyClass::Loop(int job, std::string fList){
         reco_hBinDist_cor[wtrk-1]    = new TH1D(Form("reco_hBinDist_%d",wtrk),Form("reco_hBinDist_%d",wtrk), bin360, bin0, bin120);
         reco_h_jet_cor_jT[wtrk-1]=new TH1D(Form("reco_jet_jT_%d",wtrk),Form("reco_jet_jT_%d",wtrk),200,0,20);
         reco_h_jet_cor_etastar[wtrk-1]=new TH1D(Form("reco_jet_etastar_%d",wtrk),Form("reco_jet_etastar_%d",wtrk),100,0,10);
+        
+        reco_h_jet_unc_jT_etastar[wtrk-1]=new TH2D(Form("reco_jet_jT_etastar_unc_%d",wtrk),Form("reco_jet_jT_etastar_unc_%d",wtrk),100,0,10,200,0,20);
+        reco_h_jet_cor_jT_etastar[wtrk-1]=new TH2D(Form("reco_jet_jT_etastar_%d",wtrk),Form("reco_jet_jT_etastar_%d",wtrk),100,0,10,200,0,20);
+        
         gen_hBinDist_unc[wtrk-1]    = new TH1D(Form("gen_hBinDist_%d",wtrk),Form("gen_hBinDist_%d",wtrk), bin360, bin0, bin120);
         gen_h_jet_unc_jT[wtrk-1]=new TH1D(Form("gen_jet_jT_%d",wtrk),Form("gen_jet_jT_%d",wtrk),200,0,20);
         gen_h_jet_unc_etastar[wtrk-1]=new TH1D(Form("gen_jet_etastar_%d",wtrk),Form("gen_jet_etastar_%d",wtrk),100,0,10);
+        
+        gen_h_jet_unc_jT_etastar[wtrk-1]=new TH2D(Form("gen_jet_jT_etastar_unc_%d",wtrk),Form("gen_jet_jT_etastar_unc_%d",wtrk),100,0,10,200,0,20);
     }
 
 
@@ -441,6 +454,7 @@ void MyClass::Loop(int job, std::string fList){
                         if(tkBool[i]==1){
                             gen_h_jet_unc_jT[i]->Fill(jet_dau_pt,1.0*genWeightPy);
                             gen_h_jet_unc_etastar[i]->Fill(jet_dau_eta,1.0*genWeightPy);
+                            gen_h_jet_unc_jT_etastar[i]->Fill(jet_dau_eta,jet_dau_pt,1.0*genWeightPy);
                         } 
                     }
                 }
@@ -475,6 +489,9 @@ void MyClass::Loop(int job, std::string fList){
                             reco_h_jet_cor_etastar[i]->Fill(jet_dau_eta,1.0*genWeightPy/(Atrk_weight));
                             reco_h_jet_unc_jT[i]->Fill(jet_dau_pt,1.0*genWeightPy);
                             reco_h_jet_unc_etastar[i]->Fill(jet_dau_eta,1.0*genWeightPy);
+                            
+                            reco_h_jet_unc_jT_etastar[i]->Fill(jet_dau_eta,jet_dau_pt,1.0*genWeightPy);
+                            reco_h_jet_cor_jT_etastar[i]->Fill(jet_dau_eta,jet_dau_pt,1.0*genWeightPy/(Atrk_weight));
                         } 
                     }
                 }
@@ -490,7 +507,8 @@ void MyClass::Loop(int job, std::string fList){
 
     string subList = fList.substr(fList.size() - 3);
     TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/MC/13TeV/closure/job_%s.root",subList.c_str()), "recreate");
-   
+
+    qHatHist->Write();
     hpthat->Write();
     hleadingJetPt->Write(); 
     hjetPtReco->Write();
@@ -505,11 +523,14 @@ void MyClass::Loop(int job, std::string fList){
         reco_h_jet_unc_etastar[i]->Write();
         reco_h_jet_cor_jT[i]->Write();
         reco_h_jet_cor_etastar[i]->Write();
+        reco_h_jet_unc_jT_etastar[i]->Write();
+        reco_h_jet_cor_jT_etastar[i]->Write();
         reco_hBinDist_cor[i]->Write();
         reco_hBinDist_unc[i]->Write();
 
         gen_h_jet_unc_jT[i]->Write();
         gen_h_jet_unc_etastar[i]->Write();
+        gen_h_jet_unc_jT_etastar[i]->Write();
         gen_hBinDist_unc[i]->Write();
     }
     
