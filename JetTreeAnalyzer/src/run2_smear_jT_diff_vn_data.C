@@ -1,5 +1,8 @@
 #define MyClass_cxx
 
+//#define _jetaxissmear
+#define _jetptsmear
+
 #include "include/MyTrim.h"
 #include "include/coordinateTools.h"
 #include "include/run2_1d2d_constants_jT.h"
@@ -255,11 +258,22 @@ void MyClass::Loop(int job, std::string fList){
                 
                 long int NNtrk = (dau_pt->at(ijet)).size();
                 gRandom->SetSeed(0);
-                double eta_smear = gRandom->Gaus(0, 0.0091);
-                double phi_smear = gRandom->Gaus(0, 0.0083);
+                double eta_smear=0.0;
+                double phi_smear=0.0;
+                double pt_smearPercent=0.0;
+                
+                #ifdef _jetaxissmear
+                eta_smear = gRandom->Gaus(0, 0.0091);
+                phi_smear = gRandom->Gaus(0, 0.0083);
+                #endif
+
+                #ifdef _jetptsmear
+                pt_smearPercent = gRandom->Gaus(0, 0.07515); 
+                #endif
+                
                 if( fabs(((*jetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
-                if( (*jetPt)[ijet] < jetPtCut_Jet   ) continue;
-                hJetPt->Fill((*jetPt)[ijet]);
+                if( (*jetPt)[ijet]*(1.0+pt_smearPercent)< jetPtCut_Jet   ) continue;
+                hJetPt->Fill((*jetPt)[ijet]*(1.0+pt_smearPercent));
                 // filling distrivutions within track bins
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
