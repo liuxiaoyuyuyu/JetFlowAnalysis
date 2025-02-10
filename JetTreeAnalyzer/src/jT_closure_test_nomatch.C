@@ -320,14 +320,14 @@ void MyClass::Loop(int job, std::string fList){
                     if(fabs((*dau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
                     if(fabs((*dau_eta)[ijet][A_trk]) > 2.4)     continue;//lab eta
 
-                    double dauptnow = (*dau_pt)[kjet][A_trk];
+                    double dauptnow = (*dau_pt)[ijet][A_trk];
 
                     double pterr_R_pt =0;
                     double dcaXY = 0;
                     double dcaZ = 0;
-                    pterr_R_pt= ( (*dau_ptError)[kjet][A_trk] ) / ( (*dau_pt)[kjet][A_trk] );
-                    dcaXY = (*dau_XYDCAsig)[kjet][A_trk];
-                    dcaZ = (*dau_ZDCAsig)[kjet][A_trk];
+                    pterr_R_pt= ( (*dau_ptError)[ijet][A_trk] ) / ( (*dau_pt)[ijet][A_trk] );
+                    dcaXY = (*dau_XYDCAsig)[ijet][A_trk];
+                    dcaZ = (*dau_ZDCAsig)[ijet][A_trk];
 
                     if(pterr_R_pt   > 0.1   && dauptnow > 0.5) continue;
                     if(fabs(dcaXY)  > 3     && dauptnow > 0.5) continue;
