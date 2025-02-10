@@ -137,7 +137,7 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* h_lab_cor_JetMult_eta=new TH2D("lab_cor_JetMult_eta","lab_cor_JetMult_eta",34,-1.7,1.7,360,0.5,120.5);
 
     TH1D* h_lab_track_eta =new TH1D("lab_track_eta","lab_track_eta", 50, -2.5,2.5);
-    TH1D* h_lab_track_pt  =new TH1D("lab_track_pt","lab_track_pt",340,100,3500);
+    TH1D* h_lab_track_pt  =new TH1D("lab_track_pt","lab_track_pt",600,0,600);
     TH1D* h_lab_track_phi =new TH1D("lab_track_phi","lab_track_phi",30,-TMath::Pi(),TMath::Pi());
 
     TH1D* h_lab_cor_track_eta =new TH1D("lab_cor_track_eta","lab_cor_track_eta", 50, -2.5,2.5);
