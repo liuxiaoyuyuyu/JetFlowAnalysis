@@ -1,8 +1,10 @@
 #define MyClass_cxx
 
-#include "include/MyTrim.h"
+//#include "include/MyTrim.h"
+#include "include/MyTrimMC.h"
 #include "include/coordinateTools.h"
-#include "include/1d2d_constants.h"
+//#include "include/1d2d_constants.h"
+#include "include/mc_constants.h"
 
 #include <iostream>
 #include <iomanip>
@@ -56,12 +58,10 @@ void MyClass::Loop(int job, std::string fList){
 
     //Initializing Histograms
     TH1D* hEvent_Pass   = new TH1D("hEvent_Pass","hEvent_Pass", trackbin,bin0,trackbin);
-    TH2D* h_lab_JetMult_pT=new TH2D("lab_JetMult_pT","lab_JetMult_pT",300,100,3500,120,0.5,120.5);
-    TH2D* h_lab_JetMult_phi=new TH2D("lab_JetMult_phi","lab_JetMult_phi",30,-TMath::Pi(),TMath::Pi(),120,0.5,120.5);
-    TH2D* h_lab_JetMult_eta=new TH2D("lab_JetMult_eta","lab_JetMult_eta",34,-1.7,1.7,120,0.5,120.5);
 
     TH1D* h_jet_jT=new TH1D("jet_jT","jet_jT",200,0,20);
     TH1D* h_jet_etastar=new TH1D("jet_etastar","jet_etastar",100,0,10);
+    TH1D* hBinDist_cor_single = new TH1D("hBinDist_cor_single","hBinDist_cor_single",bin120,bin0,bin120);
 
 
     // MAIN CODE BEGINS
@@ -70,6 +70,10 @@ void MyClass::Loop(int job, std::string fList){
     for(int f = 0; f<fileList.size(); f++){
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
         TTree *tree = (TTree*)fFile->Get("analyzerOffline/trackTree");
+        if(!fFile || fFile->IsZombie()){
+                std::cout << "File " << f+1 << " out of " << fileList.size() <<" is a Zombie, skipped."<< std::endl;
+                continue;
+        } 
         Init(tree);
 
         std::cout << "File " << f+1 << " out of " << fileList.size() << std::endl;
@@ -84,24 +88,27 @@ void MyClass::Loop(int job, std::string fList){
             nb = fChain->GetEntry(ievent);   nbytes += nb;
 
             //cut on jetPt and jetN (number of [HLT-passed] jets in an evnet)
-            if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
-                continue;
-            }
+            //if(!F_eventpass(jetPt, jetN, jetPtCut_Event)){
+            //    continue;
+            //}
 
             hEvent_Pass->Fill(1);
 
-            int jetCounter = jetPt->size();
+            int jetCounter = genJetPt->size();
             if(jetCounter == 0) continue;
 
             //========ENTERING JET LOOP========
             for(int ijet=0; ijet < jetCounter; ijet++){
 
-                long int NNtrk = (dau_pt->at(ijet)).size();
-                //long int NNtrk = (dau_pt_STAR->at(ijet)).size();
+                //long int NNtrk = (dau_pt->at(ijet)).size();
+                long int NNtrk = (genDau_pt->at(ijet)).size();
+                if( fabs(((*genJetEta)[ijet])) > jetEtaCut ) continue;
+                if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
 
                 int n_ChargeMult_DCA_labPt_Eta_exclusion =0;
                 
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
+                    /*
                     if((*dau_chg)[ijet][A_trk] == 0) continue;//charge
                     if(fabs((*dau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
                     if(fabs((*dau_eta)[ijet][A_trk]) > 2.4)     continue;//lab eta
@@ -122,38 +129,36 @@ void MyClass::Loop(int job, std::string fList){
                     double jet_dau_pt    =  ptWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] , (double)(*jetPhi)[ijet] , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
                     double jet_dau_eta   = etaWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] , (double)(*jetPhi)[ijet] , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
                     double jet_dau_phi   = phiWRTJet((double)(*jetPt)[ijet], (double)(*jetEta)[ijet] , (double)(*jetPhi)[ijet] , (double)(*dau_pt)[ijet][A_trk], (double)(*dau_eta)[ijet][A_trk], (double)(*dau_phi)[ijet][A_trk]);
+                    */
 
+                    if((*genDau_chg)[ijet][A_trk] == 0) continue;//charge
+                    if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;//lab pt
+                    if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4)     continue;//lab eta
+                    n_ChargeMult_DCA_labPt_Eta_exclusion += 1;
+                    
+                    double jet_dau_pt = ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                    double jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet]   , (double)(*genJetPhi)[ijet]  , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                    double jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet]  , (double)(*genJetPhi)[ijet]   , (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                    
                     h_jet_jT->Fill(jet_dau_pt);
                     h_jet_etastar->Fill(jet_dau_eta);
                 }
-                h_lab_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-                h_lab_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-                h_lab_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
+                hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion);
             
             }
         }
         fFile->Close();
-
-        string subList = fList.substr(fList.size() - 3);
-        //TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/hlt260/job_%s_%d.root",subList.c_str(),f), "recreate");
-        TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/hlt500/job_%s_%d.root",subList.c_str(),f), "recreate");
-        hEvent_Pass->Write();
-        h_jet_jT->Write();
-        h_jet_etastar->Write();
-        h_lab_JetMult_pT->Write();
-        h_lab_JetMult_phi->Write();
-        h_lab_JetMult_eta->Write(); 
-        
-        fS_tempA->Close();
-        
-        hEvent_Pass->Reset()();
-        h_jet_jT->Reset()();
-        h_jet_etastar->Reset()();
-        h_lab_JetMult_pT->Reset()();
-        h_lab_JetMult_phi->Reset()();
-        h_lab_JetMult_eta->Reset()(); 
     
     }//end looping over files
+    
+    string subList = fList.substr(fList.size() - 3);
+    //TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/hlt260/job_%s_%d.root",subList.c_str(),f), "recreate");
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/flowcorr/root_out_qa/hlt500/job_%s_%d.root",subList.c_str(),f), "recreate");
+    hEvent_Pass->Write();
+    hBinDist_cor_single->Write();
+    h_jet_jT->Write();
+    h_jet_etastar->Write();
+    fS_tempA->Close();
 }
 
 //Code enters execution here
