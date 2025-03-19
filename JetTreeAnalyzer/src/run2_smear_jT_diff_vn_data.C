@@ -1,7 +1,7 @@
 #define MyClass_cxx
 
-//#define _jetaxissmear
-#define _jetptsmear
+#define _jetaxissmear
+//#define _jetptsmear
 
 #include "include/MyTrim.h"
 #include "include/coordinateTools.h"
@@ -187,6 +187,10 @@ void MyClass::Loop(int job, std::string fList){
     hdid400 = (TH1D*)f_jet_HLT_lookup->Get("d400")->Clone("did400");
     hdid500->Divide(hdid400);
 
+    TFile* f_jetaxis_res=new TFile("~/StorageArea/combined_jetaxisres_cutonreco_resolution.root");
+    TGraph* jetEta_res=(TGraph*)f_jetaxis_res->Get("jetEta_resolution_beta_1_zgtg_3");
+    TGraph* jetPhi_res=(TGraph*)f_jetaxis_res->Get("jetPhi_resolution_beta_1_zgtg_3");
+    
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
@@ -261,19 +265,23 @@ void MyClass::Loop(int job, std::string fList){
                 double eta_smear=0.0;
                 double phi_smear=0.0;
                 double pt_smearPercent=0.0;
-                
+               
+                /*
                 #ifdef _jetaxissmear
                 eta_smear = gRandom->Gaus(0, 0.0091);
                 phi_smear = gRandom->Gaus(0, 0.0083);
                 #endif
+                */
 
                 #ifdef _jetptsmear
                 pt_smearPercent = gRandom->Gaus(0, 0.07515); 
                 #endif
                 
+                #ifdef _jetptsmear
                 if( fabs(((*jetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
+                #endif
                 if( (*jetPt)[ijet]*(1.0+pt_smearPercent)< jetPtCut_Jet   ) continue;
-                hJetPt->Fill((*jetPt)[ijet]*(1.0+pt_smearPercent));
+                //hJetPt->Fill((*jetPt)[ijet]*(1.0+pt_smearPercent));
                 // filling distrivutions within track bins
                 // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
 
@@ -306,17 +314,20 @@ void MyClass::Loop(int job, std::string fList){
                     n_ChargeMult_DCA_labPt_Eta_exclusion_Cor += (1.0/nUnc_weight);
                 }
 
+                #ifdef _jetaxissmear
+                for(int i = 0; i < trackbin; i++){
+                    if( n_ChargeMult_DCA_labPt_Eta_exclusion >= trackbinbounds[i] && n_ChargeMult_DCA_labPt_Eta_exclusion < trackbinboundsUpper[i]){
+                        double eta_res=jetEta_res->GetY()[i];
+                        double phi_res=jetPhi_res->GetY()[i];
+                        eta_smear = gRandom->Gaus(0,eta_res);
+                        phi_smear = gRandom->Gaus(0,phi_res);
+                    }
+                }
+                if( fabs(((*jetEta)[ijet])+eta_smear) > jetEtaCut ) continue;
+                #endif
                 
-                h_lab_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-                h_lab_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-                h_lab_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
-
-                h_lab_cor_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
-                h_lab_cor_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
-                h_lab_cor_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
+                hJetPt->Fill((*jetPt)[ijet]*(1.0+pt_smearPercent));
                 
-                hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
-                hBinDist_unc_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion, 1.0*jet_HLT_weight);
                 for(int i = 0; i < trackbin; i++){
                     if( n_ChargeMult_DCA_labPt_Eta_exclusion >= trackbinbounds[i] && n_ChargeMult_DCA_labPt_Eta_exclusion < trackbinboundsUpper[i]){
                         tkBool[i] = 1;
@@ -329,6 +340,18 @@ void MyClass::Loop(int job, std::string fList){
                     }
                 }
 
+                h_lab_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
+                h_lab_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
+                h_lab_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion);
+
+                h_lab_cor_JetMult_pT->Fill((*jetPt)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
+                h_lab_cor_JetMult_phi->Fill((*jetPhi)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
+                h_lab_cor_JetMult_eta->Fill((*jetEta)[ijet],n_ChargeMult_DCA_labPt_Eta_exclusion_Cor);
+                
+                hBinDist_cor_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion_Cor, 1.0*jet_HLT_weight);
+                hBinDist_unc_single            ->Fill(n_ChargeMult_DCA_labPt_Eta_exclusion, 1.0*jet_HLT_weight);
+                
+                
                 int Ntrig[trackbin][ptbin_T] = {0};
                 double NtrigCorrected[trackbin][ptbin_T] = {0};
                 int A_ptBool[NNtrk][ptbin_A] = {0};
@@ -604,7 +627,13 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     string subList = fList.substr(fList.size() - 8);
-    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run2_root_out/jTDiff/job_%s.root",subList.c_str()), "recreate");
+    #ifdef _jetaxissmear
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run2_root_out/jTDiff/syscheck/jetaxis/job_newNch78_%s.root",subList.c_str()), "recreate");
+    #endif
+    #ifdef _jetptsmear
+    TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run2_root_out/basicAna/job_%s.root",subList.c_str()), "recreate");
+    #endif
+    //TFile* fS_tempA = new TFile(Form("/eos/cms/store/group/phys_heavyions/xiaoyul/Run2_root_out/jTDiff/job_%s.root",subList.c_str()), "recreate");
     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
         hBinDist_cor[wtrk-1]->Write();
         hBinDist_unc[wtrk-1]->Write();
