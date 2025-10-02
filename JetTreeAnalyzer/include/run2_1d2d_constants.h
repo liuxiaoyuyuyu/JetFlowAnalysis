@@ -11,7 +11,7 @@ const int mm = 1000;
 //const int   trackbinbounds[trackbin]         = { 0,20,30,40,50,59,66,76,83,76};
 //const int   trackbinboundsUpper[trackbin]    = {20,30,40,50,59,66,76,83,mm,mm};
 
-const int   trackbinbounds[trackbin]         = { 0,20,30,40,50,59,66,76,83,76};
+const int   trackbinbounds[trackbin]         = { 0,20,30,40,50,59,66,76,83,81};
 const int   trackbinboundsUpper[trackbin]    = {20,30,40,50,59,66,76,83,mm,mm};
 
 //const int   trackbinbounds[trackbin]         = {66,69,76,80,76,81,76,82};
