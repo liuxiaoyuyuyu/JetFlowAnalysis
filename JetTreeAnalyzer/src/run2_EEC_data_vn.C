@@ -505,6 +505,7 @@ void MyClass::Loop(int job, std::string fList){
                                         hSignalShiftedCor[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi,   EEC_weight*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
                                         hSignalShiftedCor[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi,   EEC_weight*jet_HLT_weight/(Atrk_weight * Ttrk_weight * NtrigCorrected[i][j] ));
                                     }
+                                }
                             }
                         }
                     }//T_trk end
