@@ -1,0 +1,53 @@
+{
+  "samples": [
+    {
+      "key": "2016APV_qcd_800to1000",
+      "era": "2016APV",
+      "qhat": "800to1000",
+      "global_tag": "106X_mcRun2_asymptotic_preVFP_v11",
+      "dataset": "/QCD_Pt_800to1000_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM",
+      "files": 526,
+      "events": 35527000
+    },
+    {
+      "key": "2016_qcd_800to1000",
+      "era": "2016",
+      "qhat": "800to1000",
+      "global_tag": "106X_mcRun2_asymptotic_v17",
+      "dataset": "/QCD_Pt_800to1000_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM",
+      "files": 834,
+      "events": 37782000
+    },
+    {
+      "key": "2017_qcd_800to1000",
+      "era": "2017",
+      "qhat": "800to1000",
+      "global_tag": "106X_mc2017_realistic_v9",
+      "dataset": "/QCD_Pt_800to1000_TuneCP5_13TeV_pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM",
+      "files": 454,
+      "events": 36890000
+    },
+    {
+      "key": "2018_qcd_800to1000",
+      "era": "2018",
+      "qhat": "800to1000",
+      "global_tag": "106X_upgrade2018_realistic_v16_L1v1",
+      "dataset": "/QCD_Pt_800to1000_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM",
+      "files": 810,
+      "events": 37160000
+    },
+    {
+      "key": "2018_qcd_600to800",
+      "era": "2018",
+      "qhat": "600to800",
+      "global_tag": "106X_upgrade2018_realistic_v16_L1v1",
+      "dataset": "/QCD_Pt_600to800_TuneCP5_13TeV_pythia8/RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1/MINIAODSIM",
+      "files": 1408,
+      "events": 67508000
+    }
+  ],
+  "totals": {
+    "files": 4032,
+    "events": 214867000
+  }
+}
