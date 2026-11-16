@@ -80,17 +80,20 @@ std::vector<int> matchJets(const std::vector<float>& recoEta,
     return recoToGen;
 }
 
-// Common Run 2/Run 3 selection from the analysis note.  The relative-pT-error
-// and DCA requirements apply to every selected reconstructed charged particle.
+// Run 2 track selection: below and at 0.5 GeV the stored relative-pT-error
+// and DCA significance are not available. Apply those quality cuts only above
+// 0.5 GeV, matching the Run 2 data analysis; the analysis uses pT >= 0.3 GeV.
 bool passesRecoTrackSelection(const MyClass& reader,
                               std::size_t jet, std::size_t track) {
     if ((*reader.dau_chg)[jet][track] == 0) return false;
     const double pt = (*reader.dau_pt)[jet][track];
     if (pt <= 0.0) return false;
     if (std::fabs((*reader.dau_eta)[jet][track]) > kTrackEtaMax) return false;
-    if ((*reader.dau_ptError)[jet][track] / pt > 0.1) return false;
-    if (std::fabs((*reader.dau_XYDCAsig)[jet][track]) > 3.0) return false;
-    if (std::fabs((*reader.dau_ZDCAsig)[jet][track]) > 3.0) return false;
+    if (pt > 0.5) {
+        if ((*reader.dau_ptError)[jet][track] / pt > 0.1) return false;
+        if (std::fabs((*reader.dau_XYDCAsig)[jet][track]) > 3.0) return false;
+        if (std::fabs((*reader.dau_ZDCAsig)[jet][track]) > 3.0) return false;
+    }
     return true;
 }
 
