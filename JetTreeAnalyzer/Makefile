@@ -15,6 +15,11 @@ mkdirBin:
 bin/era_run3_2023_correction.exe: src/era_run3_2023_correction.C
 	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/era_run3_2023_correction.exe src/era_run3_2023_correction.C
 
+# Run 2 basic-analysis revisit; build explicitly with
+# make bin/run2_default_data_vn_revisit.exe
+bin/run2_default_data_vn_revisit.exe: src/run2_default_data_vn_revisit.C | mkdirBin
+	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o $@ $<
+
 
 clean:
 	rm -f $(PWD)/include/*~
